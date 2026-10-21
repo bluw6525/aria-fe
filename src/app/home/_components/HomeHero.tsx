@@ -5,16 +5,6 @@ import { ArrowRight, Satellite, ShieldCheck } from "lucide-react";
 
 export function HomeHero() {
   return (
-    <div className="flex-1 min-h-screen bg-[#f3f4f6] flex flex-col px-10 py-8">
-      <div className="w-full mb-8 text-center">
-        <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-          Sistem Estimasi Kualitas Udara O3 dengan Sentinel-5P
-        </h2>
-        {/* Garis Pembatas Header Solid */}
-        <div className="w-full max-w-4xl mx-auto h-[1.5px] bg-slate-300 mt-4" />
-      </div>
-
-      {/* 2. Area Hero: Flex Terpusat & Rapi */}
       <div className="flex-1 flex items-center justify-center gap-16 max-w-5xl mx-auto w-full pb-14">
         {/* Kolom Kiri: Judul, Deskripsi, CTA, dan Metrics */}
         <div className="flex flex-col shrink-0 max-w-lg">
@@ -65,7 +55,6 @@ export function HomeHero() {
           />
         </div>
       </div>
-    </div>
   );
 }
 

@@ -1,4 +1,6 @@
 import { Sidebar } from "@/components/Sidebar";
+import { PageContainer } from "@/components/PageContainer";
+import { PageHeader } from "@/components/PageHeader";
 import { HomeHero } from "./_components/HomeHero";
 
 export default function HomePage() {
@@ -8,9 +10,10 @@ export default function HomePage() {
       <Sidebar />
 
       {/* 2. Konten Utama di Kanan (flex-1 agar mengisi seluruh sisa layar) */}
-      <main className="flex-1 overflow-y-auto">
+      <PageContainer>
+        <PageHeader />
         <HomeHero />
-      </main>
+      </PageContainer>
     </div>
   );
 }
