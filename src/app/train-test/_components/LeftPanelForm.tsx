@@ -9,6 +9,7 @@ import {
 import { FileUploader } from "@/components/FileUploader";
 import { Button } from "@/components/Button";
 import { Select } from "@/components/Select";
+import { Input } from "@/components/Input";
 import { toast } from "sonner";
 import { formatEstimatorType } from "../_types";
 import { useRegressionApi } from "../_hooks/use-regression-api";
@@ -167,13 +168,13 @@ export function LeftPanelForm() {
           <label className="text-xs font-bold text-slate-800">
             Simpan Parameter Model ke Database
           </label>
-          <div className="flex gap-2">
-            <input
+          <div className="flex gap-2 items-center">
+            <Input
               type="text"
               value={modelNameInput}
               onChange={(e) => setModelNameInput(e.target.value)}
               placeholder="Ketik nama model..."
-              className="flex-1 h-10 px-3.5 border border-slate-300 hover:border-slate-400 rounded-xl bg-white text-xs font-semibold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-600 shadow-sm transition-all"
+              containerClassName="flex-1"
             />
             <Button
               variant="primary"
