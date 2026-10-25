@@ -9,6 +9,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: ReactNode;
   icon?: ReactNode;
   iconPosition?: "left" | "right";
+  iconRight?: ReactNode;
   containerClassName?: string;
 }
 
@@ -28,6 +29,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       error,
       icon,
       iconPosition = "left",
+      iconRight,
       containerClassName = "",
       className = "",
       disabled,
@@ -37,7 +39,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     const hasIconLeft = Boolean(icon && iconPosition === "left");
-    const hasIconRight = Boolean(icon && iconPosition === "right");
+    const rightContent = iconRight || (iconPosition === "right" ? icon : null);
+    const hasIconRight = Boolean(rightContent);
 
     return (
       <div className={`flex flex-col gap-1.5 ${containerClassName}`}>
@@ -76,8 +79,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           />
 
           {hasIconRight && (
-            <div className="absolute right-3.5 flex items-center pointer-events-none text-slate-400">
-              {icon}
+            <div className="absolute right-3.5 flex items-center text-slate-400">
+              {rightContent}
             </div>
           )}
         </div>

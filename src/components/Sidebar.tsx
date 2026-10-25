@@ -1,8 +1,6 @@
 "use client";
 
-
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Home,
   Gauge,
@@ -10,10 +8,11 @@ import {
   HelpCircle,
   History,
 } from "lucide-react";
-import { cn } from "@/utils/cn";
 import { SidebarItem } from "./sidebar/SidebarItem";
 import Image from "next/image";
 import { SidebarHeader } from "./sidebar/SidebarHeader";
+import { useAuthStore } from "@/store/auth-store";
+import { toast } from "sonner";
 
 const MENU_ITEMS = [
   {
@@ -45,32 +44,48 @@ const MENU_ITEMS = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, isHydrated, logout } = useAuthStore();
+
+  const isAdmin = isHydrated && user?.role === "admin";
+
+  // Sembunyikan 'Latih dan Uji' jika pengguna bukan Admin
+  const visibleMenuItems = MENU_ITEMS.filter((item) => {
+    if (item.href === "/train-test") {
+      return isAdmin;
+    }
+    return true;
+  });
+
+  const handleLogout = () => {
+    logout();
+    toast.success("Berhasil keluar dari sesi admin.");
+    router.push("/home");
+  };
 
   return (
     <aside className="w-68 min-h-screen bg-[#0e8ad6] pt-6 pb-1 flex flex-col text-white shadow-xl border-r border-sky-400/20 select-none shrink-0">
       {/* Brand Header */}
-      <SidebarHeader />
+      <SidebarHeader isAdmin={isAdmin} onLogout={handleLogout} />
 
       {/* Navigation Menu */}
       <nav className="mt-10 flex flex-col gap-3 flex-1 px-6">
-        {
-          MENU_ITEMS.map((item) => {
-            return (
-              <SidebarItem
-                key={item.label}
-                {...item}
-                isActive={
-                  pathname === item.href ||
-                  (item.href === "/" && (pathname === "/" || pathname === "/home"))
-                }
-              />
-            );
-          })
-        }
+        {visibleMenuItems.map((item) => {
+          return (
+            <SidebarItem
+              key={item.label}
+              {...item}
+              isActive={
+                pathname === item.href ||
+                (item.href === "/" && (pathname === "/" || pathname === "/home"))
+              }
+            />
+          );
+        })}
       </nav>
 
       {/* System Status Footer */}
-      <div className="mt-auto pt-6 border-t border-white/10" />
+      <div className="mt-auto pt-3 border-t border-white/10" />
       <Image
         src="/images/navbar_footer.webp"
         alt="Sentinel-5P Atmosphere Monitoring"

@@ -43,13 +43,6 @@ export function LeftPanelForm() {
   const [selectedModelId, setSelectedModelId] = useState<string>("");
   const [testFile, setTestFile] = useState<File | null>(null);
 
-  // Otomatis pilih opsi 'Model Baru Dilatih' saat pelatihan selesai
-  useEffect(() => {
-    if (trainResult) {
-      setSelectedModelId("current");
-    }
-  }, [trainResult]);
-
   // Handler Latih
   const handleTrainClick = async () => {
     if (!trainFile) {
@@ -58,7 +51,13 @@ export function LeftPanelForm() {
       });
       return;
     }
-    await trainModel(trainFile, estimator);
+    try {
+      const res = await trainModel(trainFile, estimator);
+      if (res) {
+        setSelectedModelId("current");
+      }
+    } catch {
+    }
   };
 
   // Handler Deteksi Outlier
