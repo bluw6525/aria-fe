@@ -17,7 +17,7 @@ export function SidebarHeader() {
           Aria
         </h1>
         <p className="text-[11px] font-medium text-sky-200 mt-1">
-          Atmospheric Ozone Estimation System
+          Atmospheric Regression ISPU Application
         </p>
       </div>
     </div>

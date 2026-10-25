@@ -9,8 +9,6 @@ import {
   Cpu,
   HelpCircle,
   History,
-  Activity,
-  Radio,
 } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { SidebarItem } from "./sidebar/SidebarItem";
@@ -20,7 +18,7 @@ import { SidebarHeader } from "./sidebar/SidebarHeader";
 const MENU_ITEMS = [
   {
     label: "Home",
-    href: "/",
+    href: "/home",
     icon: Home,
   },
   {

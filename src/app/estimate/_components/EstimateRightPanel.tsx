@@ -102,7 +102,7 @@ export function EstimateRightPanel() {
             const ispuStyle = getIspuStyle(singleResult.ispu_category);
             return (
               <div
-                className={`flex flex-col md:flex-row items-center justify-between p-6 rounded-2xl border ${ispuStyle.badgeBorder} bg-linear-to-br ${ispuStyle.cardBg} gap-6 shadow-sm`}
+                className={`flex flex-col md:flex-row items-center justify-between p-6 rounded-2xl border border border-slate-200 bg-slate-50 gap-6 shadow-sm`}
               >
                 {/* Nilai ISPU */}
                 <div className="flex flex-col gap-2 text-center md:text-left">
@@ -122,7 +122,7 @@ export function EstimateRightPanel() {
                 </div>
 
                 {/* Deskripsi Regulasi Permen LHK */}
-                <div className="max-w-xs flex flex-col gap-1.5 text-xs bg-white/80 backdrop-blur-xs p-4 rounded-xl border border-slate-200/80">
+                <div className="max-w-xs flex flex-col gap-1.5 text-xs bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
                   <div className="flex items-center gap-1.5 font-bold text-slate-900">
                     <ShieldAlert className="w-4 h-4 text-sky-600 shrink-0" />
                     <span>Dampak Kesehatan (Permen LHK No. 14/2020):</span>

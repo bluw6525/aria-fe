@@ -49,7 +49,6 @@ export interface IspuStyleConfig {
   badgeBg: string;
   badgeBorder: string;
   badgeText: string;
-  cardBg: string;
   description: string;
   healthImpact: string;
 }
@@ -64,7 +63,6 @@ export function getIspuStyle(category: string): IspuStyleConfig {
         badgeBg: "bg-emerald-50",
         badgeBorder: "border-emerald-300",
         badgeText: "text-emerald-800",
-        cardBg: "from-emerald-50/70 to-white",
         description: "Tingkat mutu udara sangat baik, tidak memberikan efek negatif bagi manusia maupun lingkungan.",
         healthImpact: "Sangat aman untuk seluruh aktivitas luar ruangan.",
       };
@@ -73,7 +71,6 @@ export function getIspuStyle(category: string): IspuStyleConfig {
         badgeBg: "bg-sky-50",
         badgeBorder: "border-sky-300",
         badgeText: "text-sky-800",
-        cardBg: "from-sky-50/70 to-white",
         description: "Kualitas udara masih dapat diterima, namun bagi kelompok yang sangat sensitif disarankan membatasi paparan.",
         healthImpact: "Aman bagi masyarakat umum, kelompok sensitif disarankan waspada.",
       };
@@ -82,7 +79,6 @@ export function getIspuStyle(category: string): IspuStyleConfig {
         badgeBg: "bg-amber-50",
         badgeBorder: "border-amber-300",
         badgeText: "text-amber-900",
-        cardBg: "from-amber-50/70 to-white",
         description: "Tingkat mutu udara bersifat merugikan pada manusia ataupun kelompok hewan yang sensitif.",
         healthImpact: "Kurangi aktivitas berat di luar ruangan, terutama bagi anak-anak dan lansia.",
       };
@@ -91,7 +87,6 @@ export function getIspuStyle(category: string): IspuStyleConfig {
         badgeBg: "bg-rose-50",
         badgeBorder: "border-rose-300",
         badgeText: "text-rose-900",
-        cardBg: "from-rose-50/70 to-white",
         description: "Tingkat mutu udara yang dapat meningkatkan risiko kesehatan pada sejumlah segmen populasi terpapar.",
         healthImpact: "Hindari aktivitas luar ruangan yang berkepanjangan.",
       };
@@ -100,7 +95,6 @@ export function getIspuStyle(category: string): IspuStyleConfig {
         badgeBg: "bg-purple-950",
         badgeBorder: "border-purple-800",
         badgeText: "text-purple-100",
-        cardBg: "from-purple-950/10 to-white",
         description: "Tingkat mutu udara berbahaya yang secara umum dapat merugikan kesehatan serius pada seluruh populasi.",
         healthImpact: "Gunakan masker pelindung dan tetap berada di dalam ruangan.",
       };
@@ -109,7 +103,6 @@ export function getIspuStyle(category: string): IspuStyleConfig {
         badgeBg: "bg-slate-100",
         badgeBorder: "border-slate-300",
         badgeText: "text-slate-800",
-        cardBg: "from-slate-50 to-white",
         description: "Data ISPU tidak terdefinisi.",
         healthImpact: "Tidak ada informasi dampak kesehatan.",
       };
