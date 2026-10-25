@@ -8,6 +8,7 @@ export interface FileUploaderProps {
   onFileSelect: (file: File) => void;
   onFileRemove: () => void;
   label?: string;
+  hint?: string;
   accept?: string;
   placeholder?: string;
   disabled?: boolean;
@@ -19,6 +20,7 @@ export function FileUploader({
   onFileSelect,
   onFileRemove,
   label,
+  hint,
   accept = ".xlsx,.xls,.csv",
   placeholder = "Pilih file (.xlsx, .csv, .xls)",
   disabled = false,
@@ -90,8 +92,15 @@ export function FileUploader({
           <Upload className="w-3.5 h-3.5 text-slate-400 group-hover:text-sky-600 transition-colors shrink-0" />
         </button>
       )}
+
+      {hint && (
+        <p className="text-[11px] text-slate-500 leading-normal">
+          {hint}
+        </p>
+      )}
     </div>
   );
 }
 
 export default FileUploader;
+

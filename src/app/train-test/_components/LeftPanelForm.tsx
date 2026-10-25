@@ -117,6 +117,7 @@ export function LeftPanelForm() {
         {/* Upload Data Latih (Reusable Component) */}
         <FileUploader
           label="Unggah Berkas Data Latih"
+          hint="Hanya variabel CO satelit, NO2 satelit, dan O3 SPKU yang diproses. Missing value O3 otomatis diinterpolasi Natural Cubic Spline."
           file={trainFile}
           onFileSelect={setTrainFile}
           onFileRemove={() => setTrainFile(null)}
@@ -230,6 +231,7 @@ export function LeftPanelForm() {
         <FileUploader
           label="Unggah Berkas Data Uji"
           placeholder="Pilih file data uji (.xlsx, .csv, .xls)"
+          hint="Hanya data dengan CO satelit, NO2 satelit, dan O3 SPKU lengkap yang diproses untuk evaluasi."
           file={testFile}
           onFileSelect={setTestFile}
           onFileRemove={() => setTestFile(null)}

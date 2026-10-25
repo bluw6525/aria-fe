@@ -5,6 +5,7 @@ import {
   Home,
   Gauge,
   Cpu,
+  Layers,
   HelpCircle,
   History,
 } from "lucide-react";
@@ -31,6 +32,11 @@ const MENU_ITEMS = [
     icon: Cpu,
   },
   {
+    label: "Benchmark MCCV",
+    href: "/benchmark",
+    icon: Layers,
+  },
+  {
     label: "Bantuan",
     href: "/help",
     icon: HelpCircle,
@@ -49,9 +55,9 @@ export function Sidebar() {
 
   const isAdmin = isHydrated && user?.role === "admin";
 
-  // Sembunyikan 'Latih dan Uji' jika pengguna bukan Admin
+  // Sembunyikan 'Latih dan Uji' & 'Benchmark MCCV' jika pengguna bukan Admin
   const visibleMenuItems = MENU_ITEMS.filter((item) => {
-    if (item.href === "/train-test") {
+    if (item.href === "/train-test" || item.href === "/benchmark") {
       return isAdmin;
     }
     return true;
