@@ -5,7 +5,7 @@ interface PageHeaderProps {
 }
 
 export function PageHeader({
-  title = "Sistem Estimasi Kualitas Udara O3 dengan Sentinel-5P",
+  title = "Aria - Sentinel-5P Ozone Monitoring",
   subtitle,
   className = "",
 }: PageHeaderProps) {

@@ -1,11 +1,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Satellite, ShieldCheck } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export function HomeHero() {
   return (
-      <div className="flex-1 flex items-center justify-center gap-16 max-w-5xl mx-auto w-full pb-14">
+      <div className="flex items-center justify-between gap-12 max-w-5xl mx-auto w-full pt-2 pb-10">
         {/* Kolom Kiri: Judul, Deskripsi, CTA, dan Metrics */}
         <div className="flex flex-col shrink-0 max-w-lg">
           <h1 className="text-5xl font-black text-slate-900 leading-[1.15] tracking-tight">

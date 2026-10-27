@@ -70,7 +70,7 @@ export function Sidebar() {
   };
 
   return (
-    <aside className="w-68 min-h-screen bg-[#0e8ad6] pt-6 pb-1 flex flex-col text-white shadow-xl border-r border-sky-400/20 select-none shrink-0">
+    <aside className="w-68 h-screen sticky top-0 bg-[#0e8ad6] pt-6 pb-1 flex flex-col text-white shadow-xl border-r border-sky-400/20 select-none shrink-0 overflow-y-auto [scrollbar-width:none]">
       {/* Brand Header */}
       <SidebarHeader isAdmin={isAdmin} onLogout={handleLogout} />
 

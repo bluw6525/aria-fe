@@ -17,6 +17,7 @@ import { toast } from "sonner";
 export function BenchmarkContainer() {
   const [currentSession, setCurrentSession] = useState<BenchmarkSession | null>(null);
   const [summaryRows, setSummaryRows] = useState<BenchmarkSummaryRow[]>([]);
+  const [activeSeeds, setActiveSeeds] = useState<number[]>([]);
   const [isRunning, setIsRunning] = useState(false);
 
   // State Modal Simpan Model (Promote)
@@ -38,6 +39,7 @@ export function BenchmarkContainer() {
       const res = await benchmarkService.runBenchmark(params);
       setCurrentSession(res.session);
       setSummaryRows(res.summary_rows || []);
+      setActiveSeeds(res.seeds || []);
       toast.success(
         `Benchmark selesai! Sesi "${res.session.session_name || res.session.id}" berhasil dijalankan & disimpan.`
       );
@@ -60,6 +62,7 @@ export function BenchmarkContainer() {
       const session = await benchmarkService.getSessionDetail(sessionId);
       setCurrentSession(session);
       setSummaryRows(session.summary_metrics || []);
+      setActiveSeeds([]);
       toast.success(`Berhasil memuat data sesi "${session.session_name || session.id}"!`);
     } catch (err: unknown) {
       const message =
@@ -97,7 +100,11 @@ export function BenchmarkContainer() {
         {currentSession ? (
           <>
             {/* Ringkasan Evaluasi Metrik Rata-rata */}
-            <BenchmarkSummary session={currentSession} summaryRows={summaryRows} />
+            <BenchmarkSummary
+              session={currentSession}
+              summaryRows={summaryRows}
+              seeds={activeSeeds}
+            />
 
             {/* Tabel Detail Iterasi Diurutkan dari Test R2 Tertinggi */}
             <BenchmarkIterationsTable

@@ -65,6 +65,7 @@ export interface BenchmarkRunResponse {
   session: BenchmarkSession;
   summary_rows: BenchmarkSummaryRow[];
   top_iterations: MCCVIteration[];
+  seeds: number[];
 }
 
 export interface RunBenchmarkParams {

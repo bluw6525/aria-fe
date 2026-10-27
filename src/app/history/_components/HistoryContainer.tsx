@@ -2,10 +2,9 @@ import React from "react";
 import Image from "next/image";
 import { GraduationCap, MapPin } from "lucide-react";
 
-
 export function HistoryContainer() {
   return (
-    <div className="max-w-4xl mx-auto w-full flex flex-col gap-12 pb-16">
+    <div className="max-w-4xl mx-auto w-full flex flex-col gap-8 pb-16">
       {/* Profil Perancang: Christopher Wijaya */}
       <section className="bg-white rounded-2xl p-8 md:p-10 border border-slate-200/80 shadow-xs flex flex-col-reverse md:flex-row items-center md:items-start gap-8 md:gap-12 transition-all">
         {/* Kolom Teks Informasi */}
@@ -38,6 +37,21 @@ export function HistoryContainer() {
             <p>
               Didorong oleh keinginan nyata untuk berkontribusi bagi masyarakat dan lingkungan hidup, saya merancang serta mengembangkan sistem <strong>Aria</strong>. Melalui pemanfaatan data penginderaan jauh satelit Sentinel-5P dan algoritma regresi robust, sistem ini bertujuan menghadirkan estimasi Indeks Standar Pencemar Udara (ISPU) yang akurat, transparan, dan dapat diakses dengan mudah oleh semua orang guna mendukung pengambilan keputusan berbasis lingkungan yang lebih sehat.
             </p>
+          </div>
+
+          {/* Mention Dosen Pembimbing (Ringkas & Kompak) */}
+          <div className="mt-6 pt-4 border-t border-slate-100 flex flex-col gap-1.5 text-xs text-slate-600">
+            <span className="font-bold text-slate-800">
+              Dosen Pembimbing:
+            </span>
+            <div className="space-y-1 text-slate-700">
+              <p>
+                1. <strong className="text-slate-900">Dyah Erny Herwindiati, Prof. Dr., Ir., M.Si.</strong>{" "}
+              </p>
+              <p>
+                2. <strong className="text-slate-900">Lely Hiryanto, ST., M.Sc., Ph.D.</strong>{" "}
+              </p>
+            </div>
           </div>
         </div>
 

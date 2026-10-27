@@ -102,3 +102,9 @@ export function formatEstimatorType(type?: string | null): string {
   }
   return t;
 }
+
+export function formatR2(val: number | undefined | null): string {
+  if (val === undefined || val === null || isNaN(val)) return "0.0";
+  const num = Math.abs(val) <= 1.0 ? val * 100 : val;
+  return num.toFixed(1);
+}
