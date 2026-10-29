@@ -1,0 +1,1092 @@
+/* Buku Manual Program Aria
+   Stylesheet global dengan awalan m-. Berkas .module.css tidak dipakai karena aturan
+   Turbopack pada next.config.ts memproses semua *.css lewat Tailwind tanpa CSS Modules.
+   Tema: biru navy, gradasi cyan, angka chapter berkontur.
+   Ukuran halaman: A4 lanskap (297 x 210 mm). */
+
+.m-root {
+  --navy-950: #06122e;
+  --navy-900: #0a1b45;
+  --navy-800: #0f2a68;
+  --navy-700: #17408f;
+  --blue-500: #2b86f5;
+  --cyan-400: #22d3ee;
+  --cyan-300: #67e8f9;
+  --cyan-100: #d9f7fd;
+  --cyan-50: #effbfe;
+  --ink: #0e1c3d;
+  --ink-soft: #46557a;
+  --line: #d5e3f2;
+  --paper: #ffffff;
+  --grad-band: linear-gradient(100deg, #19d3f0 0%, #2aa7f5 55%, #2f6df0 100%);
+  --grad-navy: linear-gradient(160deg, #0a1b45 0%, #0f2a68 100%);
+
+  font-family: "Outfit Variable", "Outfit", "Segoe UI", Arial, sans-serif;
+  color: var(--ink);
+  background: #d9e3f1;
+  min-height: 100vh;
+  padding: 72px 0 48px;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.m-toolbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 24px;
+  background: var(--navy-900);
+  color: #fff;
+  box-shadow: 0 6px 24px rgba(6, 18, 46, 0.35);
+}
+
+.m-toolbarBrand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.m-toolbarHint {
+  font-size: 13px;
+  color: #a9bde6;
+}
+
+.m-toolbarBtn {
+  border: 0;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--navy-950);
+  background: var(--grad-band);
+}
+
+.m-toolbarBtn:hover {
+  filter: brightness(1.08);
+}
+
+.m-pages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  overflow-x: auto;
+  padding: 0 24px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Lembar halaman                                                      */
+/* ------------------------------------------------------------------ */
+
+.m-sheet {
+  position: relative;
+  flex: none;
+  width: 297mm;
+  height: 210mm;
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow: 0 18px 50px rgba(10, 27, 69, 0.28);
+  font-size: 9.6pt;
+  line-height: 1.55;
+  display: flex;
+  flex-direction: column;
+}
+
+.m-sheetHeader {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 15mm;
+  padding: 0 22mm;
+  font-size: 7.6pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  border-bottom: 0.3mm solid var(--line);
+}
+
+.m-sheetHeader b {
+  color: var(--navy-800);
+  font-weight: 700;
+}
+
+.m-sheetBody > * {
+  flex: none;
+}
+
+.m-sheetBody {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 7mm 22mm 4mm;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4mm;
+}
+
+.m-sheetFooter {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 12mm;
+  padding: 0 22mm;
+  font-size: 7.6pt;
+  color: var(--ink-soft);
+  position: relative;
+}
+
+.m-sheetFooter::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 0.9mm;
+  background: var(--grad-band);
+}
+
+.m-pageNo {
+  display: inline-grid;
+  place-items: center;
+  min-width: 9mm;
+  height: 6mm;
+  padding: 0 2.4mm;
+  border-radius: 999px;
+  background: var(--navy-900);
+  color: #fff;
+  font-weight: 700;
+  font-size: 8pt;
+}
+
+.m-footBrand {
+  font-weight: 800;
+  color: var(--navy-800);
+  letter-spacing: 0.02em;
+}
+
+.m-footBrand i {
+  font-style: normal;
+  color: var(--cyan-400);
+}
+
+/* ------------------------------------------------------------------ */
+/* Sampul                                                              */
+/* ------------------------------------------------------------------ */
+
+.m-cover {
+  background: var(--grad-navy);
+  color: #fff;
+}
+
+.m-coverGlow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60mm 60mm at 88% 22%, rgba(34, 211, 238, 0.35), transparent 70%),
+    radial-gradient(90mm 70mm at 10% 110%, rgba(43, 134, 245, 0.35), transparent 70%);
+}
+
+.m-coverBand {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 92mm;
+  height: 168mm;
+  background: var(--grad-band);
+}
+
+.m-coverStrip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42mm;
+  background: var(--navy-950);
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  align-items: center;
+  gap: 10mm;
+  padding: 0 22mm;
+  font-size: 8.4pt;
+  color: #b8c8ee;
+}
+
+.m-coverStrip b {
+  display: block;
+  color: #fff;
+  font-size: 10pt;
+  font-weight: 600;
+  margin-top: 0.8mm;
+}
+
+.m-coverStrip span {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 6.8pt;
+  color: var(--cyan-300);
+}
+
+.m-brandChip {
+  position: absolute;
+  top: 20mm;
+  left: 22mm;
+  display: inline-flex;
+  align-items: center;
+  gap: 3mm;
+  padding: 2mm 6mm 2mm 2mm;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 0.3mm solid rgba(103, 232, 249, 0.55);
+  font-weight: 800;
+  font-size: 15pt;
+  letter-spacing: 0.01em;
+}
+
+.m-brandDot {
+  width: 9mm;
+  height: 9mm;
+  border-radius: 50%;
+  background: var(--grad-band);
+  display: grid;
+  place-items: center;
+  color: var(--navy-950);
+  font-size: 11pt;
+}
+
+.m-coverTitle {
+  position: absolute;
+  left: 22mm;
+  top: 56mm;
+  width: 170mm;
+}
+
+.m-coverKicker {
+  font-size: 9pt;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--cyan-300);
+  margin: 0 0 5mm;
+}
+
+.m-coverH1 {
+  margin: 0;
+  font-size: 50pt;
+  line-height: 1.02;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.m-coverH1 em {
+  font-style: normal;
+  background: var(--grad-band);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.m-coverSub {
+  margin: 7mm 0 0;
+  max-width: 130mm;
+  font-size: 13pt;
+  line-height: 1.45;
+  color: #cfdcff;
+  font-weight: 300;
+}
+
+.m-circles {
+  position: absolute;
+  width: 74mm;
+  height: 74mm;
+}
+
+.m-circle {
+  position: absolute;
+  width: 46mm;
+  height: 46mm;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+}
+
+.m-circleA {
+  top: 0;
+  left: 0;
+  background: #19d3f0;
+  opacity: 0.95;
+}
+
+.m-circleB {
+  top: 6mm;
+  left: 24mm;
+  background: #2b6cf0;
+  opacity: 0.92;
+}
+
+.m-circleC {
+  top: 26mm;
+  left: 10mm;
+  background: #0f2a68;
+  opacity: 0.95;
+  mix-blend-mode: normal;
+}
+
+.m-coverCircles {
+  right: 22mm;
+  top: 58mm;
+}
+
+.m-backCircles {
+  right: 26mm;
+  top: 18mm;
+}
+
+/* ------------------------------------------------------------------ */
+/* Pembuka bab                                                         */
+/* ------------------------------------------------------------------ */
+
+.m-opener {
+  flex-direction: row;
+  background: var(--paper);
+}
+
+.m-openerLeft {
+  position: relative;
+  flex: none;
+  width: 118mm;
+  height: 100%;
+  background: var(--grad-navy);
+  color: #fff;
+  overflow: hidden;
+}
+
+.m-openerNum {
+  font-family: "Outfit", "Outfit Variable", sans-serif;
+  position: absolute;
+  left: 14mm;
+  top: 26mm;
+  margin: 0;
+  font-size: 128pt;
+  line-height: 1;
+  font-weight: 800;
+  /* Isi dibuat sewarna panel dan digambar di atas garis, sehingga kontur yang bertumpuk
+     pada huruf tidak ikut terlihat. Separuh garis bagian luar membentuk garis tepi. */
+  color: #0c2253;
+  -webkit-text-stroke: 1.5mm var(--cyan-400);
+  paint-order: stroke fill;
+  letter-spacing: -0.02em;
+}
+
+.m-openerTag {
+  position: absolute;
+  left: 14mm;
+  bottom: 24mm;
+  right: 14mm;
+  font-size: 8pt;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--cyan-300);
+}
+
+.m-openerTag b {
+  display: block;
+  margin-top: 2mm;
+  font-size: 13pt;
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 600;
+  color: #fff;
+}
+
+.m-openerCircles {
+  right: -18mm;
+  top: 8mm;
+  transform: scale(0.7);
+  transform-origin: top right;
+}
+
+.m-openerBandLeft {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 10mm;
+  background: var(--grad-band);
+}
+
+.m-openerRight {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 32mm 22mm 0 22mm;
+  display: flex;
+  flex-direction: column;
+}
+
+.m-openerRight h2 {
+  margin: 0 0 6mm;
+  font-size: 34pt;
+  line-height: 1.08;
+  font-weight: 800;
+  color: var(--navy-900);
+  letter-spacing: -0.015em;
+}
+
+.m-openerLead {
+  margin: 0 0 9mm;
+  max-width: 128mm;
+  font-size: 11.2pt;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.m-openerList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2.6mm;
+  max-width: 128mm;
+}
+
+.m-openerList li {
+  display: flex;
+  align-items: center;
+  gap: 4mm;
+  padding: 3mm 4mm;
+  border-radius: 3mm;
+  background: var(--cyan-50);
+  border-left: 1.2mm solid var(--cyan-400);
+  font-weight: 600;
+  font-size: 10pt;
+  color: var(--navy-800);
+}
+
+.m-openerList span {
+  margin-left: auto;
+  font-weight: 500;
+  color: var(--ink-soft);
+  font-size: 8.6pt;
+}
+
+.m-openerBandRight {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 10mm;
+  background: var(--grad-band);
+}
+
+/* ------------------------------------------------------------------ */
+/* Komponen isi                                                        */
+/* ------------------------------------------------------------------ */
+
+.m-pageHead {
+  flex: none;
+  margin: 0 0 1mm;
+}
+
+.m-kicker {
+  margin: 0 0 1mm;
+  font-size: 7.8pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--blue-500);
+}
+
+.m-title {
+  margin: 0;
+  font-size: 22pt;
+  line-height: 1.12;
+  font-weight: 800;
+  letter-spacing: -0.012em;
+  color: var(--navy-900);
+}
+
+.m-title::after {
+  content: "";
+  display: block;
+  width: 22mm;
+  height: 1.1mm;
+  margin-top: 2.4mm;
+  border-radius: 1mm;
+  background: var(--grad-band);
+}
+
+.m-h3 {
+  margin: 0 0 1.4mm;
+  font-size: 11.6pt;
+  font-weight: 700;
+  color: var(--navy-800);
+}
+
+.m-p {
+  margin: 0 0 2.4mm;
+  text-align: left;
+  hyphens: auto;
+}
+
+.m-p:last-child {
+  margin-bottom: 0;
+}
+
+.m-muted {
+  color: var(--ink-soft);
+}
+
+.m-cols {
+  display: grid;
+  gap: 8mm;
+  align-items: start;
+}
+
+.m-col {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3mm;
+}
+
+.m-fill {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.m-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 3mm;
+}
+
+.m-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6mm;
+}
+
+.m-figure img {
+  display: block;
+  height: auto;
+  border-radius: 2mm;
+  border: 0.3mm solid var(--line);
+  box-shadow: 0 1.2mm 4mm rgba(15, 42, 104, 0.14);
+  background: #fff;
+}
+
+.m-figure figcaption {
+  font-size: 7.8pt;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.m-figure figcaption b {
+  color: var(--navy-800);
+  font-weight: 700;
+}
+
+.m-figCenter {
+  align-items: center;
+}
+
+.m-figCenter figcaption {
+  text-align: center;
+}
+
+.m-cropBox {
+  overflow: hidden;
+  border-radius: 2mm;
+  border: 0.3mm solid var(--line);
+  box-shadow: 0 1.2mm 4mm rgba(15, 42, 104, 0.14);
+  background: #fff;
+}
+
+.m-cropBox img {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  width: 100%;
+}
+
+/* Langkah bernomor, angka berkontur seperti pada sampul tema */
+.m-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2.6mm;
+  counter-reset: step;
+}
+
+.m-steps li {
+  position: relative;
+  min-height: 9mm;
+  padding-left: 13mm;
+  counter-increment: step;
+}
+
+.m-steps li::before {
+  font-family: "Outfit", "Outfit Variable", sans-serif;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: -1.6mm;
+  width: 11mm;
+  font-size: 24pt;
+  line-height: 1;
+  font-weight: 800;
+  color: #fff;
+  -webkit-text-stroke: 0.8mm var(--blue-500);
+  paint-order: stroke fill;
+}
+
+.m-steps li b {
+  color: var(--navy-800);
+}
+
+.m-bullets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6mm;
+}
+
+.m-bullets li {
+  position: relative;
+  padding-left: 5mm;
+}
+
+.m-bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0.4mm;
+  top: 2.1mm;
+  width: 2mm;
+  height: 2mm;
+  border-radius: 50%;
+  background: var(--grad-band);
+}
+
+.m-callout {
+  display: flex;
+  gap: 3mm;
+  padding: 3mm 4mm;
+  border-radius: 2.4mm;
+  background: var(--cyan-50);
+  border: 0.3mm solid var(--cyan-100);
+  border-left: 1.2mm solid var(--cyan-400);
+  font-size: 9pt;
+  line-height: 1.5;
+}
+
+.m-callout b {
+  color: var(--navy-800);
+}
+
+.m-calloutTip {
+  background: #effbfe;
+}
+
+.m-calloutNote {
+  background: #eef3ff;
+  border-color: #d6e2ff;
+  border-left-color: var(--blue-500);
+}
+
+.m-calloutWarn {
+  background: #fff6e8;
+  border-color: #fde3b8;
+  border-left-color: #f59e0b;
+}
+
+.m-calloutLabel {
+  flex: none;
+  align-self: flex-start;
+  padding: 0.6mm 2.4mm;
+  border-radius: 999px;
+  background: var(--navy-900);
+  color: #fff;
+  font-size: 7pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.m-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 8.8pt;
+  line-height: 1.4;
+  border: 0.3mm solid var(--line);
+  border-radius: 2mm;
+  overflow: hidden;
+}
+
+.m-table th {
+  text-align: left;
+  padding: 2mm 3mm;
+  background: var(--navy-900);
+  color: #fff;
+  font-weight: 600;
+  font-size: 8.2pt;
+  letter-spacing: 0.04em;
+}
+
+.m-table td {
+  padding: 1.7mm 3mm;
+  vertical-align: top;
+  border-top: 0.2mm solid var(--line);
+}
+
+.m-table tbody tr:nth-child(even) td {
+  background: var(--cyan-50);
+}
+
+.m-table td:first-child {
+  font-weight: 600;
+  color: var(--navy-800);
+}
+
+.m-code {
+  margin: 0;
+  padding: 3mm 4mm;
+  border-radius: 2.4mm;
+  background: var(--navy-950);
+  color: #d8e7ff;
+  font-family: "JetBrains Mono Variable", "JetBrains Mono", Consolas, monospace;
+  font-size: 7.9pt;
+  line-height: 1.6;
+  white-space: pre;
+  overflow: hidden;
+}
+
+.m-code .m-c {
+  color: #6f86b8;
+}
+
+.m-code .m-k {
+  color: var(--cyan-300);
+}
+
+.m-inline {
+  padding: 0.2mm 1.6mm;
+  border-radius: 1.2mm;
+  background: var(--cyan-100);
+  color: var(--navy-800);
+  font-family: "JetBrains Mono Variable", "JetBrains Mono", Consolas, monospace;
+  font-size: 0.86em;
+}
+
+.m-chip {
+  display: inline-block;
+  padding: 0.3mm 2.6mm;
+  border-radius: 999px;
+  font-size: 8pt;
+  font-weight: 700;
+  color: #fff;
+  background: var(--navy-800);
+  white-space: nowrap;
+}
+
+.m-chipBaik {
+  background: #1f9d55;
+}
+
+.m-chipSedang {
+  background: #2b86f5;
+}
+
+.m-chipTidakSehat {
+  background: #d99a0b;
+}
+
+.m-chipSangat {
+  background: #e0592a;
+}
+
+.m-chipBerbahaya {
+  background: #111827;
+}
+
+/* Persamaan yang dapat dibaca */
+.m-eq {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0 1.4mm;
+  padding: 3.4mm 5mm;
+  border-radius: 2.4mm;
+  background: linear-gradient(90deg, var(--cyan-50), #f4f8ff);
+  border-left: 1.2mm solid var(--blue-500);
+  font-family: "STIX Two Text Variable", "STIX Two Text", "Times New Roman", serif;
+  font-size: 13pt;
+  color: var(--navy-900);
+}
+
+.m-eq i {
+  font-style: italic;
+}
+
+.m-eq sub,
+.m-eq sup {
+  font-size: 0.66em;
+  line-height: 0;
+}
+
+.m-eqTag {
+  margin-left: auto;
+  padding-left: 4mm;
+  font-size: 9pt;
+  color: var(--ink-soft);
+}
+
+.m-frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: middle;
+  margin: 0 1mm;
+  font-size: 0.92em;
+}
+
+.m-frac > span:first-child {
+  padding: 0 1.4mm 0.4mm;
+  border-bottom: 0.3mm solid currentColor;
+}
+
+.m-frac > span:last-child {
+  padding: 0.4mm 1.4mm 0;
+}
+
+.m-legend {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.8mm 3mm;
+  font-size: 8.8pt;
+}
+
+.m-legend dt {
+  font-family: "STIX Two Text Variable", "STIX Two Text", serif;
+  font-style: italic;
+  color: var(--navy-800);
+  font-size: 10pt;
+}
+
+.m-legend dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+.m-legendWrap {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.9mm 3mm;
+  margin: 0;
+  font-size: 8.8pt;
+}
+
+.m-legendWrap dt {
+  font-family: "STIX Two Text Variable", "STIX Two Text", serif;
+  font-style: italic;
+  color: var(--navy-800);
+  font-size: 10pt;
+  white-space: nowrap;
+}
+
+.m-legendWrap dd {
+  margin: 0;
+}
+
+.m-diagram {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3mm;
+  border-radius: 2.4mm;
+  background: #f7fbff;
+  border: 0.3mm solid var(--line);
+}
+
+.m-diagram img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Daftar isi */
+.m-toc {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4mm 16mm;
+  margin-top: 2mm;
+}
+
+.m-tocGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2mm;
+  break-inside: avoid;
+}
+
+.m-tocChapter {
+  display: flex;
+  align-items: baseline;
+  gap: 3mm;
+  font-weight: 700;
+  font-size: 11pt;
+  color: var(--navy-900);
+}
+
+.m-tocChapter i {
+  font-family: "Outfit", "Outfit Variable", sans-serif;
+  font-style: normal;
+  font-size: 17pt;
+  font-weight: 800;
+  color: #fff;
+  -webkit-text-stroke: 0.7mm var(--blue-500);
+  paint-order: stroke fill;
+  min-width: 10mm;
+}
+
+.m-tocLine {
+  display: flex;
+  align-items: baseline;
+  gap: 2mm;
+  padding-left: 13mm;
+  font-size: 9pt;
+  color: var(--ink);
+}
+
+.m-tocLine::after {
+  content: "";
+  order: 1;
+  flex: 1 1 auto;
+  border-bottom: 0.3mm dotted #9db3d6;
+  transform: translateY(-0.8mm);
+}
+
+.m-tocLine span:last-child {
+  order: 2;
+  font-weight: 600;
+  color: var(--navy-800);
+}
+
+.m-tocChapter span:last-child {
+  margin-left: auto;
+  font-size: 9.4pt;
+  color: var(--navy-800);
+}
+
+/* Sampul belakang */
+.m-back {
+  background: var(--grad-navy);
+  color: #fff;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.m-backInner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4mm;
+  margin: auto;
+}
+
+.m-backInner h2 {
+  margin: 0;
+  font-size: 30pt;
+  font-weight: 800;
+}
+
+.m-backInner p {
+  margin: 0;
+  max-width: 150mm;
+  color: #cfdcff;
+  font-weight: 300;
+  font-size: 11pt;
+}
+
+/* ------------------------------------------------------------------ */
+/* Cetak                                                               */
+/* ------------------------------------------------------------------ */
+
+@page {
+  size: 297mm 210mm;
+  margin: 0;
+}
+
+@media print {
+  .m-root {
+    padding: 0;
+    background: #fff;
+    min-height: 0;
+  }
+
+  .m-toolbar {
+    display: none;
+  }
+
+  .m-pages {
+    display: block;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .m-sheet {
+    box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+    break-inside: avoid;
+  }
+
+  .m-sheet:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .m-toolbarHint {
+    display: none;
+  }
+}
+
+.m-sqrt {
+  display: inline-flex;
+  align-items: stretch;
+  vertical-align: middle;
+}
+
+.m-sqrtSign {
+  font-size: 1.5em;
+  line-height: 1;
+  align-self: center;
+  margin-right: -0.3mm;
+}
+
+.m-sqrtBody {
+  display: inline-flex;
+  align-items: center;
+  gap: 1mm;
+  padding: 0.6mm 1.2mm 0;
+  border-top: 0.3mm solid currentColor;
+}

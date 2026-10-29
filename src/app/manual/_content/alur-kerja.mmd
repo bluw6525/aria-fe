@@ -1,0 +1,10 @@
+flowchart LR
+    A[Data latih CSV atau Excel] --> B[Deteksi outlier]
+    B --> C[Latih model robust]
+    C --> D[Simpan model]
+    D --> E[Uji dengan data baru]
+    A --> F[Benchmark MCCV]
+    F -->|Simpan iterasi terbaik| D
+    D --> G[Estimasi ISPU]
+    H[Data satelit CO dan NO2] --> G
+    G --> I[Nilai dan kategori ISPU]
