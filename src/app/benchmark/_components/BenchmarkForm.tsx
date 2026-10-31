@@ -18,8 +18,7 @@ const AVAILABLE_ALGORITHMS = [
   { id: "OLS", label: "OLS (Least Squares)", desc: "Metode kuadrat terkecil standar" },
   { id: "M", label: "M-Estimator", desc: "Robust terhadap outlier vertikal (y)" },
   { id: "S", label: "S-Estimator", desc: "Breakdown point tinggi 50%" },
-  { id: "MM (k=4.685)", label: "MM (k=4.685)", desc: "Efisiensi tinggi 95% & resisten leverage" },
-  { id: "MM (k=1.547)", label: "MM (k=1.547)", desc: "Breakdown point 50% ketahanan ekstrem" },
+  { id: "MM", label: "MM-Estimator", desc: "Breakdown point 50% & resisten leverage" },
 ];
 
 interface BenchmarkFormProps {
@@ -60,8 +59,7 @@ export function BenchmarkForm({
     "OLS",
     "M",
     "S",
-    "MM (k=4.685)",
-    "MM (k=1.547)",
+    "MM",
   ]);
 
   // Load daftar sesi saat tab history dibuka
@@ -71,7 +69,9 @@ export function BenchmarkForm({
       const data = await benchmarkService.getSessions(1, 100);
       setSessions(data);
     } catch {
-      toast.error("Gagal memuat riwayat sesi benchmark.");
+      toast.error("Gagal Memuat Riwayat", {
+        description: "Tidak dapat mengambil daftar riwayat sesi benchmark.",
+      });
     } finally {
       setIsLoadingSessions(false);
     }
@@ -98,15 +98,21 @@ export function BenchmarkForm({
   const handleSubmitNew = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!file) {
-      toast.error("Silakan pilih berkas dataset terlebih dahulu.");
+      toast.warning("Berkas Diperlukan", {
+        description: "Silakan pilih berkas dataset terlebih dahulu (.xlsx, .csv, atau .xls).",
+      });
       return;
     }
     if (selectedEstimators.length === 0) {
-      toast.error("Pilih minimal satu algoritma regresi untuk dijalankan.");
+      toast.warning("Algoritma Belum Dipilih", {
+        description: "Pilih minimal satu algoritma regresi untuk dijalankan.",
+      });
       return;
     }
     if (nSplits <= 0) {
-      toast.error("Jumlah iterasi split harus lebih dari 0.");
+      toast.warning("Input Tidak Valid", {
+        description: "Jumlah iterasi split harus lebih dari 0.",
+      });
       return;
     }
 
@@ -124,7 +130,9 @@ export function BenchmarkForm({
   const handleLoadSessionSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedSessionId) {
-      toast.error("Pilih sesi benchmark dari daftar riwayat.");
+      toast.warning("Sesi Belum Dipilih", {
+        description: "Pilih sesi benchmark terlebih dahulu dari daftar riwayat.",
+      });
       return;
     }
     await onSelectExistingSession(Number(selectedSessionId));
@@ -181,7 +189,7 @@ export function BenchmarkForm({
           <Input
             id="sessionName"
             label="Nama Sesi Benchmark (Opsional)"
-            placeholder="Contoh: Evaluasi 5 Model - Lahan Gambut"
+            placeholder="Contoh: Evaluasi 4 Model - Lahan Gambut"
             value={sessionName}
             onChange={(e) => setSessionName(e.target.value)}
             disabled={isRunning}
@@ -201,7 +209,7 @@ export function BenchmarkForm({
                 {selectedEstimators.length === AVAILABLE_ALGORITHMS.length ? "Batal Semua" : "Pilih Semua"}
               </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
               {AVAILABLE_ALGORITHMS.map((algo) => (
                 <label
                   key={algo.id}
@@ -316,9 +324,11 @@ export function BenchmarkForm({
                         : "bg-white border-slate-200 text-slate-700 hover:border-slate-300"
                     }`}
                   >
-                    <div className="flex justify-between items-center">
-                      <span className="font-bold truncate max-w-[200px]">{sess.session_name || `Sesi #${sess.id}`}</span>
-                      <span className="text-[10px] text-slate-400 font-mono">
+                    <div className="flex justify-between items-start gap-3">
+                      <span className="font-bold truncate max-w-[200px] sm:max-w-none sm:overflow-visible sm:whitespace-normal break-words">
+                        {sess.session_name || `Sesi #${sess.id}`}
+                      </span>
+                      <span className="text-[10px] text-slate-400 font-mono shrink-0 whitespace-nowrap pt-0.5">
                         {sess.created_at ? new Date(sess.created_at).toLocaleDateString("id-ID") : ""}
                       </span>
                     </div>

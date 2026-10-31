@@ -65,7 +65,9 @@ export function Sidebar() {
 
   const handleLogout = () => {
     logout();
-    toast.success("Berhasil keluar dari sesi admin.");
+    toast.success("Logout Berhasil", {
+      description: "Anda telah keluar dari sesi administrator.",
+    });
     router.push("/home");
   };
 

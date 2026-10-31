@@ -8,16 +8,11 @@ export interface LoginResponse {
 }
 
 export const authService = {
-  async login(username: string, password: string):Promise<LoginResponse> {
+  async login(username: string, password: string): Promise<LoginResponse> {
     const response = await httpClient.post<LoginResponse>("/auth/login", {
       username,
       password,
     });
-    return response.data;
-  },
-
-  async getMe(): Promise<UserProfile> {
-    const response = await httpClient.get<UserProfile>("/auth/me");
     return response.data;
   },
 };

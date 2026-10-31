@@ -72,24 +72,28 @@ export interface SaveModelPayload {
 }
 
 /**
- * Memformat nama estimator agar bersih dan konsisten tanpa label 'MM-Low' atau 'MM-High'.
+ * Memformat nama estimator agar bersih dan konsisten.
  */
 export function formatEstimatorType(type?: string | null): string {
   if (!type) return "";
   const t = type.trim();
   const lower = t.toLowerCase();
 
-  if (lower === "mm-low" || lower === "mm_low" || lower === "mm-1.547" || lower === "mm_1.547") {
-    return "MM-Estimator (k=1.547)";
-  }
   if (
+    lower === "mm" ||
+    lower === "mm-estimator" ||
+    lower === "mm-low" ||
+    lower === "mm_low" ||
+    lower === "mm-1.547" ||
+    lower === "mm_1.547" ||
+    lower === "mm (k=1.547)" ||
     lower === "mm-high" ||
     lower === "mm_high" ||
     lower === "mm-4.685" ||
     lower === "mm_4.685" ||
-    lower === "mm"
+    lower === "mm (k=4.685)"
   ) {
-    return "MM-Estimator (k=4.685)";
+    return "MM-Estimator";
   }
   if (lower === "m" || lower === "m-estimator") {
     return "M-Estimator";

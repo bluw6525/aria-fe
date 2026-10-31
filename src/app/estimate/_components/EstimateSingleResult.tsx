@@ -8,9 +8,14 @@ import { getIspuStyle, type SingleEstimateResult } from "../_types";
 interface EstimateSingleResultProps {
   result: SingleEstimateResult;
   onReset: () => void;
+  isManual?: boolean;
 }
 
-export function EstimateSingleResult({ result, onReset }: EstimateSingleResultProps) {
+export function EstimateSingleResult({
+  result,
+  onReset,
+  isManual = true,
+}: EstimateSingleResultProps) {
   const ispuStyle = getIspuStyle(result.ispu_category);
 
   return (
@@ -19,11 +24,13 @@ export function EstimateSingleResult({ result, onReset }: EstimateSingleResultPr
       <div className="flex items-center justify-between border-b border-slate-200 pb-3">
         <div>
           <h3 className="text-base font-bold text-slate-900">
-            Hasil Estimasi Indeks Standar Pencemar Udara (Titik Tunggal)
+            Hasil Estimasi ISPU
           </h3>
           <p className="text-xs text-slate-500 font-medium mt-0.5">
-            Model: <strong>{result.model_name}</strong> (
-            {formatEstimatorType(result.estimator_type)})
+            Model: <strong>{result.model_name}</strong>
+            {!result.model_name.includes(formatEstimatorType(result.estimator_type)) && (
+              <span> ({formatEstimatorType(result.estimator_type)})</span>
+            )}
           </p>
         </div>
         <button
@@ -74,12 +81,14 @@ export function EstimateSingleResult({ result, onReset }: EstimateSingleResultPr
         />
       )}
 
-      {/* Petunjuk Multi-titik */}
-      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 flex items-center justify-between">
-        <span className="leading-relaxed">
-          Anda dapat memasukkan nilai CO & NO2 berikutnya pada panel kiri untuk melihat tren grafik ISPU secara multi-titik kumulatif.
-        </span>
-      </div>
+      {/* Petunjuk Multi-titik (Hanya untuk Mode Manual) */}
+      {isManual && (
+        <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 flex items-center justify-between">
+          <span className="leading-relaxed">
+            Anda dapat memasukkan nilai CO & NO2 berikutnya pada panel kiri untuk melihat tren grafik ISPU secara multi-titik kumulatif.
+          </span>
+        </div>
+      )}
     </div>
   );
 }

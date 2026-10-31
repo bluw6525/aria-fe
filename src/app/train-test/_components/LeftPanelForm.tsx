@@ -129,8 +129,7 @@ export function LeftPanelForm() {
           value={estimator}
           onChange={(e) => setEstimator(e.target.value)}
         >
-          <option value="MM">MM-Estimator (k=4.685)</option>
-          <option value="MM-1.547">MM-Estimator (k=1.547)</option>
+          <option value="MM">MM-Estimator</option>
           <option value="M">M-Estimator</option>
           <option value="S">S-Estimator</option>
           <option value="OLS">Ordinary Least Squares (OLS)</option>

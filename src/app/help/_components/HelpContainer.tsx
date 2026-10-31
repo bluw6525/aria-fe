@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { BookOpen, Cpu, AlertTriangle, ShieldAlert } from "lucide-react";
-import { HelpTabButton } from "./HelpTabButton";
+import { TabButton } from "@/components/TabButton";
 import { GuideSection } from "./GuideSection";
 import { TheorySection } from "./TheorySection";
 import { PollutionSection } from "./PollutionSection";
@@ -38,10 +38,10 @@ export function HelpContainer() {
 
   return (
     <div className="max-w-4xl mx-auto w-full flex flex-col gap-8 pb-16 text-slate-800">
-      {/* Tab Navigasi Modul Bantuan Menggunakan HelpTabButton */}
+      {/* Tab Navigasi Modul Bantuan Menggunakan TabButton */}
       <div className="flex flex-wrap p-1.5 bg-slate-200/80 rounded-2xl gap-1">
         {TABS.map((tab) => (
-          <HelpTabButton
+          <TabButton
             key={tab.key}
             label={tab.label}
             icon={tab.icon}

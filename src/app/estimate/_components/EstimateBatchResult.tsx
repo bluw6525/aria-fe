@@ -26,11 +26,13 @@ export function EstimateBatchResult({
       <div className="flex items-center justify-between border-b border-slate-200 pb-3">
         <div>
           <h3 className="text-base font-bold text-slate-900">
-            Hasil Estimasi ISPU {showManualBatch ? "(Multi-titik Manual)" : "(Batch File)"}
+            Hasil Estimasi ISPU
           </h3>
           <p className="text-xs text-slate-500 font-medium mt-0.5">
-            Model: <strong>{batch.model_name}</strong> (
-            {formatEstimatorType(batch.estimator_type)})
+            Model: <strong>{batch.model_name}</strong>
+            {!batch.model_name.includes(formatEstimatorType(batch.estimator_type)) && (
+              <span> ({formatEstimatorType(batch.estimator_type)})</span>
+            )}
           </p>
         </div>
         <button
@@ -39,7 +41,7 @@ export function EstimateBatchResult({
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer"
         >
           <RotateCcw className="w-3.5 h-3.5" />
-          <span>{showManualBatch ? "Reset Riwayat" : "Estimasi Ulang"}</span>
+          <span>Reset</span>
         </button>
       </div>
 

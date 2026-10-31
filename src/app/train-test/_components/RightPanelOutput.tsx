@@ -6,9 +6,6 @@ import { TrainTestEmptyState } from "./TrainTestEmptyState";
 import { OutlierResultCard } from "./OutlierResultCard";
 import { TrainResultCard } from "./TrainResultCard";
 import { TestResultCard } from "./TestResultCard";
-import { formatR2 } from "../_types";
-
-export { formatR2 };
 
 export function RightPanelOutput() {
   // Ambil state langsung dari Zustand hook

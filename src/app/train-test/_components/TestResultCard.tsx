@@ -9,11 +9,16 @@ interface TestResultCardProps {
 
 export function TestResultCard({ result }: TestResultCardProps) {
   return (
-    <div className="flex flex-col gap-4 border-t border-slate-200 pt-6 mt-2">
-      <div className="flex items-center justify-between border-b border-slate-200 pb-2.5">
-        <h3 className="text-base font-bold text-slate-900">
-          Hasil Evaluasi Model terhadap Data Uji ({result.model_name})
-        </h3>
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+        <div>
+          <h3 className="text-base font-bold text-slate-900">
+            Hasil Evaluasi Model terhadap Data Uji
+          </h3>
+          <p className="text-xs text-slate-500 font-medium mt-0.5">
+            Model: <strong>{result.model_name}</strong>
+          </p>
+        </div>
         <span className="text-xs text-slate-500 font-medium">
           Jumlah data uji: {result.total_samples}
         </span>

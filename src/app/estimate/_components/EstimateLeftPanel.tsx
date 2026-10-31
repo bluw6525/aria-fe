@@ -11,7 +11,7 @@ import { FileUploader } from "@/components/FileUploader";
 import { Button } from "@/components/Button";
 import { Select } from "@/components/Select";
 import { Input } from "@/components/Input";
-import { formatEstimatorType } from "@/app/train-test/_types";
+import { formatEstimatorType, formatR2 } from "@/app/train-test/_types";
 import { useEstimateApi } from "../_hooks/use-estimate-api";
 
 export function EstimateLeftPanel() {
@@ -125,10 +125,10 @@ export function EstimateLeftPanel() {
               <button
                 type="button"
                 onClick={resetManualHistory}
-                className="inline-flex items-center gap-1 text-[11px] font-bold text-sky-700 hover:text-sky-950 underline cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer"
               >
-                <RotateCcw className="w-3 h-3" />
-                <span>Reset Titik</span>
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Reset</span>
               </button>
             </div>
           )}
@@ -153,7 +153,7 @@ export function EstimateLeftPanel() {
             : "— Pilih Model Estimasi —"}
         </option>
         {models.map((m) => {
-          const r2Display = m.train_r2 != null ? m.train_r2.toFixed(1) : "0.0";
+          const r2Display = formatR2(m.train_r2);
           return (
             <option key={m.id} value={m.id}>
               {m.name} ({formatEstimatorType(m.estimator_type)}) • R² {r2Display}%

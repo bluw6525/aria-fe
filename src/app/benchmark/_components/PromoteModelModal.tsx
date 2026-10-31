@@ -31,7 +31,9 @@ function PromoteModelForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!modelName.trim()) {
-      toast.error("Nama model wajib diisi.");
+      toast.warning("Nama Model Kosong", {
+        description: "Harap masukkan nama model sebelum menyimpan ke database.",
+      });
       return;
     }
 
@@ -42,7 +44,9 @@ function PromoteModelForm({
         model_name: modelName.trim(),
         is_default: isDefault,
       });
-      toast.success(`Model "${modelName.trim()}" berhasil disimpan ke daftar model produksi!`);
+      toast.success("Model Berhasil Disimpan", {
+        description: `Model "${modelName.trim()}" berhasil tersimpan ke sistem.`,
+      });
       onSuccess();
       onClose();
     } catch (err: unknown) {
@@ -51,7 +55,9 @@ function PromoteModelForm({
           ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (err as any).response?.data?.detail || "Gagal menyimpan model."
           : "Gagal menyimpan model.";
-      toast.error(String(message));
+      toast.error("Penyimpanan Model Gagal", {
+        description: String(message),
+      });
     } finally {
       setIsSubmitting(false);
     }

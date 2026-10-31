@@ -12,10 +12,15 @@ export function TrainResultCard({ result }: TrainResultCardProps) {
   return (
     <div className="flex flex-col gap-4">
       {/* Header Section Sederhana */}
-      <div className="flex items-center justify-between border-b border-slate-200 pb-2.5">
-        <h3 className="text-base font-bold text-slate-900">
-          Hasil Pelatihan Model ({formatEstimatorType(result.estimator_type)})
-        </h3>
+      <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+        <div>
+          <h3 className="text-base font-bold text-slate-900">
+            Hasil Pelatihan Model
+          </h3>
+          <p className="text-xs text-slate-500 font-medium mt-0.5">
+            Model: <strong>{formatEstimatorType(result.estimator_type)}</strong>
+          </p>
+        </div>
         <span className="text-xs text-slate-500 font-medium">
           Jumlah data latih: {result.total_samples}
         </span>

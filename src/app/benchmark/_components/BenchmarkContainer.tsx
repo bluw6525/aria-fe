@@ -40,16 +40,18 @@ export function BenchmarkContainer() {
       setCurrentSession(res.session);
       setSummaryRows(res.summary_rows || []);
       setActiveSeeds(res.seeds || []);
-      toast.success(
-        `Benchmark selesai! Sesi "${res.session.session_name || res.session.id}" berhasil dijalankan & disimpan.`
-      );
+      toast.success("Benchmark MCCV Selesai", {
+        description: `Sesi "${res.session.session_name || res.session.id}" berhasil dijalankan dan disimpan.`,
+      });
     } catch (err: unknown) {
       const message =
         err && typeof err === "object" && "response" in err
           ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (err as any).response?.data?.detail || "Gagal menjalankan benchmark MCCV."
           : "Gagal menjalankan benchmark MCCV.";
-      toast.error(String(message));
+      toast.error("Benchmark MCCV Gagal", {
+        description: String(message),
+      });
     } finally {
       setIsRunning(false);
     }
@@ -63,14 +65,18 @@ export function BenchmarkContainer() {
       setCurrentSession(session);
       setSummaryRows(session.summary_metrics || []);
       setActiveSeeds([]);
-      toast.success(`Berhasil memuat data sesi "${session.session_name || session.id}"!`);
+      toast.success("Sesi Benchmark Dimuat", {
+        description: `Berhasil memuat data sesi "${session.session_name || session.id}".`,
+      });
     } catch (err: unknown) {
       const message =
         err && typeof err === "object" && "response" in err
           ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (err as any).response?.data?.detail || "Gagal memuat sesi benchmark."
           : "Gagal memuat sesi benchmark.";
-      toast.error(String(message));
+      toast.error("Gagal Memuat Sesi", {
+        description: String(message),
+      });
     } finally {
       setIsRunning(false);
     }

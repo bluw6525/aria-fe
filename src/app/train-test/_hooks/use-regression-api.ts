@@ -44,7 +44,6 @@ export interface RegressionState {
   saveModel: (payload: SaveModelPayload) => Promise<TrainedModel>;
   saveCurrentModel: (name: string) => Promise<void>;
   testModel: (modelId: number | "current", file: File) => Promise<TestModelResult>;
-  resetResults: () => void;
 }
 
 export const useRegressionApi = create<RegressionState>((set, get) => ({
@@ -216,8 +215,6 @@ export const useRegressionApi = create<RegressionState>((set, get) => ({
       set({ isTesting: false });
     }
   },
-
-  resetResults: () => set({ outlierResult: null, trainResult: null, testResult: null }),
 }));
 
 export default useRegressionApi;

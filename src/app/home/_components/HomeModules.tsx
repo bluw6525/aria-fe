@@ -37,7 +37,7 @@ const MODULES: ModuleItem[] = [
   {
     title: "Modul Riwayat Perancang",
     description:
-      "Menyajikan informasi identitas pengembang aplikasi, program studi Teknik Informatika Universitas Tarumanagara, dan catatan perancangan sistem.",
+      "Menyajikan profil pengembang, latar belakang penelitian, serta dedikasi dalam perancangan sistem Aria.",
     href: "/history",
     actionLabel: "Buka Riwayat",
     icon: History,

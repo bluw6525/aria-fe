@@ -30,7 +30,9 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!username.trim() || !password) {
-      toast.error("Harap isi username dan password.");
+      toast.warning("Input Belum Lengkap", {
+        description: "Harap isi username dan password terlebih dahulu.",
+      });
       return;
     }
 
@@ -40,17 +42,23 @@ export default function LoginPage() {
       setAuth(data.access_token, data.user);
 
       if (data.user.role === "admin") {
-        toast.success(`Selamat datang kembali, ${data.user.username}!`);
+        toast.success("Login Berhasil", {
+          description: `Selamat datang kembali, ${data.user.username}!`,
+        });
       } else {
-        toast.info("Login berhasil, namun akun ini bukan akun administrator.");
+        toast.info("Login Berhasil", {
+          description: "Akun berhasil masuk, namun bukan merupakan akun administrator.",
+        });
       }
       router.push("/home");
     } catch (err: unknown) {
-      let msg = "Gagal masuk. Periksa kembali username dan password Anda.";
+      let msg = "Periksa kembali username dan password Anda.";
       if (axios.isAxiosError(err) && err.response?.data?.detail) {
         msg = String(err.response.data.detail);
       }
-      toast.error(msg);
+      toast.error("Login Gagal", {
+        description: msg,
+      });
     } finally {
       setIsLoading(false);
     }

@@ -87,7 +87,21 @@ export const useEstimateApi = create<EstimateState>((set, get) => ({
     set({ inputMode });
   },
 
-  setSelectedModelId: (selectedModelId) => set({ selectedModelId }),
+  setSelectedModelId: (selectedModelId) => {
+    const { selectedModelId: currentModelId, manualHistory } = get();
+    if (selectedModelId !== currentModelId && manualHistory.length > 0) {
+      set({
+        selectedModelId,
+        manualHistory: [],
+        singleResult: null,
+      });
+      toast.info("Hasil Estimasi Direset", {
+        description: "Riwayat titik manual direset karena pergantian model.",
+      });
+    } else {
+      set({ selectedModelId });
+    }
+  },
   setFile: (file) => set({ file }),
   setCoInput: (coInput) => set({ coInput }),
   setNo2Input: (no2Input) => set({ no2Input }),
@@ -190,7 +204,9 @@ export const useEstimateApi = create<EstimateState>((set, get) => ({
         no2Input: "",
       });
     }
-    toast.info("Hasil Estimasi Direset");
+    toast.info("Hasil Estimasi Direset", {
+      description: "Data dan hasil estimasi telah dibersihkan.",
+    });
   },
 
   resetManualHistory: () => {
@@ -200,7 +216,9 @@ export const useEstimateApi = create<EstimateState>((set, get) => ({
       coInput: "",
       no2Input: "",
     });
-    toast.info("Riwayat titik manual telah dibersihkan.");
+    toast.info("Hasil Estimasi Direset", {
+      description: "Data dan hasil estimasi telah dibersihkan.",
+    });
   },
 }));
 

@@ -70,12 +70,12 @@ export interface BenchmarkRunResponse {
 
 export interface RunBenchmarkParams {
   file: File;
-  session_name?: string;
-  n_splits?: number;
+  sessionName?: string;
+  nSplits?: number;
   seeds?: string;
-  test_size?: number;
-  fit_intercept?: boolean;
-  estimator_types?: string[];
+  testSize?: number;
+  fitIntercept?: boolean;
+  estimatorTypes?: string[];
 }
 
 export interface PromoteModelPayload {
@@ -89,23 +89,23 @@ export const benchmarkService = {
     const formData = new FormData();
     formData.append("file", params.file);
 
-    if (params.session_name) {
-      formData.append("session_name", params.session_name);
+    if (params.sessionName && params.sessionName.trim()) {
+      formData.append("session_name", params.sessionName.trim());
     }
-    if (params.n_splits) {
-      formData.append("n_splits", String(params.n_splits));
+    if (params.nSplits) {
+      formData.append("n_splits", String(params.nSplits));
     }
     if (params.seeds && params.seeds.trim()) {
       formData.append("seeds", params.seeds.trim());
     }
-    if (params.test_size !== undefined) {
-      formData.append("test_size", String(params.test_size));
+    if (params.testSize !== undefined) {
+      formData.append("test_size", String(params.testSize));
     }
-    if (params.fit_intercept !== undefined) {
-      formData.append("fit_intercept", String(params.fit_intercept));
+    if (params.fitIntercept !== undefined) {
+      formData.append("fit_intercept", String(params.fitIntercept));
     }
-    if (params.estimator_types && params.estimator_types.length > 0) {
-      formData.append("estimator_types", JSON.stringify(params.estimator_types));
+    if (params.estimatorTypes && params.estimatorTypes.length > 0) {
+      formData.append("estimator_types", JSON.stringify(params.estimatorTypes));
     }
 
     const res = await httpClient.post<BenchmarkRunResponse>("/regression/benchmark/run", formData, {
@@ -151,10 +151,6 @@ export const benchmarkService = {
       }
     );
     return res.data;
-  },
-
-  async deleteSession(sessionId: number): Promise<void> {
-    await httpClient.delete(`/regression/benchmark/sessions/${sessionId}`);
   },
 
   async promoteModel(payload: PromoteModelPayload): Promise<unknown> {
