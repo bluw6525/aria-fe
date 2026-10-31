@@ -1,6 +1,7 @@
 "use client";
 
 import React, { ReactNode } from "react";
+import { UnstyledButton, Text } from "@mantine/core";
 
 export interface TabButtonProps {
   label: string;
@@ -18,18 +19,30 @@ export function TabButton({
   className = "",
 }: TabButtonProps) {
   return (
-    <button
+    <UnstyledButton
       type="button"
       onClick={onClick}
-      className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-        isActive
-          ? "bg-white text-sky-800 shadow-sm"
-          : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
-      } ${className}`}
+      px="md"
+      py="xs"
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 8,
+        borderRadius: 12,
+        transition: "all 150ms ease",
+        backgroundColor: isActive ? "#ffffff" : "transparent",
+        boxShadow: isActive ? "var(--mantine-shadow-xs)" : "none",
+        color: isActive ? "var(--mantine-color-brandPrimary-8)" : "var(--mantine-color-brandSecondary-6)",
+        fontWeight: 700,
+        fontSize: "12px",
+      }}
+      className={className}
     >
       {icon}
-      <span>{label}</span>
-    </button>
+      <Text size="xs" fw={700} inherit>
+        {label}
+      </Text>
+    </UnstyledButton>
   );
 }
 

@@ -22,7 +22,7 @@ export const estimateService = {
    */
   estimateSingle: async (payload: SingleEstimatePayload): Promise<SingleEstimateResult> => {
     const response = await httpClient.post<SingleEstimateResult>(
-      "/regression/estimate",
+      "/regression/estimates",
       payload
     );
     return response.data;
@@ -40,7 +40,7 @@ export const estimateService = {
     formData.append("file", file);
 
     const response = await httpClient.post<BatchEstimateResult>(
-      "/regression/estimate-file",
+      "/regression/estimates/batch",
       formData,
       {
         headers: {

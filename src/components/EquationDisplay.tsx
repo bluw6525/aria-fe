@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import { Paper, Text, Stack } from "@mantine/core";
 
 interface EquationDisplayProps {
   equation: string;
@@ -10,24 +13,33 @@ interface EquationDisplayProps {
 export function EquationDisplay({
   equation,
   label,
-  className = "",
   size = "md",
 }: EquationDisplayProps) {
-  const sizeClass = size === "sm" ? "text-xs py-2 px-3.5" : "text-sm py-2.5 px-4";
+  const isSm = size === "sm";
 
   return (
-    <div className={`flex flex-col gap-1.5 ${className}`}>
+    <Stack gap={6}>
       {label && (
-        <span className="text-xs font-bold text-slate-700 capitalize">
+        <Text size="xs" fw={700} c="brandSecondary.7" tt="capitalize">
           {label}
-        </span>
+        </Text>
       )}
-      <div
-        className={`bg-sky-50 border border-sky-200 rounded-xl text-sky-950 font-bold font-mono tracking-tight overflow-x-auto ${sizeClass}`}
+      <Paper
+        p={isSm ? "xs" : "sm"}
+        radius="lg"
+        withBorder
+        style={{
+          backgroundColor: "var(--mantine-color-brandPrimary-0)",
+          borderColor: "var(--mantine-color-brandPrimary-2)",
+          color: "var(--mantine-color-brandPrimary-9)",
+          overflowX: "auto",
+        }}
       >
-        {equation}
-      </div>
-    </div>
+        <Text size={isSm ? "xs" : "sm"} fw={700} ff="monospace" c="brandPrimary.7">
+          {equation}
+        </Text>
+      </Paper>
+    </Stack>
   );
 }
 

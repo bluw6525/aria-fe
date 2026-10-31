@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useMemo } from "react";
+import { Paper } from "@mantine/core";
 import { LineSeries } from "@/components/LineChart";
-import { BatchEstimateResult } from "../_types";
+import { BatchEstimateResult, SingleEstimateResult } from "../_types";
 import { useEstimateApi, getManualBatchResult } from "../_hooks/use-estimate-api";
 import { EstimateEmptyState } from "./EstimateEmptyState";
 import { EstimateSingleResult } from "./EstimateSingleResult";
@@ -22,10 +23,34 @@ export function EstimateRightPanel() {
   }, [manualHistory, singleResult, selectedModelId]);
 
   const isFileUploadActive = inputMode === "file";
-  const showBatch = isFileUploadActive && Boolean(batchResult);
+
+  // Jika file upload hanya memiliki 1 baris data, konversi menjadi SingleEstimateResult
+  const fileSingleResult: SingleEstimateResult | null = useMemo(() => {
+    if (!isFileUploadActive || !batchResult || batchResult.chart_data.length !== 1) {
+      return null;
+    }
+    const point = batchResult.chart_data[0];
+    return {
+      model_id: batchResult.model_id,
+      model_name: batchResult.model_name,
+      estimator_type: batchResult.estimator_type,
+      equation: batchResult.equation,
+      estimated_value: point.estimated_value,
+      ispu_category: point.ispu_category,
+    };
+  }, [isFileUploadActive, batchResult]);
+
+  const showFileSingle = isFileUploadActive && Boolean(fileSingleResult);
+  const showBatch = isFileUploadActive && Boolean(batchResult) && batchResult!.chart_data.length >= 2;
   const showManualSingle = !isFileUploadActive && manualHistory.length === 1 && Boolean(singleResult);
   const showManualBatch = !isFileUploadActive && manualHistory.length >= 2 && Boolean(manualBatchResult);
-  const showEmpty = !showBatch && !showManualSingle && !showManualBatch;
+  const showEmpty = !showFileSingle && !showBatch && !showManualSingle && !showManualBatch;
+
+  const activeSingleResult: SingleEstimateResult | null = showFileSingle
+    ? fileSingleResult
+    : showManualSingle
+    ? singleResult
+    : null;
 
   // Active batch object to render
   const activeBatch: BatchEstimateResult | null = showBatch
@@ -41,26 +66,36 @@ export function EstimateRightPanel() {
       (p) => p.actual_value !== null && p.actual_value !== undefined
     );
     const lines: LineSeries[] = [
-      { key: "estimated_value", name: "Estimasi ISPU", color: "#0284c7" },
+      { key: "estimated_value", name: "Estimasi ISPU", color: "var(--mantine-color-brandPrimary-6)" },
     ];
     if (hasActual) {
-      lines.unshift({ key: "actual_value", name: "ISPU Aktual", color: "#10b981", dashed: true });
+      lines.unshift({ key: "actual_value", name: "ISPU Aktual", color: "#ef4444", dashed: true });
     }
     return lines;
   }, [activeBatch]);
 
   return (
-    <div className="w-full bg-white rounded-2xl p-6 flex flex-col gap-6 text-slate-900 border border-slate-200 shadow-sm min-h-145">
+    <Paper
+      p={24}
+      shadow="xs"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+        minHeight: 580,
+      }}
+    >
       {/* 1. Empty State (Placeholder) */}
       {showEmpty && (
         <EstimateEmptyState isFileUploadActive={isFileUploadActive} />
       )}
 
-      {/* 2. Hasil Estimasi Titik Tunggal (Manual Mode 1 Titik) */}
-      {showManualSingle && singleResult && (
+      {/* 2. Hasil Estimasi Titik Tunggal (Manual 1 Titik atau File 1 Baris) */}
+      {activeSingleResult && (
         <EstimateSingleResult
-          result={singleResult}
+          result={activeSingleResult}
           onReset={resetEstimate}
+          isManual={showManualSingle}
         />
       )}
 
@@ -73,7 +108,7 @@ export function EstimateRightPanel() {
           onReset={resetEstimate}
         />
       )}
-    </div>
+    </Paper>
   );
 }
 

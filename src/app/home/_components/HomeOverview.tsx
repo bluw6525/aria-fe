@@ -1,17 +1,21 @@
+"use client";
+
 import React from "react";
+import { Stack } from "@mantine/core";
 import { HomeObjectives } from "./HomeObjectives";
 import { HomeModules } from "./HomeModules";
 
 export function HomeOverview() {
   return (
-    <section className="w-full max-w-5xl mx-auto flex flex-col gap-8 pb-14">
+    <Stack gap={32} maw={1024} mx="auto" w="100%" pb={56}>
       {/* 1. Bagian Ringkasan Tujuan Aplikasi */}
       <HomeObjectives />
 
       {/* 2. Bagian Fitur & Modul Aplikasi */}
       <HomeModules />
-    </section>
+    </Stack>
   );
 }
 
 export { HomeObjectives, HomeModules };
+export default HomeOverview;

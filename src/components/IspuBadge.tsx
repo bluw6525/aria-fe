@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import { Badge } from "@mantine/core";
 import { getIspuStyle } from "@/app/estimate/_types";
 
 interface IspuBadgeProps {
@@ -13,19 +16,26 @@ export function IspuBadge({
   className = "",
 }: IspuBadgeProps) {
   const ispuStyle = getIspuStyle(category);
-
-  const sizeStyles = {
-    xs: "px-2 py-0.5 text-[10px]",
-    sm: "px-2.5 py-0.5 text-xs font-bold",
-    md: "px-3 py-1 text-xs font-extrabold",
-  }[size];
+  const mantineSize = size === "xs" ? "xs" : size === "md" ? "md" : "sm";
 
   return (
-    <span
-      className={`inline-block rounded-full border transition-colors select-none ${ispuStyle.badgeBorder} ${ispuStyle.badgeBg} ${ispuStyle.badgeText} ${sizeStyles} ${className}`}
+    <Badge
+      size={mantineSize}
+      radius="xl"
+      variant="light"
+      color={ispuStyle.color}
+      style={{
+        backgroundColor: ispuStyle.bgHex,
+        borderColor: ispuStyle.borderHex,
+        color: ispuStyle.textHex,
+        border: `1px solid ${ispuStyle.borderHex}`,
+        fontWeight: 700,
+        userSelect: "none",
+      }}
+      className={className}
     >
       {category}
-    </span>
+    </Badge>
   );
 }
 

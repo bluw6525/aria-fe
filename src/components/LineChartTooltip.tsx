@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import { Paper, Box, Flex, Text, alpha } from "@mantine/core";
+import { brandSecondary } from "@/theme/theme";
 
 export interface LineChartTooltipItem {
   name?: string;
@@ -16,7 +18,7 @@ export interface LineChartTooltipProps {
 }
 
 /**
- * Tooltip khusus untuk komponen LineChart dengan gaya dark glassmorphism.
+ * Tooltip khusus untuk komponen LineChart dengan gaya dark glassmorphism berbasis token Mantine.
  */
 export function LineChartTooltip({
   active,
@@ -24,33 +26,55 @@ export function LineChartTooltip({
   label,
 }: LineChartTooltipProps) {
   if (active && payload && payload.length) {
+    const tooltipBg = alpha(brandSecondary[9], 0.95);
+    const tooltipBorder = alpha(brandSecondary[7], 0.8);
+
     return (
-      <div className="bg-slate-900/95 text-white p-2.5 rounded-xl border border-slate-700/80 shadow-xl text-xs backdrop-blur-md min-w-[170px] select-none pointer-events-none">
-        <div className="font-bold text-sky-400 text-[11px] mb-1.5 border-b border-slate-700/80 pb-1 flex justify-between">
-          <span>Observasi #{label}</span>
-        </div>
-        <div className="flex flex-col gap-1">
+      <Paper
+        p="xs"
+        radius="lg"
+        withBorder
+        shadow="xl"
+        style={{
+          backgroundColor: tooltipBg,
+          borderColor: tooltipBorder,
+          backdropFilter: "blur(8px)",
+          minWidth: 170,
+          userSelect: "none",
+          pointerEvents: "none",
+        }}
+      >
+        <Box pb={4} mb={6} style={{ borderBottom: `1px solid ${tooltipBorder}` }}>
+          <Text size="xs" fw={700} c="brandPrimary.4" style={{ fontSize: 11 }}>
+            Observasi #{label}
+          </Text>
+        </Box>
+        <Flex direction="column" gap={4}>
           {payload.map((item) => (
-            <div
+            <Flex
               key={String(item.dataKey || item.name)}
-              className="flex items-center justify-between gap-3 text-[11px]"
+              justify="space-between"
+              align="center"
+              gap="sm"
+              style={{ fontSize: 11 }}
             >
-              <div className="flex items-center gap-1.5">
-                <span
-                  className="w-2 h-2 rounded-full shrink-0"
-                  style={{ backgroundColor: item.color }}
+              <Flex align="center" gap={6}>
+                <Box
+                  w={8}
+                  h={8}
+                  style={{ borderRadius: "50%", backgroundColor: item.color, flexShrink: 0 }}
                 />
-                <span className="text-slate-300">{item.name}:</span>
-              </div>
-              <span className="font-bold text-white">
-                {typeof item.value === "number"
-                  ? item.value.toFixed(2)
-                  : item.value}
-              </span>
-            </div>
+                <Text size="xs" c="brandSecondary.3" style={{ fontSize: 11 }}>
+                  {item.name}:
+                </Text>
+              </Flex>
+              <Text size="xs" fw={700} c="white" style={{ fontSize: 11 }}>
+                {typeof item.value === "number" ? item.value.toFixed(2) : item.value}
+              </Text>
+            </Flex>
           ))}
-        </div>
-      </div>
+        </Flex>
+      </Paper>
     );
   }
   return null;

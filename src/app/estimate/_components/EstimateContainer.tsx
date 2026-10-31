@@ -1,27 +1,43 @@
 import React from "react";
+import { Box, Flex, Paper } from "@mantine/core";
 import { EstimateLeftPanel } from "./EstimateLeftPanel";
 import { EstimateRightPanel } from "./EstimateRightPanel";
 
 /**
- * Server Component container untuk halaman Estimasi Indeks Standar Pencemar Udara (ISPU).
- * Komponen ini murni mengelola layout tanpa state/hook.
+ * Container untuk halaman Estimasi Indeks Standar Pencemar Udara (ISPU) berbasis Mantine.
  */
 export function EstimateContainer() {
   return (
-    <div className="w-full flex flex-col">
-      {/* 2 Kolom: Kiri Kontrol (380px) & Kanan Output (flex-1) */}
-      <div className="max-w-6xl mx-auto w-full flex flex-row gap-8 pb-16 items-start">
-        {/* Kolom Kiri: Form Kontrol (Client Component) */}
-        <div className="w-95 shrink-0 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+    <Box style={{ width: "100%", display: "flex", flexDirection: "column" }}>
+      {/* 2 Kolom: Kiri Kontrol & Kanan Output */}
+      <Flex
+        maw={1152}
+        mx="auto"
+        w="100%"
+        gap={32}
+        pb={64}
+        align="flex-start"
+        direction={{ base: "column", lg: "row" }}
+      >
+        {/* Kolom Kiri: Form Kontrol */}
+        <Paper
+          p={24}
+          shadow="xs"
+          style={{
+            width: "100%",
+            maxWidth: 380,
+            flexShrink: 0,
+          }}
+        >
           <EstimateLeftPanel />
-        </div>
+        </Paper>
 
-        {/* Kolom Kanan: Output & Visualisasi Grafik (Client Component) */}
-        <div className="flex-1 min-w-0">
+        {/* Kolom Kanan: Output & Visualisasi Grafik */}
+        <Box style={{ flex: 1, minWidth: 0, width: "100%" }}>
           <EstimateRightPanel />
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Flex>
+    </Box>
   );
 }
 

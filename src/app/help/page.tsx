@@ -1,3 +1,4 @@
+import { Box } from "@mantine/core";
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
 import { Sidebar } from "@/components/Sidebar";
@@ -10,7 +11,7 @@ export const metadata = {
 
 export default function HelpPage() {
   return (
-    <div className="flex min-h-screen w-full bg-[#f3f4f6]">
+    <Box style={{ display: "flex", minHeight: "100vh", width: "100%", backgroundColor: "var(--background)" }}>
       {/* 1. Sidebar Navigasi di Kiri */}
       <Sidebar />
 
@@ -22,6 +23,6 @@ export default function HelpPage() {
         />
         <HelpContainer />
       </PageContainer>
-    </div>
+    </Box>
   );
 }

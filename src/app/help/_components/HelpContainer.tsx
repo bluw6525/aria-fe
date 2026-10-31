@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { BookOpen, Cpu, AlertTriangle, ShieldAlert } from "lucide-react";
-import { HelpTabButton } from "./HelpTabButton";
+import { Box, Flex } from "@mantine/core";
+import { TabButton } from "@/components/TabButton";
 import { GuideSection } from "./GuideSection";
 import { TheorySection } from "./TheorySection";
 import { PollutionSection } from "./PollutionSection";
@@ -14,22 +15,22 @@ const TABS: { key: TabKey; label: string; icon: React.ReactNode }[] = [
   {
     key: "guide",
     label: "Cara Penggunaan",
-    icon: <BookOpen className="w-4 h-4" />,
+    icon: <BookOpen style={{ width: 16, height: 16 }} />,
   },
   {
     key: "theory",
     label: "Dasar Teori MM-Estimator",
-    icon: <Cpu className="w-4 h-4" />,
+    icon: <Cpu style={{ width: 16, height: 16 }} />,
   },
   {
     key: "pollution",
     label: "Dampak Polusi & Prekursor",
-    icon: <AlertTriangle className="w-4 h-4" />,
+    icon: <AlertTriangle style={{ width: 16, height: 16 }} />,
   },
   {
     key: "ispu",
     label: "Kategori Standar ISPU",
-    icon: <ShieldAlert className="w-4 h-4" />,
+    icon: <ShieldAlert style={{ width: 16, height: 16 }} />,
   },
 ];
 
@@ -37,11 +38,19 @@ export function HelpContainer() {
   const [activeTab, setActiveTab] = useState<TabKey>("guide");
 
   return (
-    <div className="max-w-4xl mx-auto w-full flex flex-col gap-8 pb-16 text-slate-800">
-      {/* Tab Navigasi Modul Bantuan Menggunakan HelpTabButton */}
-      <div className="flex flex-wrap p-1.5 bg-slate-200/80 rounded-2xl gap-1">
+    <Box maw={896} mx="auto" w="100%" pb={64} style={{ color: "var(--mantine-color-brandSecondary-8)", display: "flex", flexDirection: "column", gap: 32 }}>
+      {/* Tab Navigasi Modul Bantuan */}
+      <Flex
+        wrap="wrap"
+        p={6}
+        gap={4}
+        style={{
+          backgroundColor: "var(--mantine-color-brandSecondary-2)",
+          borderRadius: 16,
+        }}
+      >
         {TABS.map((tab) => (
-          <HelpTabButton
+          <TabButton
             key={tab.key}
             label={tab.label}
             icon={tab.icon}
@@ -49,14 +58,14 @@ export function HelpContainer() {
             onClick={() => setActiveTab(tab.key)}
           />
         ))}
-      </div>
+      </Flex>
 
       {/* Konten Tab yang Terpisah per Komponen */}
       {activeTab === "guide" && <GuideSection />}
       {activeTab === "theory" && <TheorySection />}
       {activeTab === "pollution" && <PollutionSection />}
       {activeTab === "ispu" && <IspuStandardSection />}
-    </div>
+    </Box>
   );
 }
 

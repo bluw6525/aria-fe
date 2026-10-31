@@ -1,87 +1,147 @@
+"use client";
+
 import React from "react";
 import { Cpu } from "lucide-react";
+import { Paper, SimpleGrid, Flex, Box, Title, Text, Stack } from "@mantine/core";
 
 export function TheorySection() {
   return (
-    <div className="flex flex-col gap-6 animate-in fade-in duration-300">
-      <div className="bg-white rounded-2xl p-7 border border-slate-200/80 shadow-xs flex flex-col gap-6">
-        <div>
-          <h3 className="text-xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2.5">
-            <Cpu className="w-5 h-5 text-sky-600" />
-            <span>Dasar Teori Regresi Linear Robust & MM-Estimator</span>
-          </h3>
-          <p className="text-xs text-slate-500 mt-1">
+    <Stack gap={24}>
+      <Paper
+        p={28}
+        shadow="xs"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 24,
+        }}
+      >
+        <Box>
+          <Flex align="center" gap={10}>
+            <Cpu style={{ width: 20, height: 20, color: "var(--mantine-color-brandPrimary-6)" }} />
+            <Title order={3} size="h4" fw={800} c="brandSecondary.9" style={{ letterSpacing: "-0.01em" }}>
+              Dasar Teori Regresi Linear Robust & MM-Estimator
+            </Title>
+          </Flex>
+          <Text size="xs" c="brandSecondary.5" mt={4}>
             Penjelasan matematis mengapa metode Ordinary Least Squares (OLS) rentan terhadap pencilan satelit dan bagaimana MM-estimator menyelesaikan kelemahan tersebut.
-          </p>
-        </div>
+          </Text>
+        </Box>
 
         {/* Mengapa Regresi Robust Dibutuhkan? */}
-        <div className="flex flex-col gap-2.5 text-xs text-slate-700 leading-relaxed">
-          <h4 className="font-bold text-slate-900 text-sm">
+        <Stack gap={10} style={{ fontSize: 12, color: "var(--mantine-color-brandSecondary-7)", lineHeight: 1.65 }}>
+          <Text size="sm" fw={700} c="brandSecondary.9">
             1. Keterbatasan Regresi Klasik (OLS) Terhadap Data Satelit
-          </h4>
-          <p>
+          </Text>
+          <Text size="xs" inherit>
             Metode kuadrat terkecil klasik (Ordinary Least Squares / OLS) mengasumsikan galat berdistribusi normal tanpa adanya pencilan (outliers). Namun, data penginderaan jauh satelit Sentinel-5P sering mengandung derau (noise) akibat tutupan awan.
-          </p>
-          <p>
+          </Text>
+          <Text size="xs" inherit>
             Satu titik pencilan ekstrem saja dapat menarik garis regresi OLS menjauh dari tren data populasi sesungguhnya karena fungsi kuadratik OLS memberikan penalti kuadratik yang sangat besar terhadap residual besar.
-          </p>
-        </div>
+          </Text>
+        </Stack>
 
         {/* Evolusi M, S, hingga MM-Estimator */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+        <SimpleGrid cols={{ base: 1, md: 3 }} spacing="md">
           {/* M-Estimator */}
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
-            <strong className="text-slate-900 text-sm">M-Estimator (Huber, 1973)</strong>
-            <p className="text-slate-600 leading-relaxed">
+          <Paper
+            p="md"
+            bg="brandSecondary.0"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+              fontSize: 12,
+            }}
+          >
+            <Text size="sm" fw={700} c="brandSecondary.9">
+              M-Estimator (Huber, 1973)
+            </Text>
+            <Text size="xs" c="brandSecondary.6" lh={1.6}>
               Meminimumkan fungsi objektif dari residual terstandarisasi sehingga observasi dengan residual besar memperoleh kontribusi lebih kecil dalam penaksiran parameter.
-            </p>
-            <div className="mt-auto pt-2 flex flex-col gap-1 text-[11px]">
-              <span className="font-semibold text-emerald-700">
+            </Text>
+            <Box mt="auto" pt={8} style={{ display: "flex", flexDirection: "column", gap: 4, fontSize: 11 }}>
+              <Text size="xs" fw={600} c="green.8" inherit>
                 Kelebihan: Memiliki efisiensi relatif yang tinggi ketika data mendekati distribusi normal.
-              </span>
-              <span className="font-semibold text-rose-600">
+              </Text>
+              <Text size="xs" fw={600} c="red.6" inherit>
                 Kelemahan: Nilai breakdown point rendah.
-              </span>
-            </div>
-          </div>
+              </Text>
+            </Box>
+          </Paper>
 
           {/* S-Estimator */}
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
-            <strong className="text-slate-900 text-sm">S-Estimator (Rousseeuw & Yohai, 1984)</strong>
-            <p className="text-slate-600 leading-relaxed">
+          <Paper
+            p="md"
+            bg="brandSecondary.0"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+              fontSize: 12,
+            }}
+          >
+            <Text size="sm" fw={700} c="brandSecondary.9">
+              S-Estimator (Rousseeuw & Yohai, 1984)
+            </Text>
+            <Text size="xs" c="brandSecondary.6" lh={1.6}>
               Meminimumkan suatu estimator skala robust (M-scale) dari residual, bukan meminimumkan fungsi objektif residual secara langsung.
-            </p>
-            <div className="mt-auto pt-2 flex flex-col gap-1 text-[11px]">
-              <span className="font-semibold text-emerald-700">
+            </Text>
+            <Box mt="auto" pt={8} style={{ display: "flex", flexDirection: "column", gap: 4, fontSize: 11 }}>
+              <Text size="xs" fw={600} c="green.8" inherit>
                 Kelebihan: Memiliki nilai breakdown point tinggi hingga mencapai batas teoretis maksimum sebesar 50%.
-              </span>
-              <span className="font-semibold text-rose-600">
+              </Text>
+              <Text size="xs" fw={600} c="red.6" inherit>
                 Kelemahan: Efisiensi relatif estimatornya masih tergolong rendah.
-              </span>
-            </div>
-          </div>
+              </Text>
+            </Box>
+          </Paper>
 
-
-          <div className="p-4 rounded-xl bg-sky-50 border border-sky-200 flex flex-col gap-2">
-            <strong className="text-sky-950 text-sm">MM-Estimator (Yohai, 1987)</strong>
-            <p className="text-sky-900 leading-relaxed">
+          {/* MM-Estimator */}
+          <Paper
+            p="md"
+            radius="xl"
+            withBorder
+            style={{
+              backgroundColor: "var(--mantine-color-brandPrimary-0)",
+              borderColor: "var(--mantine-color-brandPrimary-2)",
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+              fontSize: 12,
+            }}
+          >
+            <Text size="sm" fw={700} c="brandPrimary.8">
+              MM-Estimator (Yohai, 1987)
+            </Text>
+            <Text size="xs" c="brandPrimary.9" lh={1.6}>
               Metode regresi robust yang dirancang untuk mengatasi kelemahan M-estimator dan S-estimator secara simultan.
-            </p>
-            <div className="mt-auto pt-2 flex flex-col gap-1 text-[11px]">
-              <span className="font-semibold text-sky-900">
+            </Text>
+            <Box mt="auto" pt={8} style={{ fontSize: 11 }}>
+              <Text size="xs" fw={600} c="brandPrimary.9" inherit>
                 Metode optimal: Memiliki nilai breakdown point tinggi (mencapai hingga 50%) sekaligus mempertahankan efisiensi relatif yang tinggi (mencapai 95%).
-              </span>
-            </div>
-          </div>
-        </div>
+              </Text>
+            </Box>
+          </Paper>
+        </SimpleGrid>
 
         {/* Tahapan Algoritma MM-Estimator */}
-        <div className="p-5 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col gap-3 text-xs text-slate-700 leading-relaxed">
-          <h4 className="font-bold text-slate-900 text-sm">
+        <Paper
+          p="lg"
+          bg="brandSecondary.0"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 12,
+            fontSize: 12,
+            color: "var(--mantine-color-brandSecondary-7)",
+            lineHeight: 1.65,
+          }}
+        >
+          <Text size="sm" fw={700} c="brandSecondary.9">
             2. Tiga Tahap Komputasi MM-Estimator (Yohai, 1987)
-          </h4>
-          <ol className="list-decimal pl-5 space-y-2 text-slate-600">
+          </Text>
+          <Box component="ol" pl={20} m={0} style={{ display: "flex", flexDirection: "column", gap: 8, color: "var(--mantine-color-brandSecondary-6)" }}>
             <li>
               <strong>Tahap 1 (Inisialisasi S-Estimator):</strong> Menghitung estimasi parameter awal dan skala residual robust <code>s</code> menggunakan algoritma S-estimator dengan konstanta efisiensi tuning yang menjamin ketahanan breakdown point 50%.
             </li>
@@ -91,10 +151,10 @@ export function TheorySection() {
             <li>
               <strong>Tahap 3 (Iterative Reweighted Least Squares / IRLS):</strong> Menggunakan fungsi pembobot Tukey Bisquare untuk menghitung bobot observasi pada setiap iterasi hingga nilai koefisien konvergen.
             </li>
-          </ol>
-        </div>
-      </div>
-    </div>
+          </Box>
+        </Paper>
+      </Paper>
+    </Stack>
   );
 }
 

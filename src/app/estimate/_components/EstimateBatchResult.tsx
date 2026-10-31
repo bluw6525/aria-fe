@@ -1,4 +1,5 @@
 import React from "react";
+import { Stack, Flex, Box, Text, Button } from "@mantine/core";
 import { RotateCcw } from "lucide-react";
 import { LineChart, LineSeries } from "@/components/LineChart";
 import { EquationDisplay } from "@/components/EquationDisplay";
@@ -21,29 +22,39 @@ export function EstimateBatchResult({
   onReset,
 }: EstimateBatchResultProps) {
   return (
-    <div className="flex flex-col gap-6 animate-in fade-in duration-300">
+    <Stack gap="lg">
       {/* Header Bar */}
-      <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-        <div>
-          <h3 className="text-base font-bold text-slate-900">
-            Hasil Estimasi ISPU {showManualBatch ? "(Multi-titik Manual)" : "(Batch File)"}
-          </h3>
-          <p className="text-xs text-slate-500 font-medium mt-0.5">
-            Model: <strong>{batch.model_name}</strong> (
-            {formatEstimatorType(batch.estimator_type)})
-          </p>
-        </div>
-        <button
-          type="button"
+      <Flex
+        justify="space-between"
+        align="center"
+        pb="sm"
+        style={{ borderBottom: "1px solid #e2e8f0" }}
+      >
+        <Box>
+          <Text size="md" fw={700} c="brandSecondary.9">
+            Hasil Estimasi ISPU
+          </Text>
+          <Text size="xs" c="brandSecondary.5" fw={500} mt={2}>
+            Model: <strong>{batch.model_name}</strong>
+            {!batch.model_name.includes(formatEstimatorType(batch.estimator_type)) && (
+              <span> ({formatEstimatorType(batch.estimator_type)})</span>
+            )}
+          </Text>
+        </Box>
+        <Button
+          variant="light"
+          color="gray"
+          size="xs"
+          radius="md"
+          leftSection={<RotateCcw size={14} />}
           onClick={onReset}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer"
+          style={{ backgroundColor: "var(--mantine-color-brandSecondary-1)", color: "var(--mantine-color-brandSecondary-7)" }}
         >
-          <RotateCcw className="w-3.5 h-3.5" />
-          <span>{showManualBatch ? "Reset Riwayat" : "Estimasi Ulang"}</span>
-        </button>
-      </div>
+          Reset
+        </Button>
+      </Flex>
 
-      {/* 4 Kartu Metrik Ringkasan ISPU */}
+      {/* 3 Kartu Metrik Ringkasan ISPU */}
       <EstimateBatchMetrics summary={batch.summary} />
 
       {/* Persamaan Model */}
@@ -54,8 +65,8 @@ export function EstimateBatchResult({
         />
       )}
 
-      {/* Grafik Garis Tren Estimasi ISPU Recharts */}
-      <div className="mt-1">
+      {/* Grafik Garis Tren Estimasi ISPU */}
+      <Box mt={4}>
         <LineChart
           data={batch.chart_data}
           title={`Grafik Tren Nilai ISPU (${batch.chart_data.length} Observasi)`}
@@ -63,13 +74,13 @@ export function EstimateBatchResult({
           xAxisKey="label"
           height={260}
         />
-      </div>
+      </Box>
 
       {/* Tabel Sampel Data Hasil Estimasi ISPU */}
       <EstimateBatchTable
         data={batch.chart_data}
         showManualBatch={showManualBatch}
       />
-    </div>
+    </Stack>
   );
 }

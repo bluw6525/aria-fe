@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import axios from "axios";
-import { toast } from "sonner";
+import { notify } from "@/lib/notifications";
+import { extractApiErrorMessage } from "@/lib/api/error";
 import { estimateService } from "../_services";
 import {
   TrainedModel,
@@ -9,15 +9,7 @@ import {
   BatchEstimatePoint,
 } from "../_types";
 
-function extractErrorMessage(err: unknown, fallback: string): string {
-  if (axios.isAxiosError(err)) {
-    return err.response?.data?.detail || err.message || fallback;
-  }
-  if (err instanceof Error) {
-    return err.message;
-  }
-  return fallback;
-}
+const extractErrorMessage = extractApiErrorMessage;
 
 export interface EstimateState {
   // ── Models State ────────────────────────────────────────────────────────────
@@ -87,7 +79,21 @@ export const useEstimateApi = create<EstimateState>((set, get) => ({
     set({ inputMode });
   },
 
-  setSelectedModelId: (selectedModelId) => set({ selectedModelId }),
+  setSelectedModelId: (selectedModelId) => {
+    const { selectedModelId: currentModelId, manualHistory } = get();
+    if (selectedModelId !== currentModelId && manualHistory.length > 0) {
+      set({
+        selectedModelId,
+        manualHistory: [],
+        singleResult: null,
+      });
+      notify.info("Hasil Estimasi Direset", {
+        description: "Riwayat titik manual direset karena pergantian model.",
+      });
+    } else {
+      set({ selectedModelId });
+    }
+  },
   setFile: (file) => set({ file }),
   setCoInput: (coInput) => set({ coInput }),
   setNo2Input: (no2Input) => set({ no2Input }),
@@ -96,7 +102,7 @@ export const useEstimateApi = create<EstimateState>((set, get) => ({
     const { inputMode, selectedModelId, file, coInput, no2Input, manualHistory } = get();
 
     if (!selectedModelId) {
-      toast.warning("Model Belum Dipilih", {
+      notify.warning("Model Belum Dipilih", {
         description: "Harap pilih model regresi terlebih dahulu dari dropdown.",
       });
       return;
@@ -104,7 +110,7 @@ export const useEstimateApi = create<EstimateState>((set, get) => ({
 
     const modelIdNum = parseInt(selectedModelId, 10);
     if (isNaN(modelIdNum)) {
-      toast.error("ID Model Tidak Valid", {
+      notify.error("ID Model Tidak Valid", {
         description: "Pastikan model yang dipilih valid.",
       });
       return;
@@ -115,7 +121,7 @@ export const useEstimateApi = create<EstimateState>((set, get) => ({
     try {
       if (inputMode === "file") {
         if (!file) {
-          toast.warning("Berkas Diperlukan", {
+          notify.warning("Berkas Diperlukan", {
             description: "Harap pilih berkas data satelit (.xlsx, .csv, atau .xls).",
           });
           set({ isEstimating: false });
@@ -124,8 +130,8 @@ export const useEstimateApi = create<EstimateState>((set, get) => ({
 
         const res = await estimateService.estimateFromFile(modelIdNum, file);
         set({ batchResult: res });
-        toast.success("Estimasi Satelit Selesai", {
-          description: `Berhasil mengestimasi ${res.summary.total_samples} sampel data satelit. Kategori dominan: ${res.summary.dominant_ispu_category}.`,
+        notify.success("Estimasi Satelit Selesai", {
+          description: `Berhasil mengestimasi ${res.summary.total_samples} sampel data satelit.`,
         });
       } else {
         // Mode Manual: Input nilai tunggal CO & NO2
@@ -133,7 +139,7 @@ export const useEstimateApi = create<EstimateState>((set, get) => ({
         const no2Val = parseFloat(no2Input);
 
         if (isNaN(coVal) || isNaN(no2Val)) {
-          toast.warning("Input Tidak Valid", {
+          notify.warning("Input Tidak Valid", {
             description: "Nilai konsentrasi CO dan NO2 harus berupa bilangan numerik.",
           });
           set({ isEstimating: false });
@@ -164,13 +170,13 @@ export const useEstimateApi = create<EstimateState>((set, get) => ({
           no2Input: "",
         });
 
-        toast.success("Estimasi ISPU Berhasil", {
+        notify.success("Estimasi ISPU Berhasil", {
           description: `Nilai ISPU: ${res.estimated_value} (Kategori: ${res.ispu_category}).`,
         });
       }
     } catch (err: unknown) {
       const msg = extractErrorMessage(err, "Gagal menjalankan estimasi kualitas udara.");
-      toast.error("Estimasi Gagal", {
+      notify.error("Estimasi Gagal", {
         description: msg,
       });
     } finally {
@@ -190,7 +196,9 @@ export const useEstimateApi = create<EstimateState>((set, get) => ({
         no2Input: "",
       });
     }
-    toast.info("Hasil Estimasi Direset");
+    notify.info("Hasil Estimasi Direset", {
+      description: "Data dan hasil estimasi telah dibersihkan.",
+    });
   },
 
   resetManualHistory: () => {
@@ -200,7 +208,9 @@ export const useEstimateApi = create<EstimateState>((set, get) => ({
       coInput: "",
       no2Input: "",
     });
-    toast.info("Riwayat titik manual telah dibersihkan.");
+    notify.info("Hasil Estimasi Direset", {
+      description: "Data dan hasil estimasi telah dibersihkan.",
+    });
   },
 }));
 
@@ -216,24 +226,6 @@ export function getManualBatchResult(
   if (history.length < 2 || !singleResult) return null;
 
   const allValues = history.map((p) => p.estimated_value);
-  const ispuCounts: Record<string, number> = {
-    Baik: 0,
-    Sedang: 0,
-    "Tidak Sehat": 0,
-    "Sangat Tidak Sehat": 0,
-    Berbahaya: 0,
-  };
-
-  history.forEach((p) => {
-    if (p.ispu_category in ispuCounts) {
-      ispuCounts[p.ispu_category]++;
-    }
-  });
-
-  const dominantCat = Object.keys(ispuCounts).reduce((a, b) =>
-    ispuCounts[a] >= ispuCounts[b] ? a : b
-  );
-
   const sum = allValues.reduce((a, b) => a + b, 0);
   const avgEst = Number((sum / allValues.length).toFixed(1));
   const minEst = Number(Math.min(...allValues).toFixed(1));
@@ -250,8 +242,6 @@ export function getManualBatchResult(
       avg_estimated: avgEst,
       min_estimated: minEst,
       max_estimated: maxEst,
-      dominant_ispu_category: dominantCat,
-      ispu_distribution: ispuCounts,
     },
   };
 }

@@ -1,5 +1,8 @@
+"use client";
+
 import React, { ReactNode } from "react";
 import { LucideIcon } from "lucide-react";
+import { Title, Text, Box, Center, Stack } from "@mantine/core";
 
 interface EmptyStateProps {
   icon: LucideIcon;
@@ -13,22 +16,33 @@ export function EmptyState({
   icon: Icon,
   title,
   description,
-  className = "",
   action,
 }: EmptyStateProps) {
   return (
-    <div
-      className={`flex-1 flex flex-col items-center justify-center text-center text-slate-500 py-24 ${className}`}
-    >
-      <div className="w-14 h-14 rounded-2xl bg-sky-50 border border-sky-100 flex items-center justify-center text-sky-600 mb-4 shadow-sm">
-        <Icon className="w-7 h-7" />
-      </div>
-      <h4 className="font-bold text-slate-800 text-base mb-1">{title}</h4>
-      <div className="text-xs text-slate-500 max-w-md leading-relaxed">
-        {description}
-      </div>
-      {action && <div className="mt-4">{action}</div>}
-    </div>
+    <Center py={64} style={{ flex: 1, width: "100%", textAlign: "center" }}>
+      <Stack align="center" gap="xs">
+        <Center
+          w={56}
+          h={56}
+          mb="xs"
+          style={{
+            borderRadius: 16,
+            backgroundColor: "var(--mantine-color-brandPrimary-0)",
+            border: "1px solid var(--mantine-color-brandPrimary-1)",
+            color: "var(--mantine-color-brandPrimary-6)",
+          }}
+        >
+          <Icon size={28} />
+        </Center>
+        <Title order={4} size="h5" fw={700} c="brandSecondary.9">
+          {title}
+        </Title>
+        <Text size="xs" c="brandSecondary.5" maw={420} lh={1.6}>
+          {description}
+        </Text>
+        {action && <Box mt="md">{action}</Box>}
+      </Stack>
+    </Center>
   );
 }
 

@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import { RotateCcw, ShieldAlert } from "lucide-react";
+import { Box, Flex, Paper, Title, Text, UnstyledButton, Stack } from "@mantine/core";
 import { formatEstimatorType } from "@/app/train-test/_types";
 import { EquationDisplay } from "@/components/EquationDisplay";
 import { IspuBadge } from "@/components/IspuBadge";
@@ -8,63 +11,112 @@ import { getIspuStyle, type SingleEstimateResult } from "../_types";
 interface EstimateSingleResultProps {
   result: SingleEstimateResult;
   onReset: () => void;
+  isManual?: boolean;
 }
 
-export function EstimateSingleResult({ result, onReset }: EstimateSingleResultProps) {
+export function EstimateSingleResult({
+  result,
+  onReset,
+  isManual = true,
+}: EstimateSingleResultProps) {
   const ispuStyle = getIspuStyle(result.ispu_category);
 
   return (
-    <div className="flex flex-col gap-6 animate-in fade-in duration-300">
+    <Stack gap={24}>
       {/* Header Card */}
-      <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-        <div>
-          <h3 className="text-base font-bold text-slate-900">
-            Hasil Estimasi Indeks Standar Pencemar Udara (Titik Tunggal)
-          </h3>
-          <p className="text-xs text-slate-500 font-medium mt-0.5">
-            Model: <strong>{result.model_name}</strong> (
-            {formatEstimatorType(result.estimator_type)})
-          </p>
-        </div>
-        <button
-          type="button"
+      <Flex
+        align="center"
+        justify="space-between"
+        pb={12}
+        style={{ borderBottom: "1px solid #e2e8f0" }}
+      >
+        <Box>
+          <Title order={3} size="h4" fw={700} c="brandSecondary.9">
+            Hasil Estimasi ISPU
+          </Title>
+          <Text size="xs" c="brandSecondary.5" fw={500} mt={2}>
+            Model: <strong>{result.model_name}</strong>
+            {!result.model_name.includes(formatEstimatorType(result.estimator_type)) && (
+              <span> ({formatEstimatorType(result.estimator_type)})</span>
+            )}
+          </Text>
+        </Box>
+        <UnstyledButton
           onClick={onReset}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer"
+          px={12}
+          py={6}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            borderRadius: 12,
+            backgroundColor: "var(--mantine-color-brandSecondary-1)",
+            color: "var(--mantine-color-brandSecondary-7)",
+            fontSize: 12,
+            fontWeight: 700,
+            transition: "all 150ms ease",
+          }}
         >
-          <RotateCcw className="w-3.5 h-3.5" />
+          <RotateCcw style={{ width: 14, height: 14 }} />
           <span>Reset</span>
-        </button>
-      </div>
+        </UnstyledButton>
+      </Flex>
 
       {/* ISPU Primary Badge & Card */}
-      <div className="flex flex-col md:flex-row items-center justify-between p-6 rounded-2xl border border-slate-200 bg-slate-50 gap-6 shadow-sm">
-        {/* Nilai ISPU */}
-        <div className="flex flex-col gap-2 text-center md:text-left">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Nilai Indeks Standar Pencemar Udara (ISPU)
-          </span>
-          <div className="flex items-baseline gap-3 justify-center md:justify-start">
-            <span className="text-5xl font-black text-slate-900 tracking-tight">
-              {result.estimated_value}
-            </span>
-            <IspuBadge category={result.ispu_category} size="md" />
-          </div>
-        </div>
+      <Paper
+        p={{ base: "lg", md: 24 }}
+        bg="brandSecondary.0"
+        radius="lg"
+        withBorder
+      >
+        <Flex
+          direction={{ base: "column", md: "row" }}
+          align={{ base: "stretch", md: "center" }}
+          justify="space-between"
+          gap={24}
+        >
+          {/* Nilai ISPU (Kiri) */}
+          <Box style={{ flex: "1 1 auto", minWidth: 220, display: "flex", flexDirection: "column", gap: 10 }}>
+            <Text size="xs" fw={700} c="brandSecondary.5" tt="uppercase" style={{ letterSpacing: "0.05em" }}>
+              Nilai Indeks Standar Pencemar Udara (ISPU)
+            </Text>
+            <Flex align="center" gap={16} wrap="wrap">
+              <Text size="46px" fw={900} c="brandSecondary.9" style={{ letterSpacing: "-0.02em", lineHeight: 1 }}>
+                {result.estimated_value}
+              </Text>
+              <IspuBadge category={result.ispu_category} size="md" />
+            </Flex>
+          </Box>
 
-        {/* Deskripsi Regulasi Permen LHK */}
-        <div className="max-w-xs flex flex-col gap-1.5 text-xs bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
-          <div className="flex items-center gap-1.5 font-bold text-slate-900">
-            <ShieldAlert className="w-4 h-4 text-sky-600 shrink-0" />
-            <span>Dampak Kesehatan (Permen LHK No. 14/2020):</span>
-          </div>
-          <p className="text-slate-600 leading-relaxed text-[11px]">
-            {ispuStyle.description}
-          </p>
-          <span className="font-semibold text-sky-950 text-[11px] mt-0.5">
-            {ispuStyle.healthImpact}
-          </span>
-        </div>
-      </div>
+          {/* Deskripsi Regulasi Permen LHK / Dampak Kesehatan (Kanan) */}
+          <Paper
+            p="md"
+            radius="md"
+            withBorder
+            shadow="none"
+            style={{
+              flex: "1 1 380px",
+              maxWidth: 440,
+              backgroundColor: "#ffffff",
+              borderColor: "var(--mantine-color-brandSecondary-2)",
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+            }}
+          >
+            <Flex align="center" gap={8} fw={700} c="brandSecondary.9" style={{ fontSize: 12 }}>
+              <ShieldAlert style={{ width: 16, height: 16, color: "var(--mantine-color-brandPrimary-6)", flexShrink: 0 }} />
+              <span>Dampak Kesehatan (Permen LHK No. 14/2020):</span>
+            </Flex>
+            <Text size="xs" c="brandSecondary.6" lh={1.55} style={{ fontSize: 11.5 }}>
+              {ispuStyle.description}
+            </Text>
+            <Text size="xs" fw={700} c="brandPrimary.8" style={{ fontSize: 11.5 }}>
+              {ispuStyle.healthImpact}
+            </Text>
+          </Paper>
+        </Flex>
+      </Paper>
 
       {/* Persamaan Model */}
       {result.equation && (
@@ -75,11 +127,18 @@ export function EstimateSingleResult({ result, onReset }: EstimateSingleResultPr
       )}
 
       {/* Petunjuk Multi-titik */}
-      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 flex items-center justify-between">
-        <span className="leading-relaxed">
-          Anda dapat memasukkan nilai CO & NO2 berikutnya pada panel kiri untuk melihat tren grafik ISPU secara multi-titik kumulatif.
-        </span>
-      </div>
-    </div>
+      {isManual && (
+        <Paper
+          p="md"
+          bg="brandSecondary.0"
+        >
+          <Text size="xs" lh={1.6}>
+            Anda dapat memasukkan nilai CO & NO2 berikutnya pada panel kiri untuk melihat tren grafik ISPU secara multi-titik kumulatif.
+          </Text>
+        </Paper>
+      )}
+    </Stack>
   );
 }
+
+export default EstimateSingleResult;

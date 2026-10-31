@@ -7,9 +7,9 @@ import {
   Gauge,
   RotateCcw,
 } from "lucide-react";
+import { Stack, Box, SimpleGrid, Flex, UnstyledButton, Text, Select } from "@mantine/core";
 import { FileUploader } from "@/components/FileUploader";
 import { Button } from "@/components/Button";
-import { Select } from "@/components/Select";
 import { Input } from "@/components/Input";
 import { formatEstimatorType } from "@/app/train-test/_types";
 import { useEstimateApi } from "../_hooks/use-estimate-api";
@@ -48,45 +48,71 @@ export function EstimateLeftPanel() {
     (inputMode === "file" ? Boolean(file) : Boolean(coInput.trim() && no2Input.trim()));
 
   return (
-    <div className="w-full flex flex-col gap-6 text-slate-800">
-      {/* =================================================================== */}
-      {/* 1. PEMILIHAN JENIS INPUT (Upload Data Satelit vs Input Manual) */}
-      {/* =================================================================== */}
-      <div className="flex flex-col gap-2">
-        <label className="text-xs font-bold text-slate-800 tracking-tight">
+    <Stack gap={24} style={{ color: "var(--mantine-color-brandSecondary-8)", width: "100%" }}>
+      {/* 1. PEMILIHAN JENIS INPUT */}
+      <Box style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <Text size="xs" fw={700} c="brandSecondary.8">
           Pilih Jenis Input
-        </label>
-        <div className="grid grid-cols-2 p-1 bg-slate-100 rounded-xl border border-slate-200">
-          <button
-            type="button"
+        </Text>
+        <SimpleGrid
+          cols={2}
+          p={4}
+          style={{
+            backgroundColor: "var(--mantine-color-brandSecondary-1)",
+            borderRadius: 12,
+            border: "1px solid #e2e8f0",
+          }}
+        >
+          <UnstyledButton
             onClick={() => setInputMode("file")}
-            className={`flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-              inputMode === "file"
-                ? "bg-white text-sky-700 shadow-sm"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
+            py={8}
+            px={12}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              borderRadius: 8,
+              fontSize: 12,
+              fontWeight: 700,
+              backgroundColor: inputMode === "file" ? "#ffffff" : "transparent",
+              color: inputMode === "file"
+                ? "var(--mantine-color-brandPrimary-7)"
+                : "var(--mantine-color-brandSecondary-6)",
+              boxShadow: inputMode === "file" ? "var(--mantine-shadow-xs)" : "none",
+              transition: "all 150ms ease",
+            }}
           >
-            <FileUp className="w-3.5 h-3.5" />
+            <FileUp style={{ width: 14, height: 14 }} />
             <span>Upload Data Satelit</span>
-          </button>
-          <button
-            type="button"
+          </UnstyledButton>
+          <UnstyledButton
             onClick={() => setInputMode("manual")}
-            className={`flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-              inputMode === "manual"
-                ? "bg-white text-sky-700 shadow-sm"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
+            py={8}
+            px={12}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              borderRadius: 8,
+              fontSize: 12,
+              fontWeight: 700,
+              backgroundColor: inputMode === "manual" ? "#ffffff" : "transparent",
+              color: inputMode === "manual"
+                ? "var(--mantine-color-brandPrimary-7)"
+                : "var(--mantine-color-brandSecondary-6)",
+              boxShadow: inputMode === "manual" ? "var(--mantine-shadow-xs)" : "none",
+              transition: "all 150ms ease",
+            }}
           >
-            <Sliders className="w-3.5 h-3.5" />
+            <Sliders style={{ width: 14, height: 14 }} />
             <span>Input Manual</span>
-          </button>
-        </div>
-      </div>
+          </UnstyledButton>
+        </SimpleGrid>
+      </Box>
 
-      {/* =================================================================== */}
       {/* 2. FORM BERDASARKAN MODE */}
-      {/* =================================================================== */}
       {inputMode === "file" ? (
         <FileUploader
           label="Unggah Berkas Satelit Sentinel-5P"
@@ -96,11 +122,11 @@ export function EstimateLeftPanel() {
           onFileRemove={() => setFile(null)}
         />
       ) : (
-        <div className="flex flex-col gap-3">
-          <label className="text-xs font-bold text-slate-800 tracking-tight">
+        <Stack gap={12}>
+          <Text size="xs" fw={700} c="brandSecondary.8">
             Input Nilai Gas Prekursor Sentinel-5P
-          </label>
-          <div className="grid grid-cols-1 gap-3">
+          </Text>
+          <Stack gap={12}>
             <Input
               label="Konsentrasi CO (mol/m²)"
               type="text"
@@ -115,71 +141,94 @@ export function EstimateLeftPanel() {
               onChange={(e) => setNo2Input(e.target.value)}
               placeholder="Contoh: 0.000092"
             />
-          </div>
+          </Stack>
 
           {manualHistory.length > 0 && (
-            <div className="flex items-center justify-between px-3.5 py-2.5 bg-sky-50 border border-sky-200 rounded-xl text-xs text-sky-900">
-              <span className="font-semibold">
+            <Flex
+              align="center"
+              justify="space-between"
+              px={14}
+              py={10}
+              style={{
+                backgroundColor: "var(--mantine-color-brandPrimary-0)",
+                border: "1px solid #bae6fd",
+                borderRadius: 12,
+                fontSize: 12,
+                color: "var(--mantine-color-brandPrimary-9)",
+              }}
+            >
+              <span style={{ fontWeight: 600 }}>
                 Tercatat: <strong>{manualHistory.length} titik</strong> manual
               </span>
-              <button
-                type="button"
+              <UnstyledButton
                 onClick={resetManualHistory}
-                className="inline-flex items-center gap-1 text-[11px] font-bold text-sky-700 hover:text-sky-950 underline cursor-pointer"
+                px={12}
+                py={6}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  borderRadius: 12,
+                  backgroundColor: "var(--mantine-color-brandSecondary-1)",
+                  color: "var(--mantine-color-brandSecondary-7)",
+                  fontSize: 12,
+                  fontWeight: 700,
+                  transition: "all 150ms ease",
+                }}
               >
-                <RotateCcw className="w-3 h-3" />
-                <span>Reset Titik</span>
-              </button>
-            </div>
+                <RotateCcw style={{ width: 14, height: 14 }} />
+                <span>Reset</span>
+              </UnstyledButton>
+            </Flex>
           )}
-        </div>
+        </Stack>
       )}
 
-      {/* =================================================================== */}
       {/* 3. PEMILIHAN MODEL DARI DATABASE */}
-      {/* =================================================================== */}
       <Select
-        label="Pilih Model Estimasi"
-        labelRight={`${models.length} model tersedia`}
-        value={selectedModelId}
-        onChange={(e) => setSelectedModelId(e.target.value)}
-        disabled={isModelsLoading || models.length === 0}
-      >
-        <option value="">
-          {isModelsLoading
+        label={
+          <Flex justify="space-between" align="center" style={{ width: "100%" }}>
+            <span>Pilih Model Estimasi</span>
+            <Text component="span" size="xs" c="dimmed" fw={400}>
+              {models.length} model tersedia
+            </Text>
+          </Flex>
+        }
+        placeholder={
+          isModelsLoading
             ? "Memuat daftar model..."
             : models.length === 0
             ? "Belum ada model tersimpan di database"
-            : "— Pilih Model Estimasi —"}
-        </option>
-        {models.map((m) => {
-          const r2Display = m.train_r2 != null ? m.train_r2.toFixed(1) : "0.0";
-          return (
-            <option key={m.id} value={m.id}>
-              {m.name} ({formatEstimatorType(m.estimator_type)}) • R² {r2Display}%
-            </option>
-          );
-        })}
-      </Select>
+            : "— Pilih Model Estimasi —"
+        }
+        value={selectedModelId || null}
+        onChange={(val) => setSelectedModelId(val || "")}
+        disabled={isModelsLoading || models.length === 0}
+        data={models.map((m) => ({
+          value: String(m.id),
+          label: `${m.name} (${formatEstimatorType(m.estimator_type)})`,
+        }))}
+        searchable
+        clearable
+        nothingFoundMessage="Tidak ada model ditemukan"
+        radius="md"
+      />
 
-      {/* =================================================================== */}
       {/* 4. TOMBOL AKSI ESTIMASI */}
-      {/* =================================================================== */}
       <Button
         variant="primary"
         onClick={runEstimate}
         disabled={isEstimating || !canEstimate}
         isLoading={isEstimating}
         loadingText="Memproses Estimasi..."
-        icon={<Gauge className="w-4 h-4" />}
+        icon={<Gauge style={{ width: 16, height: 16 }} />}
         fullWidth
-        className="mt-1"
       >
         {inputMode === "manual" && manualHistory.length > 0
           ? `+ Tambah Titik Ke-${manualHistory.length + 1}`
           : "Jalankan Estimasi"}
       </Button>
-    </div>
+    </Stack>
   );
 }
 

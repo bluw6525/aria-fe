@@ -1,8 +1,10 @@
 import React from "react";
+import { Stack, Flex, Box, Text, SimpleGrid } from "@mantine/core";
 import { LineChart } from "@/components/LineChart";
 import { StatCard } from "@/components/StatCard";
 import { EquationDisplay } from "@/components/EquationDisplay";
-import { formatEstimatorType, formatR2, type TrainModelResult } from "../_types";
+import { RegressionPointsTable } from "./RegressionPointsTable";
+import { formatEstimatorType, type TrainModelResult } from "../_types";
 
 interface TrainResultCardProps {
   result: TrainModelResult;
@@ -10,16 +12,26 @@ interface TrainResultCardProps {
 
 export function TrainResultCard({ result }: TrainResultCardProps) {
   return (
-    <div className="flex flex-col gap-4">
-      {/* Header Section Sederhana */}
-      <div className="flex items-center justify-between border-b border-slate-200 pb-2.5">
-        <h3 className="text-base font-bold text-slate-900">
-          Hasil Pelatihan Model ({formatEstimatorType(result.estimator_type)})
-        </h3>
-        <span className="text-xs text-slate-500 font-medium">
+    <Stack gap="md">
+      {/* Header Section */}
+      <Flex
+        justify="space-between"
+        align="center"
+        pb="sm"
+        style={{ borderBottom: "1px solid #e2e8f0" }}
+      >
+        <Box>
+          <Text size="md" fw={700} c="brandSecondary.9">
+            Hasil Pelatihan Model
+          </Text>
+          <Text size="xs" c="brandSecondary.5" fw={500} mt={2}>
+            Model: <strong>{formatEstimatorType(result.estimator_type)}</strong>
+          </Text>
+        </Box>
+        <Text size="xs" c="brandSecondary.5" fw={500}>
           Jumlah data latih: {result.total_samples}
-        </span>
-      </div>
+        </Text>
+      </Flex>
 
       {/* Persamaan Parameter */}
       <EquationDisplay
@@ -27,30 +39,36 @@ export function TrainResultCard({ result }: TrainResultCardProps) {
         equation={result.equation}
       />
 
-      {/* Kotak Metrik Evaluasi Data Latih */}
-      <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-bold text-slate-700">
+      {/* Kotak Metrik Evaluasi Data Latih (RMSE & MAE) */}
+      <Stack gap={6}>
+        <Text size="xs" fw={700} c="brandSecondary.7">
           hasil evaluasi model terhadap data latih
-        </span>
-        <div className="grid grid-cols-3 gap-3">
+        </Text>
+        <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
           <StatCard label="RMSE" value={result.rmse} />
           <StatCard label="MAE" value={result.mae} />
-          <StatCard label="R² Score" value={`${formatR2(result.r2)}%`} />
-        </div>
-      </div>
+        </SimpleGrid>
+      </Stack>
 
-      {/* Grafik Interaktif Data Latih */}
-      <div className="mt-1">
+      {/* Grafik Data Latih */}
+      <Box mt={4}>
         <LineChart
           data={result.chart_data}
           title={`Grafik Data Latih (${formatEstimatorType(result.estimator_type)})`}
           lines={[
-            { key: "actual", name: "O3 Sebenarnya", color: "#0284c7" },
+            { key: "actual", name: "O3 Sebenarnya", color: "var(--mantine-color-brandPrimary-6)" },
             { key: "predicted", name: "O3 Estimasi", color: "#f43f5e", dashed: true },
           ]}
           height={240}
         />
-      </div>
-    </div>
+      </Box>
+
+      {/* Tabel Evaluasi Titik Data Latih */}
+      <RegressionPointsTable
+        data={result.chart_data}
+        title="Daftar Data Hasil Pelatihan (Aktual, Estimasi & Residual)"
+        subtitle={`Total ${result.total_samples} sampel data latih`}
+      />
+    </Stack>
   );
 }

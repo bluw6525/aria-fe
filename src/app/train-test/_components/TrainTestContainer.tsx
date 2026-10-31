@@ -1,27 +1,40 @@
 import React from "react";
+import { Box, Flex, Paper } from "@mantine/core";
 import { LeftPanelForm } from "./LeftPanelForm";
 import { RightPanelOutput } from "./RightPanelOutput";
 
 /**
- * Server Component container untuk halaman Latih & Uji Regresi.
- * Komponen ini murni mengelola layout tanpa state/hook.
+ * Container untuk halaman Latih & Uji Regresi.
  */
 export function TrainTestContainer() {
   return (
-    <div className="w-full flex flex-col">
+    <Box w="100%">
       {/* 2 Kolom: Kiri Kontrol (380px) & Kanan Output (flex-1) */}
-      <div className="max-w-6xl mx-auto w-full flex flex-row gap-8 pb-16 items-start">
-        {/* Kolom Kiri: Form Kontrol (Client Component) */}
-        <div className="w-95 shrink-0 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+      <Flex
+        direction={{ base: "column", lg: "row" }}
+        gap="xl"
+        align="flex-start"
+        maw={1152}
+        mx="auto"
+        pb={64}
+        w="100%"
+      >
+        {/* Kolom Kiri: Form Kontrol */}
+        <Paper
+          w={{ base: "100%", lg: 380 }}
+          p="xl"
+          shadow="sm"
+          style={{ flexShrink: 0 }}
+        >
           <LeftPanelForm />
-        </div>
+        </Paper>
 
-        {/* Kolom Kanan: Output & Visualisasi Grafik (Client Component) */}
-        <div className="flex-1 min-w-0">
+        {/* Kolom Kanan: Output & Visualisasi Grafik */}
+        <Box style={{ flex: 1, minWidth: 0, width: "100%" }}>
           <RightPanelOutput />
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Flex>
+    </Box>
   );
 }
 

@@ -8,7 +8,7 @@ export interface LoginResponse {
 }
 
 export const authService = {
-  async login(username: string, password: string):Promise<LoginResponse> {
+  async login(username: string, password: string): Promise<LoginResponse> {
     const response = await httpClient.post<LoginResponse>("/auth/login", {
       username,
       password,
@@ -16,6 +16,10 @@ export const authService = {
     return response.data;
   },
 
+  /**
+   * Mengambil profil pengguna yang sedang login berdasarkan token JWT aktif.
+   * Digunakan untuk verifikasi keabsahan sesi/otorisasi saat halaman dimuat/refresh.
+   */
   async getMe(): Promise<UserProfile> {
     const response = await httpClient.get<UserProfile>("/auth/me");
     return response.data;

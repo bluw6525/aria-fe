@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Center, Loader } from "@mantine/core";
 import { useAuthStore } from "@/store/auth-store";
 
 interface AdminGuardProps {
@@ -11,24 +11,27 @@ interface AdminGuardProps {
 
 export function AdminGuard({ children }: AdminGuardProps) {
   const router = useRouter();
-  const { user, isHydrated } = useAuthStore();
-  const isAdmin = isHydrated && user?.role === "admin";
+  const { user, isHydrated, isValidating, token } = useAuthStore();
+  const isAdmin = isHydrated && !isValidating && user?.role === "admin";
 
   useEffect(() => {
-    if (isHydrated && !isAdmin) {
+    // Jika store sudah terhidrasi dan tidak sedang memvalidasi token di server
+    if (isHydrated && !isValidating && (!token || user?.role !== "admin")) {
       router.replace("/home");
     }
-  }, [isHydrated, isAdmin, router]);
+  }, [isHydrated, isValidating, token, user, router]);
 
-  // Tahan konten jika belum terkonfirmasi sebagai admin
-  if (!isAdmin) {
+  // Tahan konten jika belum terhidrasi, sedang memvalidasi token, atau belum terkonfirmasi sebagai admin
+  if (!isHydrated || isValidating || !isAdmin) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center min-h-[60vh] gap-3 text-slate-400">
-        <Loader2 className="w-6 h-6 animate-spin text-sky-500" />
-      </div>
+      <Center style={{ minHeight: "60vh", flex: 1 }}>
+        <Loader color="brandPrimary" size="md" />
+      </Center>
     );
   }
 
   // Jika admin terverifikasi
   return <>{children}</>;
 }
+
+export default AdminGuard;

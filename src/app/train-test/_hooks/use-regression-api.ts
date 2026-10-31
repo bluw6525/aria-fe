@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import axios from "axios";
-import { toast } from "sonner";
+import { notify } from "@/lib/notifications";
+import { extractApiErrorMessage } from "@/lib/api/error";
 import { regressionService } from "../_services";
 import {
   TrainedModel,
@@ -11,15 +11,7 @@ import {
   formatEstimatorType,
 } from "../_types";
 
-function extractErrorMessage(err: unknown, fallback: string): string {
-  if (axios.isAxiosError(err)) {
-    return err.response?.data?.detail || err.message || fallback;
-  }
-  if (err instanceof Error) {
-    return err.message;
-  }
-  return fallback;
-}
+const extractErrorMessage = extractApiErrorMessage;
 
 export interface RegressionState {
   // ── State ──────────────────────────────────────────────────────────────────
@@ -44,7 +36,6 @@ export interface RegressionState {
   saveModel: (payload: SaveModelPayload) => Promise<TrainedModel>;
   saveCurrentModel: (name: string) => Promise<void>;
   testModel: (modelId: number | "current", file: File) => Promise<TestModelResult>;
-  resetResults: () => void;
 }
 
 export const useRegressionApi = create<RegressionState>((set, get) => ({
@@ -83,13 +74,13 @@ export const useRegressionApi = create<RegressionState>((set, get) => ({
       const result = await regressionService.detectOutliers(file, fitIntercept);
       const count = result.total_outliers ?? 0;
       set({ outlierResult: result });
-      toast.success("Deteksi Outlier Berhasil", {
+      notify.success("Deteksi Outlier Berhasil", {
         description: `Analisis selesai. Teridentifikasi ${count} titik outlier pada data latih.`,
       });
       return result;
     } catch (err) {
       const msg = extractErrorMessage(err, "Gagal menjalankan deteksi outlier.");
-      toast.error("Deteksi Outlier Gagal", {
+      notify.error("Deteksi Outlier Gagal", {
         description: msg,
       });
       throw err;
@@ -103,18 +94,14 @@ export const useRegressionApi = create<RegressionState>((set, get) => ({
     set({ isTraining: true });
     try {
       const result = await regressionService.trainModel(file, estimatorType, fitIntercept);
-      const r2Display =
-        Math.abs(result.r2) <= 1.0
-          ? (result.r2 * 100).toFixed(1)
-          : result.r2.toFixed(1);
       set({ trainResult: result });
-      toast.success("Pelatihan Model Berhasil", {
-        description: `Model ${formatEstimatorType(result.estimator_type)} berhasil diestimasi (R²: ${r2Display}%).`,
+      notify.success("Pelatihan Model Berhasil", {
+        description: `Model ${formatEstimatorType(result.estimator_type)} berhasil diestimasi (RMSE: ${result.rmse.toFixed(2)}).`,
       });
       return result;
     } catch (err) {
       const msg = extractErrorMessage(err, "Gagal melatih model regresi.");
-      toast.error("Pelatihan Model Gagal", {
+      notify.error("Pelatihan Model Gagal", {
         description: msg,
       });
       throw err;
@@ -129,13 +116,13 @@ export const useRegressionApi = create<RegressionState>((set, get) => ({
     try {
       const saved = await regressionService.saveModel(payload);
       await get().fetchModels();
-      toast.success("Model Berhasil Disimpan", {
+      notify.success("Model Berhasil Disimpan", {
         description: `Model "${saved.name}" berhasil tersimpan ke sistem.`,
       });
       return saved;
     } catch (err) {
       const msg = extractErrorMessage(err, "Gagal menyimpan model ke database.");
-      toast.error("Penyimpanan Model Gagal", {
+      notify.error("Penyimpanan Model Gagal", {
         description: msg,
       });
       throw err;
@@ -148,16 +135,11 @@ export const useRegressionApi = create<RegressionState>((set, get) => ({
   saveCurrentModel: async (name: string) => {
     const { trainResult } = get();
     if (!trainResult) {
-      toast.warning("Model Belum Dilatih", {
+      notify.warning("Model Belum Dilatih", {
         description: "Harap lakukan pelatihan (Latih) terlebih dahulu sebelum menyimpan model.",
       });
       return;
     }
-
-    const r2Percentage =
-      Math.abs(trainResult.r2) <= 1.0
-        ? Number((trainResult.r2 * 100).toFixed(2))
-        : Number(trainResult.r2.toFixed(2));
 
     await get().saveModel({
       name,
@@ -168,8 +150,6 @@ export const useRegressionApi = create<RegressionState>((set, get) => ({
       scale: trainResult.scale,
       train_rmse: trainResult.rmse,
       train_mae: trainResult.mae,
-      train_r2: r2Percentage,
-      is_default: false,
     });
   },
 
@@ -197,18 +177,14 @@ export const useRegressionApi = create<RegressionState>((set, get) => ({
         result = await regressionService.testModel(modelId, file);
       }
 
-      const r2Display =
-        Math.abs(result.r2) <= 1.0
-          ? (result.r2 * 100).toFixed(1)
-          : result.r2.toFixed(1);
       set({ testResult: result });
-      toast.success("Pengujian Model Berhasil", {
-        description: `Model "${result.model_name}" selesai dievaluasi (R²: ${r2Display}%).`,
+      notify.success("Pengujian Model Berhasil", {
+        description: `Model "${result.model_name}" selesai dievaluasi (RMSE: ${result.rmse.toFixed(2)}).`,
       });
       return result;
     } catch (err) {
       const msg = extractErrorMessage(err, "Gagal menguji model terhadap data uji.");
-      toast.error("Pengujian Model Gagal", {
+      notify.error("Pengujian Model Gagal", {
         description: msg,
       });
       throw err;
@@ -216,8 +192,6 @@ export const useRegressionApi = create<RegressionState>((set, get) => ({
       set({ isTesting: false });
     }
   },
-
-  resetResults: () => set({ outlierResult: null, trainResult: null, testResult: null }),
 }));
 
 export default useRegressionApi;

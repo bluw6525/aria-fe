@@ -1,6 +1,7 @@
 "use client";
 
 import React, { InputHTMLAttributes, ReactNode, forwardRef } from "react";
+import { Box, Group, Text } from "@mantine/core";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: ReactNode;
@@ -13,13 +14,6 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   containerClassName?: string;
 }
 
-/**
- * Reusable Input Component dengan standar styling Aria System:
- * - Dukungan label & labelRight (opsional)
- * - Dukungan ikon kiri/kanan (opsional)
- * - Dukungan pesan error / petunjuk (hint)
- * - State focus ring sky-500, hover border, disabled state terstandardisasi
- */
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
@@ -34,6 +28,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       className = "",
       disabled,
       id,
+      style,
       ...props
     },
     ref
@@ -43,25 +38,34 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const hasIconRight = Boolean(rightContent);
 
     return (
-      <div className={`flex flex-col gap-1.5 ${containerClassName}`}>
+      <Box style={{ display: "flex", flexDirection: "column", gap: 6 }} className={containerClassName}>
         {(label || labelRight) && (
-          <div className="flex items-center justify-between text-xs font-bold text-slate-800">
+          <Group justify="space-between" align="center" style={{ fontSize: "12px", fontWeight: 700 }}>
             {label && (
-              <label htmlFor={id} className="cursor-pointer">
+              <label htmlFor={id} style={{ cursor: "pointer", color: "var(--mantine-color-brandSecondary-8)" }}>
                 {label}
               </label>
             )}
             {labelRight && (
-              <span className="text-[10px] font-normal text-slate-500">
+              <Text size="xs" c="dimmed" style={{ fontSize: "10px", fontWeight: 400 }}>
                 {labelRight}
-              </span>
+              </Text>
             )}
-          </div>
+          </Group>
         )}
 
-        <div className="relative flex items-center">
+        <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
           {hasIconLeft && (
-            <div className="absolute left-3.5 flex items-center pointer-events-none text-slate-400">
+            <div
+              style={{
+                position: "absolute",
+                left: 14,
+                display: "flex",
+                alignItems: "center",
+                pointerEvents: "none",
+                color: "var(--mantine-color-brandSecondary-4)",
+              }}
+            >
               {icon}
             </div>
           )}
@@ -70,31 +74,57 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             id={id}
             disabled={disabled}
-            className={`w-full h-10 px-3.5 border rounded-xl bg-white text-xs font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 shadow-sm transition-all disabled:bg-slate-100 disabled:text-slate-400 disabled:border-slate-200 disabled:cursor-not-allowed ${
-              error
-                ? "border-rose-400 focus:ring-rose-500/20 focus:border-rose-500"
-                : "border-slate-300 hover:border-slate-400 focus:ring-sky-500/20 focus:border-sky-600"
-            } ${hasIconLeft ? "pl-10" : ""} ${hasIconRight ? "pr-10" : ""} ${className}`}
+            style={{
+              width: "100%",
+              height: 40,
+              paddingLeft: hasIconLeft ? 40 : 14,
+              paddingRight: hasIconRight ? 40 : 14,
+              border: error ? "1px solid #f43f5e" : "1px solid #cbd5e1",
+              borderRadius: 12,
+              backgroundColor: disabled ? "#f1f5f9" : "#ffffff",
+              color: disabled
+                ? "var(--mantine-color-brandSecondary-4)"
+                : "var(--mantine-color-brandSecondary-9)",
+              fontSize: 12,
+              fontWeight: 600,
+              outline: "none",
+              boxShadow: "var(--mantine-shadow-xs)",
+              transition: "border-color 150ms ease, box-shadow 150ms ease",
+              cursor: disabled ? "not-allowed" : "text",
+              ...style,
+            }}
+            className={className}
             {...props}
           />
 
           {hasIconRight && (
-            <div className="absolute right-3.5 flex items-center text-slate-400">
+            <div
+              style={{
+                position: "absolute",
+                right: 14,
+                display: "flex",
+                alignItems: "center",
+                color: "var(--mantine-color-brandSecondary-4)",
+              }}
+            >
               {rightContent}
             </div>
           )}
         </div>
 
         {error ? (
-          <span className="text-[11px] font-medium text-rose-600">{error}</span>
+          <Text size="xs" c="red.6" style={{ fontSize: 11, fontWeight: 500 }}>
+            {error}
+          </Text>
         ) : hint ? (
-          <span className="text-[11px] text-slate-500">{hint}</span>
+          <Text size="xs" c="dimmed" style={{ fontSize: 11 }}>
+            {hint}
+          </Text>
         ) : null}
-      </div>
+      </Box>
     );
   }
 );
 
 Input.displayName = "Input";
-
 export default Input;

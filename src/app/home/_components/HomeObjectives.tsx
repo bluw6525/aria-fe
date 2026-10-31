@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import { Target, Globe2 } from "lucide-react";
+import { Paper, SimpleGrid, Flex, Box, Title, Text, Badge, ThemeIcon } from "@mantine/core";
 
 interface ObjectiveItem {
   id: number;
@@ -30,44 +33,99 @@ const OBJECTIVES: ObjectiveItem[] = [
 
 export function ObjectiveCard({ id, title, description }: ObjectiveItem) {
   return (
-    <div className="p-4 rounded-xl bg-slate-50/80 border border-slate-200/70 hover:border-sky-200 hover:bg-sky-50/20 transition-all flex items-start gap-3.5">
-      <div className="w-7 h-7 rounded-lg bg-sky-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 shadow-xs">
-        {id}
-      </div>
-      <div className="flex flex-col gap-1">
-        <h3 className="font-bold text-slate-900 text-xs">{title}</h3>
-        <p className="text-xs text-slate-600 leading-relaxed">{description}</p>
-      </div>
-    </div>
+    <Paper
+      p="md"
+      radius="md"
+      bg="brandSecondary.0"
+      style={{
+        display: "flex",
+        alignItems: "flex-start",
+        gap: 14,
+        transition: "all 150ms ease",
+      }}
+    >
+      <ThemeIcon
+        size={28}
+        radius="md"
+        color="brandPrimary"
+        variant="filled"
+        style={{ flexShrink: 0, marginTop: 2 }}
+      >
+        <Text size="xs" fw={700} c="white">
+          {id}
+        </Text>
+      </ThemeIcon>
+      <Box style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <Text size="xs" fw={700} c="brandSecondary.9">
+          {title}
+        </Text>
+        <Text size="xs" c="brandSecondary.6" lh={1.6}>
+          {description}
+        </Text>
+      </Box>
+    </Paper>
   );
 }
 
 export function HomeObjectives() {
   return (
-    <div className="bg-white rounded-2xl p-7 border border-slate-200/80 shadow-xs flex flex-col gap-6">
+    <Paper
+      p={28}
+      radius="lg"
+      shadow="xs"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+      }}
+    >
       {/* Header Bagian Tujuan */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-sky-50 text-sky-600 border border-sky-100">
-            <Target className="w-5 h-5" />
-          </div>
-          <div>
-            <h2 className="text-lg font-bold text-slate-900 tracking-tight">
+      <Flex
+        direction={{ base: "column", sm: "row" }}
+        justify="space-between"
+        align={{ base: "flex-start", sm: "center" }}
+        gap={12}
+        pb={16}
+        style={{ borderBottom: "1px solid var(--mantine-color-brandSecondary-1)" }}
+      >
+        <Flex align="center" gap={12}>
+          <Box
+            p={10}
+            style={{
+              borderRadius: 12,
+              backgroundColor: "var(--mantine-color-brandPrimary-0)",
+              color: "var(--mantine-color-brandPrimary-6)",
+              border: "1px solid var(--mantine-color-brandPrimary-1)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Target style={{ width: 20, height: 20 }} />
+          </Box>
+          <Box>
+            <Title order={2} size="h4" fw={700} c="brandSecondary.9" style={{ letterSpacing: "-0.01em" }}>
               Tujuan Aplikasi
-            </h2>
-            <p className="text-xs text-slate-500">
+            </Title>
+            <Text size="xs" c="brandSecondary.5">
               Sasaran utama sistem pemantauan dan estimasi kualitas udara berbasis data satelit
-            </p>
-          </div>
-        </div>
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-100 self-start sm:self-auto">
-          <Globe2 className="w-3.5 h-3.5" />
+            </Text>
+          </Box>
+        </Flex>
+
+        <Badge
+          color="brandPrimary"
+          variant="light"
+          size="lg"
+          radius="xl"
+          leftSection={<Globe2 style={{ width: 14, height: 14 }} />}
+        >
           DKI Jakarta & Sentinel-5P
-        </span>
-      </div>
+        </Badge>
+      </Flex>
 
       {/* Grid Kartu Tujuan */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <SimpleGrid cols={{ base: 1, md: 3 }} spacing="md">
         {OBJECTIVES.map((item) => (
           <ObjectiveCard
             key={item.id}
@@ -76,7 +134,9 @@ export function HomeObjectives() {
             description={item.description}
           />
         ))}
-      </div>
-    </div>
+      </SimpleGrid>
+    </Paper>
   );
 }
+
+export default HomeObjectives;

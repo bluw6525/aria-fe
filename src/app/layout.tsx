@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
+import { theme } from "@/theme/theme";
+import { AuthProvider } from "@/components/auth/AuthProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,17 +21,26 @@ export const metadata: Metadata = {
   description: "Atmospheric Regression ISPU Application",
 };
 
-import { Toaster } from "sonner";
-
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+      style={{ height: "100%" }}
     >
-      <body className="min-h-full flex flex-col">
-        <Toaster position="top-right" richColors />
-        {children}
+      <head>
+        <ColorSchemeScript defaultColorScheme="light" />
+      </head>
+      <body style={{ minHeight: "100%", display: "flex", flexDirection: "column", margin: 0 }}>
+        <MantineProvider theme={theme} defaultColorScheme="light">
+          <Notifications position="top-right" zIndex={2000} />
+          <AuthProvider>{children}</AuthProvider>
+        </MantineProvider>
       </body>
     </html>
   );

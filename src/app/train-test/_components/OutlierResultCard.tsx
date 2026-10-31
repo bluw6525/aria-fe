@@ -1,4 +1,5 @@
 import React from "react";
+import { Stack, Text, Paper, Flex } from "@mantine/core";
 import type { OutlierDetectionResponse } from "../_types";
 
 interface OutlierResultCardProps {
@@ -11,69 +12,93 @@ export function OutlierResultCard({ result }: OutlierResultCardProps) {
   const bothOutliers = result.both?.outlier_indices || [];
 
   return (
-    <div className="flex flex-col gap-2.5 pb-2">
-      <h3 className="text-base font-bold text-slate-900">
+    <Stack gap="xs" pb="xs">
+      <Text size="md" fw={700} c="brandSecondary.9">
         Outlier pada data latih
-      </h3>
+      </Text>
 
-      <div className="flex flex-col divide-y divide-slate-200/70 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 overflow-hidden">
-        {/* Leverage Value */}
-        <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 px-4 py-3">
-          <span className="font-bold text-slate-900 w-36 shrink-0">
-            Leverage Value
-          </span>
-          <span className="leading-relaxed text-slate-800">
-            {leverageOutliers.length > 0 ? (
-              <>
+      <Paper
+        bg="brandSecondary.0"
+        style={{
+          overflow: "hidden",
+        }}
+      >
+        <Stack gap={0} style={{ divideColor: "var(--mantine-color-brandSecondary-2)" }}>
+          {/* Leverage Value */}
+          <Flex
+            direction={{ base: "column", sm: "row" }}
+            gap={{ base: 4, sm: 16 }}
+            align={{ base: "flex-start", sm: "baseline" }}
+            p="md"
+            style={{ borderBottom: "1px solid #e2e8f0" }}
+          >
+            <Text size="xs" fw={700} c="brandSecondary.9" w={140} style={{ flexShrink: 0 }}>
+              Leverage Value
+            </Text>
+            <Text size="xs" c="brandSecondary.8" style={{ lineHeight: 1.6 }}>
+              {leverageOutliers.length > 0 ? (
+                <>
+                  data ke{" "}
+                  <Text component="span" fw={600} c="brandSecondary.9">
+                    {leverageOutliers.join(", ")}
+                  </Text>
+                </>
+              ) : (
+                <Text component="span" c="brandSecondary.4" fs="italic">
+                  Tidak terdeteksi pencilan leverage
+                </Text>
+              )}
+            </Text>
+          </Flex>
+
+          {/* DFFITS */}
+          <Flex
+            direction={{ base: "column", sm: "row" }}
+            gap={{ base: 4, sm: 16 }}
+            align={{ base: "flex-start", sm: "baseline" }}
+            p="md"
+            style={{ borderBottom: bothOutliers.length > 0 ? "1px solid #e2e8f0" : "none" }}
+          >
+            <Text size="xs" fw={700} c="brandSecondary.9" w={140} style={{ flexShrink: 0 }}>
+              DFFITS
+            </Text>
+            <Text size="xs" c="brandSecondary.8" style={{ lineHeight: 1.6 }}>
+              {dffitsOutliers.length > 0 ? (
+                <>
+                  data ke{" "}
+                  <Text component="span" fw={600} c="brandSecondary.9">
+                    {dffitsOutliers.join(", ")}
+                  </Text>
+                </>
+              ) : (
+                <Text component="span" c="brandSecondary.4" fs="italic">
+                  Tidak terdeteksi pencilan DFFITS
+                </Text>
+              )}
+            </Text>
+          </Flex>
+
+          {/* Both (Irisan) */}
+          {bothOutliers.length > 0 && (
+            <Flex
+              direction={{ base: "column", sm: "row" }}
+              gap={{ base: 4, sm: 16 }}
+              align={{ base: "flex-start", sm: "baseline" }}
+              p="md"
+            >
+              <Text size="xs" fw={700} c="brandSecondary.9" w={140} style={{ flexShrink: 0 }}>
+                Both (Irisan)
+              </Text>
+              <Text size="xs" c="brandSecondary.8" style={{ lineHeight: 1.6 }}>
                 data ke{" "}
-                <span className="font-semibold text-slate-950">
-                  {leverageOutliers.join(", ")}
-                </span>
-              </>
-            ) : (
-              <span className="text-slate-400 italic">
-                Tidak terdeteksi pencilan leverage
-              </span>
-            )}
-          </span>
-        </div>
-
-        {/* DFFITS */}
-        <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 px-4 py-3">
-          <span className="font-bold text-slate-900 w-36 shrink-0">
-            DFFITS
-          </span>
-          <span className="leading-relaxed text-slate-800">
-            {dffitsOutliers.length > 0 ? (
-              <>
-                data ke{" "}
-                <span className="font-semibold text-slate-950">
-                  {dffitsOutliers.join(", ")}
-                </span>
-              </>
-            ) : (
-              <span className="text-slate-400 italic">
-                Tidak terdeteksi pencilan DFFITS
-              </span>
-            )}
-          </span>
-        </div>
-
-        {/* Both (Irisan) */}
-        {bothOutliers.length > 0 && (
-          <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 px-4 py-3">
-            <span className="font-bold text-slate-900 w-36 shrink-0">
-              Both (Irisan)
-            </span>
-            <span className="leading-relaxed text-slate-800">
-              data ke{" "}
-              <span className="font-semibold text-slate-950">
-                {bothOutliers.join(", ")}
-              </span>
-            </span>
-          </div>
-        )}
-      </div>
-    </div>
+                <Text component="span" fw={600} c="brandSecondary.9">
+                  {bothOutliers.join(", ")}
+                </Text>
+              </Text>
+            </Flex>
+          )}
+        </Stack>
+      </Paper>
+    </Stack>
   );
 }

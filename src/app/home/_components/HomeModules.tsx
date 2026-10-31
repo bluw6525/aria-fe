@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import {
@@ -8,6 +10,7 @@ import {
   ArrowRight,
   type LucideIcon,
 } from "lucide-react";
+import { Paper, SimpleGrid, Flex, Box, Title, Text, Badge, ThemeIcon } from "@mantine/core";
 
 interface ModuleItem {
   title: string;
@@ -37,7 +40,7 @@ const MODULES: ModuleItem[] = [
   {
     title: "Modul Riwayat Perancang",
     description:
-      "Menyajikan informasi identitas pengembang aplikasi, program studi Teknik Informatika Universitas Tarumanagara, dan catatan perancangan sistem.",
+      "Menyajikan profil pengembang, latar belakang penelitian, serta dedikasi dalam perancangan sistem Aria.",
     href: "/history",
     actionLabel: "Buka Riwayat",
     icon: History,
@@ -52,65 +55,116 @@ export function ModuleCard({
   icon: Icon,
 }: ModuleItem) {
   return (
-    <Link
-      href={href}
-      className="group p-5 rounded-xl bg-slate-50/80 border border-slate-200/70 hover:border-sky-400 hover:bg-sky-50/30 transition-all flex flex-col justify-between"
-    >
-      <div className="flex flex-col gap-2.5">
-        <div className="p-2 rounded-lg bg-sky-600 text-white shadow-xs w-fit">
-          <Icon className="w-4 h-4" />
-        </div>
-        <h3 className="font-bold text-slate-900 text-sm group-hover:text-sky-600 transition-colors">
-          {title}
-        </h3>
-        <p className="text-xs text-slate-600 leading-relaxed">
-          {description}
-        </p>
-      </div>
-      <div className="mt-4 pt-3 border-t border-slate-200/60 flex items-center gap-1.5 text-xs font-semibold text-sky-600 group-hover:gap-2 transition-all">
-        <span>{actionLabel}</span>
-        <ArrowRight className="w-3.5 h-3.5" />
-      </div>
+    <Link href={href} style={{ textDecoration: "none" }}>
+      <Paper
+        p="lg"
+        radius="md"
+        bg="brandSecondary.0"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          height: "100%",
+          transition: "all 150ms ease",
+        }}
+      >
+        <Box style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <ThemeIcon size={34} radius="md" color="brandPrimary" variant="filled">
+            <Icon size={18} />
+          </ThemeIcon>
+          <Title order={3} size="sm" fw={700} c="brandSecondary.9">
+            {title}
+          </Title>
+          <Text size="xs" c="brandSecondary.6" lh={1.6}>
+            {description}
+          </Text>
+        </Box>
+        <Flex
+          align="center"
+          gap={6}
+          mt={16}
+          pt={12}
+          style={{
+            borderTop: "1px solid var(--mantine-color-brandSecondary-2)",
+            fontSize: 12,
+            fontWeight: 600,
+            color: "var(--mantine-color-brandPrimary-6)",
+          }}
+        >
+          <span>{actionLabel}</span>
+          <ArrowRight style={{ width: 14, height: 14 }} />
+        </Flex>
+      </Paper>
     </Link>
   );
 }
 
 export function HomeModules() {
   return (
-    <div className="bg-white rounded-2xl p-7 border border-slate-200/80 shadow-xs flex flex-col gap-6">
+    <Paper
+      p={28}
+      radius="lg"
+      shadow="xs"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+      }}
+    >
       {/* Header Bagian Modul */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-sky-50 text-sky-600 border border-sky-100">
-            <Layers className="w-5 h-5" />
-          </div>
-          <div>
-            <h2 className="text-lg font-bold text-slate-900 tracking-tight">
+      <Flex
+        direction={{ base: "column", sm: "row" }}
+        justify="space-between"
+        align={{ base: "flex-start", sm: "center" }}
+        gap={12}
+        pb={16}
+        style={{ borderBottom: "1px solid var(--mantine-color-brandSecondary-1)" }}
+      >
+        <Flex align="center" gap={12}>
+          <Box
+            p={10}
+            style={{
+              borderRadius: 12,
+              backgroundColor: "var(--mantine-color-brandPrimary-0)",
+              color: "var(--mantine-color-brandPrimary-6)",
+              border: "1px solid var(--mantine-color-brandPrimary-1)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Layers style={{ width: 20, height: 20 }} />
+          </Box>
+          <Box>
+            <Title order={2} size="h4" fw={700} c="brandSecondary.9" style={{ letterSpacing: "-0.01em" }}>
               Fitur & Modul Aplikasi
-            </h2>
-            <p className="text-xs text-slate-500">
+            </Title>
+            <Text size="xs" c="brandSecondary.5">
               Panduan ringkas fitur dan modul yang dapat diakses pengguna di dalam sistem
-            </p>
-          </div>
-        </div>
-        <span className="text-xs font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-full self-start sm:self-auto">
+            </Text>
+          </Box>
+        </Flex>
+
+        <Badge color="gray" variant="light" size="md" radius="xl">
           Navigasi Antarmuka
-        </span>
-      </div>
+        </Badge>
+      </Flex>
 
       {/* Grid Kartu Modul */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {MODULES.map((item) => (
+      <SimpleGrid cols={{ base: 1, md: 3 }} spacing="md">
+        {MODULES.map((mod) => (
           <ModuleCard
-            key={item.href}
-            title={item.title}
-            description={item.description}
-            href={item.href}
-            actionLabel={item.actionLabel}
-            icon={item.icon}
+            key={mod.title}
+            title={mod.title}
+            description={mod.description}
+            href={mod.href}
+            actionLabel={mod.actionLabel}
+            icon={mod.icon}
           />
         ))}
-      </div>
-    </div>
+      </SimpleGrid>
+    </Paper>
   );
 }
+
+export default HomeModules;

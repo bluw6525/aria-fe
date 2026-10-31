@@ -1,21 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  Cpu,
-  FileCheck,
-  Save,
-} from "lucide-react";
+import { Stack, Box, Text, Flex, Select } from "@mantine/core";
+import { Cpu, FileCheck, Save } from "lucide-react";
 import { FileUploader } from "@/components/FileUploader";
 import { Button } from "@/components/Button";
-import { Select } from "@/components/Select";
 import { Input } from "@/components/Input";
-import { toast } from "sonner";
+import { notify } from "@/lib/notifications";
 import { formatEstimatorType } from "../_types";
 import { useRegressionApi } from "../_hooks/use-regression-api";
 
 export function LeftPanelForm() {
-  // Ambil data dan aksi dari hook Zustand
   const models = useRegressionApi((s) => s.models);
   const isModelsLoading = useRegressionApi((s) => s.isModelsLoading);
   const fetchModels = useRegressionApi((s) => s.fetchModels);
@@ -29,7 +24,6 @@ export function LeftPanelForm() {
   const isTesting = useRegressionApi((s) => s.isTesting);
   const trainResult = useRegressionApi((s) => s.trainResult);
 
-  // Ambil daftar model tersimpan saat pertama kali dimuat
   useEffect(() => {
     fetchModels();
   }, [fetchModels]);
@@ -46,7 +40,7 @@ export function LeftPanelForm() {
   // Handler Latih
   const handleTrainClick = async () => {
     if (!trainFile) {
-      toast.warning("Berkas Diperlukan", {
+      notify.warning("Berkas Diperlukan", {
         description: "Harap pilih berkas data latih terlebih dahulu (.xlsx, .csv, atau .xls).",
       });
       return;
@@ -57,13 +51,14 @@ export function LeftPanelForm() {
         setSelectedModelId("current");
       }
     } catch {
+      // Ditangani oleh interceptor/hook
     }
   };
 
   // Handler Deteksi Outlier
   const handleDetectOutliersClick = async () => {
     if (!trainFile) {
-      toast.warning("Berkas Diperlukan", {
+      notify.warning("Berkas Diperlukan", {
         description: "Harap pilih berkas data latih terlebih dahulu (.xlsx, .csv, atau .xls).",
       });
       return;
@@ -74,7 +69,7 @@ export function LeftPanelForm() {
   // Handler Simpan Model
   const handleSaveClick = async () => {
     if (!modelNameInput.trim()) {
-      toast.warning("Nama Model Kosong", {
+      notify.warning("Nama Model Kosong", {
         description: "Harap masukkan nama model sebelum menyimpan ke database.",
       });
       return;
@@ -86,13 +81,13 @@ export function LeftPanelForm() {
   // Handler Uji Model
   const handleTestClick = async () => {
     if (!selectedModelId) {
-      toast.warning("Model Belum Dipilih", {
+      notify.warning("Model Belum Dipilih", {
         description: "Harap pilih model yang ingin diuji dari dropdown.",
       });
       return;
     }
     if (!testFile) {
-      toast.warning("Berkas Diperlukan", {
+      notify.warning("Berkas Diperlukan", {
         description: "Harap pilih berkas data uji terlebih dahulu (.xlsx, .csv, atau .xls).",
       });
       return;
@@ -102,19 +97,18 @@ export function LeftPanelForm() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-6 text-slate-800">
+    <Stack gap="xl">
       {/* =================================================================== */}
       {/* SECTION 1: PELATIHAN MODEL */}
       {/* =================================================================== */}
-      <div className="flex flex-col gap-4">
-        {/* Section Header */}
-        <div className="pb-1 border-b border-slate-100">
-          <span className="text-xs font-bold text-slate-900 tracking-tight">
+      <Stack gap="md">
+        <Box pb={4} style={{ borderBottom: "1px solid #f1f5f9" }}>
+          <Text size="xs" fw={700} c="brandSecondary.9">
             1. Konfigurasi Data Latih
-          </span>
-        </div>
+          </Text>
+        </Box>
 
-        {/* Upload Data Latih (Reusable Component) */}
+        {/* Upload Data Latih */}
         <FileUploader
           label="Unggah Berkas Data Latih"
           hint="Hanya variabel CO satelit, NO2 satelit, dan O3 SPKU yang diproses. Missing value O3 otomatis diinterpolasi Natural Cubic Spline."
@@ -123,21 +117,23 @@ export function LeftPanelForm() {
           onFileRemove={() => setTrainFile(null)}
         />
 
-        {/* Pilih Estimator (Reusable Component) */}
+        {/* Pilih Estimator */}
         <Select
           label="Metode Regresi Robust"
           value={estimator}
-          onChange={(e) => setEstimator(e.target.value)}
-        >
-          <option value="MM">MM-Estimator (k=4.685)</option>
-          <option value="MM-1.547">MM-Estimator (k=1.547)</option>
-          <option value="M">M-Estimator</option>
-          <option value="S">S-Estimator</option>
-          <option value="OLS">Ordinary Least Squares (OLS)</option>
-        </Select>
+          onChange={(val) => setEstimator(val || "MM")}
+          data={[
+            { value: "MM", label: "MM-Estimator" },
+            { value: "M", label: "M-Estimator" },
+            { value: "S", label: "S-Estimator" },
+            { value: "OLS", label: "Ordinary Least Squares (OLS)" },
+          ]}
+          allowDeselect={false}
+          radius="md"
+        />
 
-        {/* Action Row: Deteksi Outlier & Latih (Reusable Buttons) */}
-        <div className="grid grid-cols-1 gap-2.5 pt-1 relative isolate">
+        {/* Action Row: Deteksi Outlier & Latih */}
+        <Stack gap="xs" pt={4}>
           <Button
             variant="secondary"
             onClick={handleDetectOutliersClick}
@@ -145,7 +141,6 @@ export function LeftPanelForm() {
             isLoading={isDetectingOutliers}
             loadingText="Mendeteksi Outlier (Leverage & DFFITS)..."
             fullWidth
-            className="h-10"
           >
             Deteksi Outlier (optional)
           </Button>
@@ -156,78 +151,78 @@ export function LeftPanelForm() {
             disabled={isTraining || !trainFile}
             isLoading={isTraining}
             loadingText="Memproses Estimasi Model..."
-            icon={<Cpu className="w-4 h-4" />}
+            icon={<Cpu size={16} />}
             fullWidth
           >
             Latih Model
           </Button>
-        </div>
+        </Stack>
 
         {/* Input & Simpan Model */}
-        <div className="flex flex-col gap-2 pt-2 border-t border-slate-100">
-          <label className="text-xs font-bold text-slate-800">
+        <Stack gap="xs" pt={8} style={{ borderTop: "1px solid #f1f5f9" }}>
+          <Text size="xs" fw={700} c="brandSecondary.8">
             Simpan Parameter Model ke Database
-          </label>
-          <div className="flex gap-2 items-center">
-            <Input
-              type="text"
-              value={modelNameInput}
-              onChange={(e) => setModelNameInput(e.target.value)}
-              placeholder="Ketik nama model..."
-              containerClassName="flex-1"
-            />
+          </Text>
+          <Flex gap="xs" align="center">
+            <Box style={{ flex: 1 }}>
+              <Input
+                type="text"
+                value={modelNameInput}
+                onChange={(e) => setModelNameInput(e.target.value)}
+                placeholder="Ketik nama model..."
+              />
+            </Box>
             <Button
               variant="primary"
               onClick={handleSaveClick}
               disabled={isSaving || !modelNameInput.trim()}
               isLoading={isSaving}
-              icon={<Save className="w-3.5 h-3.5" />}
-              className="h-10 px-4 shrink-0"
+              icon={<Save size={14} />}
             >
               Simpan
             </Button>
-          </div>
-        </div>
-      </div>
+          </Flex>
+        </Stack>
+      </Stack>
 
       {/* =================================================================== */}
       {/* SECTION 2: PENGUJIAN MODEL */}
       {/* =================================================================== */}
-      <div className="flex flex-col gap-4 pt-3 border-t border-slate-200">
-        {/* Section Header */}
-        <div className="pb-1 border-b border-slate-100">
-          <span className="text-xs font-bold text-slate-900 tracking-tight">
+      <Stack gap="md" pt="md" style={{ borderTop: "1px solid #e2e8f0" }}>
+        <Box pb={4} style={{ borderBottom: "1px solid #f1f5f9" }}>
+          <Text size="xs" fw={700} c="brandSecondary.9">
             2. Pengujian Terhadap Data Uji
-          </span>
-        </div>
+          </Text>
+        </Box>
 
-        {/* Pilih Model Pengujian (Reusable Component) */}
+        {/* Pilih Model Pengujian */}
         <Select
-          label="Pilih Model Pengujian"
-          labelRight={`${models.length} model di database`}
-          value={selectedModelId}
-          onChange={(e) => setSelectedModelId(e.target.value)}
-          disabled={isModelsLoading}
-        >
-          <option value="">
-            {isModelsLoading ? "Memuat model..." : "— Pilih Model Pengujian —"}
-          </option>
-          {trainResult && (
-            <option value="current" className="font-bold text-sky-800 bg-sky-50">
-              ★ Model Baru Dilatih • Belum Disimpan
-            </option>
-          )}
-          {models.map((m) => {
-            const r2Display = m.train_r2 != null ? m.train_r2.toFixed(1) : "0.0";
-            return (
-              <option key={m.id} value={m.id}>
-                {m.name} ({formatEstimatorType(m.estimator_type)}) • R² {r2Display}%
-              </option>
-            );
-          })}
-        </Select>
+          label={
+            <Flex justify="space-between" align="center" style={{ width: "100%" }}>
+              <span>Pilih Model Pengujian</span>
+              <Text component="span" size="xs" c="dimmed" fw={400}>
+                {models.length} model di database
+              </Text>
+            </Flex>
+          }
+          placeholder={isModelsLoading ? "Memuat model..." : "— Pilih Model Pengujian —"}
+          value={selectedModelId || null}
+          onChange={(val) => setSelectedModelId(val || "")}
+          disabled={isModelsLoading || (models.length === 0 && !trainResult)}
+          data={[
+            ...(trainResult ? [{ value: "current", label: "★ Model Baru Dilatih • Belum Disimpan" }] : []),
+            ...models.map((m) => ({
+              value: String(m.id),
+              label: `${m.name} (${formatEstimatorType(m.estimator_type)})`,
+            })),
+          ]}
+          searchable
+          clearable
+          nothingFoundMessage="Tidak ada model ditemukan"
+          radius="md"
+        />
 
-        {/* Unggah Berkas Data Uji (Reusable Component) */}
+        {/* Unggah Berkas Data Uji */}
         <FileUploader
           label="Unggah Berkas Data Uji"
           placeholder="Pilih file data uji (.xlsx, .csv, .xls)"
@@ -237,20 +232,19 @@ export function LeftPanelForm() {
           onFileRemove={() => setTestFile(null)}
         />
 
-        {/* Tombol Uji Model (Reusable Button) */}
+        {/* Tombol Uji Model */}
         <Button
           variant="primary"
           onClick={handleTestClick}
           disabled={isTesting || !selectedModelId || !testFile}
           isLoading={isTesting}
           loadingText="Memvalidasi Data Uji..."
-          icon={<FileCheck className="w-4 h-4" />}
+          icon={<FileCheck size={16} />}
           fullWidth
-          className="mt-1"
         >
           Uji Model Terhadap Data Baru
         </Button>
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   );
 }

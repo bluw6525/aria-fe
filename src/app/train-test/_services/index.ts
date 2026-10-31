@@ -30,7 +30,7 @@ export const regressionService = {
     formData.append("fit_intercept", String(fitIntercept));
 
     const response = await httpClient.post<OutlierDetectionResponse>(
-      "/regression/detect-outliers",
+      "/regression/outliers",
       formData,
       {
         headers: {
@@ -55,7 +55,7 @@ export const regressionService = {
     formData.append("fit_intercept", String(fitIntercept));
 
     const response = await httpClient.post<TrainModelResult>(
-      "/regression/train",
+      "/regression/trainings",
       formData,
       {
         headers: {
@@ -71,7 +71,7 @@ export const regressionService = {
    */
   saveModel: async (payload: SaveModelPayload): Promise<TrainedModel> => {
     const response = await httpClient.post<TrainedModel>(
-      "/regression/save",
+      "/regression/models",
       payload
     );
     return response.data;
@@ -88,7 +88,7 @@ export const regressionService = {
     formData.append("file", file);
 
     const response = await httpClient.post<TestModelResult>(
-      `/regression/test/${modelId}`,
+      `/regression/models/${modelId}/tests`,
       formData,
       {
         headers: {
@@ -127,7 +127,7 @@ export const regressionService = {
     }
 
     const response = await httpClient.post<TestModelResult>(
-      "/regression/test-custom",
+      "/regression/tests/custom",
       formData,
       {
         headers: {
