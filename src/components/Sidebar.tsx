@@ -1,30 +1,28 @@
 "use client";
 
-
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 import {
-  Home,
+  Layers,
   Gauge,
-  Cpu,
   HelpCircle,
   History,
-  Activity,
-  Radio,
+  Cpu,
 } from "lucide-react";
-import { cn } from "@/utils/cn";
-import { SidebarItem } from "./sidebar/SidebarItem";
-import Image from "next/image";
+import { Box, Stack } from "@mantine/core";
+import { useAuthStore } from "@/store/auth-store";
+import { notify } from "@/lib/notifications";
 import { SidebarHeader } from "./sidebar/SidebarHeader";
+import { SidebarItem } from "./sidebar/SidebarItem";
 
 const MENU_ITEMS = [
   {
-    label: "Home",
-    href: "/",
-    icon: Home,
+    label: "Beranda",
+    href: "/home",
+    icon: Layers,
   },
   {
-    label: "Estimasi",
+    label: "Estimasi ISPU",
     href: "/estimate",
     icon: Gauge,
   },
@@ -32,6 +30,11 @@ const MENU_ITEMS = [
     label: "Latih dan Uji",
     href: "/train-test",
     icon: Cpu,
+  },
+  {
+    label: "Pelatihan Massal",
+    href: "/batch",
+    icon: Layers,
   },
   {
     label: "Bantuan",
@@ -47,40 +50,80 @@ const MENU_ITEMS = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, isHydrated, logout } = useAuthStore();
+
+  const isAdmin = isHydrated && user?.role === "admin";
+
+  // Sembunyikan 'Latih dan Uji' & 'Pelatihan Massal' jika pengguna bukan Admin
+  const visibleMenuItems = MENU_ITEMS.filter((item) => {
+    if (item.href === "/train-test" || item.href === "/batch") {
+      return isAdmin;
+    }
+    return true;
+  });
+
+  const handleLogout = () => {
+    logout();
+    notify.success("Logout Berhasil", {
+      description: "Anda telah keluar dari sesi administrator.",
+    });
+    router.push("/home");
+  };
 
   return (
-    <aside className="w-68 min-h-screen bg-[#0e8ad6] pt-6 pb-1 flex flex-col text-white shadow-xl border-r border-sky-400/20 select-none shrink-0">
+    <Box
+      component="aside"
+      style={{
+        width: 272,
+        height: "100vh",
+        position: "sticky",
+        top: 0,
+        backgroundColor: "#0e8ad6",
+        paddingTop: 24,
+        paddingBottom: 4,
+        display: "flex",
+        flexDirection: "column",
+        color: "white",
+        boxShadow: "var(--mantine-shadow-xl)",
+        borderRight: "1px solid rgba(56, 189, 248, 0.2)",
+        userSelect: "none",
+        flexShrink: 0,
+        overflowY: "auto",
+        scrollbarWidth: "none",
+      }}
+    >
       {/* Brand Header */}
-      <SidebarHeader />
+      <SidebarHeader isAdmin={isAdmin} onLogout={handleLogout} />
 
       {/* Navigation Menu */}
-      <nav className="mt-10 flex flex-col gap-3 flex-1 px-6">
-        {
-          MENU_ITEMS.map((item) => {
-            return (
-              <SidebarItem
-                key={item.label}
-                {...item}
-                isActive={
-                  pathname === item.href ||
-                  (item.href === "/" && (pathname === "/" || pathname === "/home"))
-                }
-              />
-            );
-          })
-        }
-      </nav>
+      <Stack gap={12} mt={40} px={24} style={{ flex: 1 }}>
+        {visibleMenuItems.map((item) => {
+          return (
+            <SidebarItem
+              key={item.label}
+              {...item}
+              isActive={
+                pathname === item.href ||
+                (item.href === "/" && (pathname === "/" || pathname === "/home"))
+              }
+            />
+          );
+        })}
+      </Stack>
 
       {/* System Status Footer */}
-      <div className="mt-auto pt-6 border-t border-white/10" />
+      <Box mt="auto" pt={12} style={{ borderTop: "1px solid rgba(255, 255, 255, 0.1)" }} />
       <Image
         src="/images/navbar_footer.webp"
         alt="Sentinel-5P Atmosphere Monitoring"
         width={260}
-        height={100}
-        className="w-full h-auto select-none block"
+        height={85}
+        style={{ width: "100%", height: "auto", paddingLeft: 16, paddingRight: 16, paddingBottom: 8 }}
         priority
       />
-    </aside>
+    </Box>
   );
 }
+
+export default Sidebar;

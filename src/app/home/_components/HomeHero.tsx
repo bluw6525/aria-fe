@@ -1,61 +1,106 @@
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Satellite, ShieldCheck } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { Box, Flex, Title, Text, Group, Button as MantineBtn } from "@mantine/core";
 
 export function HomeHero() {
   return (
-      <div className="flex-1 flex items-center justify-center gap-16 max-w-5xl mx-auto w-full pb-14">
-        {/* Kolom Kiri: Judul, Deskripsi, CTA, dan Metrics */}
-        <div className="flex flex-col shrink-0 max-w-lg">
-          <h1 className="text-5xl font-black text-slate-900 leading-[1.15] tracking-tight">
-            Estimasi Konsentrasi <br />
-            Ozon Permukaan <br />
-            <span className="text-sky-600">
-              DKI JAKARTA
-            </span>
-          </h1>
+    <Flex
+      align="center"
+      justify="space-between"
+      gap={48}
+      maw={1024}
+      mx="auto"
+      w="100%"
+      pt={8}
+      pb={40}
+    >
+      {/* Kolom Kiri: Judul, Deskripsi, CTA */}
+      <Box style={{ flexShrink: 0, maxWidth: 512 }}>
+        <Title
+          order={1}
+          size={48}
+          fw={900}
+          c="brandSecondary.9"
+          style={{ lineHeight: 1.15, letterSpacing: "-0.03em" }}
+        >
+          Estimasi Konsentrasi <br />
+          Ozon Permukaan <br />
+          <Text component="span" c="brandPrimary.6" inherit>
+            DKI JAKARTA
+          </Text>
+        </Title>
 
-          {/* Garis Aksen Solid */}
-          <div className="w-20 h-1 bg-sky-600 rounded-full mt-4 mb-4" />
+        {/* Garis Aksen Solid */}
+        <Box
+          mt={16}
+          mb={16}
+          style={{
+            width: 80,
+            height: 4,
+            backgroundColor: "var(--mantine-color-brandPrimary-5)",
+            borderRadius: 9999,
+          }}
+        />
 
-          {/* Deskripsi Nyata */}
-          <p className="text-base text-slate-600 leading-relaxed font-normal">
-            Pemantauan dan estimasi presisi konsentrasi Ozon (O3) permukaan secara
-            berkala menggunakan analisis citra satelit pengorbit Bumi Sentinel-5P TROPOMI.
-          </p>
+        {/* Deskripsi */}
+        <Text size="md" c="brandSecondary.6" lh={1.6} fw={400}>
+          Pemantauan dan estimasi presisi konsentrasi Ozon (O3) permukaan secara
+          berkala menggunakan analisis citra satelit pengorbit Bumi Sentinel-5P TROPOMI.
+        </Text>
 
-          {/* Tombol Aksi (CTA) Solid */}
-          <div className="flex items-center gap-3.5 mt-6">
-            <Link
-              href="/estimate"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold text-sm shadow-md transition-all hover:scale-[1.02] active:scale-[0.98]"
+        {/* Tombol Aksi (CTA) */}
+        <Group gap={14} mt={24}>
+          <Link href="/estimate" style={{ textDecoration: "none" }}>
+            <MantineBtn
+              color="brandPrimary"
+              variant="filled"
+              size="md"
+              radius="xl"
+              rightSection={<ArrowRight style={{ width: 16, height: 16 }} />}
+              style={{ boxShadow: "var(--mantine-shadow-md)" }}
             >
-              <span>Mulai Estimasi</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href="/help"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm border border-slate-300 shadow-sm transition-all hover:scale-[1.01]"
+              Mulai Estimasi
+            </MantineBtn>
+          </Link>
+          <Link href="/help" style={{ textDecoration: "none" }}>
+            <MantineBtn
+              variant="default"
+              size="md"
+              radius="xl"
+              bg="white"
+              style={{
+                borderColor: "var(--mantine-color-brandSecondary-3)",
+                color: "var(--mantine-color-brandSecondary-7)",
+              }}
             >
-              <span>Panduan Sistem</span>
-            </Link>
-          </div>
-        </div>
+              Panduan Sistem
+            </MantineBtn>
+          </Link>
+        </Group>
+      </Box>
 
-        {/* Kolom Kanan: Gambar Satelit Sentinel 5P */}
-        <div className="flex justify-center shrink-0">
-          <Image
-            src="/images/home.webp"
-            alt="Sentinel 5P Satellite Illustration"
-            width={400}
-            height={400}
-            priority
-            className="w-92 h-auto drop-shadow-lg object-contain hover:scale-[1.02] transition-transform duration-300 select-none"
-          />
-        </div>
-      </div>
+      {/* Kolom Kanan: Gambar Satelit Sentinel 5P */}
+      <Box style={{ display: "flex", justifyContent: "center", flexShrink: 0 }}>
+        <Image
+          src="/images/home.webp"
+          alt="Sentinel 5P Satellite Illustration"
+          width={400}
+          height={400}
+          priority
+          style={{
+            width: 368,
+            height: "auto",
+            filter: "drop-shadow(0 10px 8px var(--mantine-color-brandSecondary-2))",
+            objectFit: "contain",
+            userSelect: "none",
+          }}
+        />
+      </Box>
+    </Flex>
   );
 }
 
-
+export default HomeHero;

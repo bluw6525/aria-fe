@@ -1,8 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { LucideIcon } from "lucide-react";
-import { cn } from "@/utils/cn";
+import { Box, Text } from "@mantine/core";
 
 interface SidebarItemProps {
   label: string;
@@ -13,27 +14,73 @@ interface SidebarItemProps {
 
 /**
  * Item tombol navigasi pada Sidebar dengan icon dan penanda rute aktif.
+ * Mengembalikan styling frosted-glass asli (#0e8ad6 sidebar, bg-white/10 inactive, bg-white active).
  */
 export function SidebarItem({ label, href, icon: Icon, isActive }: SidebarItemProps) {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <Link
+    <Box
+      component={Link}
       href={href}
-      className={cn(
-        // Base style tombol
-        "group flex items-center gap-3.5 py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-200",
-        // Tampilan status aktif vs tidak aktif
-        isActive
-          ? "bg-white text-sky-900 shadow-lg shadow-sky-950/20 font-bold scale-[1.02]"
-          : "bg-white/10 text-sky-100 hover:bg-white/20 hover:text-white backdrop-blur-sm hover:scale-[1.01]"
-      )}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 14,
+        paddingTop: 12,
+        paddingBottom: 12,
+        paddingLeft: 16,
+        paddingRight: 16,
+        borderRadius: 12,
+        textDecoration: "none",
+        fontSize: 14,
+        fontWeight: isActive ? 700 : 600,
+        backgroundColor: isActive
+          ? "#ffffff"
+          : isHovered
+          ? "rgba(255, 255, 255, 0.2)"
+          : "rgba(255, 255, 255, 0.1)",
+        color: isActive
+          ? "#0c4a6e"
+          : isHovered
+          ? "#ffffff"
+          : "#e0f2fe",
+        boxShadow: isActive ? "0 10px 15px -3px rgba(8, 47, 73, 0.2)" : "none",
+        backdropFilter: "blur(4px)",
+        transform: isActive
+          ? "scale(1.02)"
+          : isHovered
+          ? "scale(1.01)"
+          : "scale(1)",
+        transition: "all 200ms ease",
+      }}
     >
       <Icon
-        className={cn(
-          "w-4 h-4 transition-transform group-hover:scale-110",
-          isActive ? "text-sky-600" : "text-sky-200 group-hover:text-white"
-        )}
+        size={16}
+        color={
+          isActive
+            ? "#0284c7"
+            : isHovered
+            ? "#ffffff"
+            : "#bae6fd"
+        }
+        style={{
+          flexShrink: 0,
+          transition: "transform 200ms ease, color 200ms ease",
+          transform: isHovered ? "scale(1.1)" : "scale(1)",
+        }}
       />
-      <span>{label}</span>
-    </Link>
+      <Text
+        size="sm"
+        fw={isActive ? 700 : 600}
+        inherit
+      >
+        {label}
+      </Text>
+    </Box>
   );
 }
+
+export default SidebarItem;

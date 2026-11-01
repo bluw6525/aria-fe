@@ -1,16 +1,29 @@
+"use client";
+
 import { ReactNode } from "react";
+import { Box } from "@mantine/core";
 
 interface PageContainerProps {
-    children: ReactNode;
-    className?: string;
+  children: ReactNode;
 }
 
-export function PageContainer({ children, className = "" }: PageContainerProps) {
-    return (
-    <main className="flex-1 overflow-y-auto">
-        <div className={`flex-1 min-h-screen bg-[#f3f4f6] flex flex-col px-10 py-8 ${className}`}>
-        {children}
-        </div>
-    </main >
+export function PageContainer({ children }: PageContainerProps) {
+  return (
+    <Box
+      component="main"
+      style={{
+        flex: 1,
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        overflowY: "auto",
+        backgroundColor: "var(--background)",
+        padding: "32px 40px",
+      }}
+    >
+      {children}
+    </Box>
   );
 }
+
+export default PageContainer;

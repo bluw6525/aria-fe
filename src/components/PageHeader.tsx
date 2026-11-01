@@ -1,26 +1,39 @@
+"use client";
+
+import { Title, Text, Box } from "@mantine/core";
+
 interface PageHeaderProps {
   title?: string;
   subtitle?: string;
-  className?: string;
 }
 
 export function PageHeader({
-  title = "Sistem Estimasi Kualitas Udara O3 dengan Sentinel-5P",
+  title = "Aria - Sentinel-5P Ozone Monitoring",
   subtitle,
-  className = "",
 }: PageHeaderProps) {
   return (
-    <header className={`w-full mb-8 text-center ${className}`}>
-      <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+    <Box component="header" w="100%" mb={32} style={{ textAlign: "center" }}>
+      <Title order={2} size="h2" fw={800} c="brandSecondary.9" style={{ letterSpacing: "-0.02em" }}>
         {title}
-      </h2>
+      </Title>
       {subtitle && (
-        <p className="mt-2 text-sm text-slate-500 font-medium">
+        <Text size="sm" c="brandSecondary.5" fw={500} mt={6}>
           {subtitle}
-        </p>
+        </Text>
       )}
       {/* Garis Pembatas Header Solid */}
-      <div className="w-full max-w-4xl mx-auto h-[1.5px] bg-slate-300 mt-4" />
-    </header>
+      <Box
+        mx="auto"
+        mt="md"
+        style={{
+          width: "100%",
+          maxWidth: 896,
+          height: 1.5,
+          backgroundColor: "var(--mantine-color-brandSecondary-3)",
+        }}
+      />
+    </Box>
   );
 }
+
+export default PageHeader;
