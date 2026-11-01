@@ -274,7 +274,7 @@ export const chapter01: PageDesc[] = [
                 ["OLS", "Metode kuadrat terkecil standar. Menjadi pembanding, rentan terhadap outlier."],
                 ["M-Estimator", "Tahan terhadap outlier pada nilai O3 (arah vertikal), tetapi kurang tahan bila outlier ada pada CO atau NO2."],
                 ["S-Estimator", "Sangat tahan karena mampu menahan hingga 50% data menyimpang, dengan efisiensi lebih rendah."],
-                ["MM-Estimator", "Menggabungkan ketahanan S-Estimator dengan efisiensi tinggi dan tahan terhadap titik leverage."],
+                ["MM-Estimator", "Menggabungkan ketahanan S-Estimator dengan efisiensi tinggi dan tahan terhadap outlier."],
               ]}
             />
             <H3>Ukuran ketepatan model</H3>

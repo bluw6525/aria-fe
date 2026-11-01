@@ -105,39 +105,4 @@ export const chapter06: PageDesc[] = [
       </>
     ),
   },
-  {
-    kind: "page",
-    id: "c6-pesan",
-    chapterNo: NO,
-    chapter: CH,
-    toc: "Pesan pada layar dan penanganannya",
-    body: (
-      <>
-        <PageHead kicker="Bab 6" title="Pesan pada Layar dan Penanganannya" />
-        <P>
-          Aria menampilkan notifikasi singkat di sudut layar setelah sebuah aksi
-          berhasil atau gagal. Tabel berikut mencantumkan pesan yang paling
-          sering muncul beserta cara menanganinya. Semua penanganan dilakukan
-          dari layar tanpa mengubah pengaturan apa pun.
-        </P>
-        <Table
-          head={["Pesan atau kondisi", "Penyebab", "Yang dilakukan"]}
-          widths={["27%", "35%", "38%"]}
-          rows={[
-            ["Tombol Jalankan Estimasi tidak dapat ditekan", "Berkas atau nilai CO dan NO2 belum terisi, atau model belum dipilih", "Lengkapi isian dan pilih model pada Pilih Model Estimasi"],
-            ["Pilihan model tertulis Belum ada model tersimpan", "Administrator belum menyimpan model", "Minta administrator melatih dan menyimpan model"],
-            ["Berkas Diperlukan", "Tombol aksi ditekan tanpa berkas", "Unggah berkas .xlsx, .csv, atau .xls"],
-            ["Input Tidak Valid", "Kolom CO atau NO2 berisi huruf atau kosong", "Ketik bilangan dengan tanda titik sebagai desimal"],
-            ["Estimasi Gagal atau Pelatihan Model Gagal", "Kolom berkas tidak sesuai atau isi berkas tidak terbaca", "Periksa nama kolom CO satelit, NO2 satelit, dan O3 SPKU, lalu unggah ulang"],
-            ["Hasil Estimasi Direset", "Model diganti saat titik manual sudah tercatat", "Isi ulang titik dengan model yang dipilih"],
-            ["Menu Latih dan Uji tidak tampil", "Belum masuk sebagai administrator", "Masuk melalui halaman Login Administrator"],
-            ["Model Belum Dilatih", "Tombol Simpan ditekan sebelum Latih Model", "Tekan Latih Model terlebih dahulu"],
-            ["Nama Model Kosong", "Kolom nama kosong saat menyimpan", "Isi nama model, lalu simpan lagi"],
-            ["Algoritma Belum Dipilih atau Input Tidak Valid (Massal)", "Tidak ada algoritma tercentang atau iterasi di luar 1 sampai 1000", "Centang minimal satu algoritma dan atur iterasi"],
-            ["Sesi Belum Dipilih", "Tampilkan Data Sesi Terpilih ditekan tanpa memilih sesi", "Pilih satu sesi pada daftar, lalu tekan tombol"],
-          ]}
-        />
-      </>
-    ),
-  },
 ];
