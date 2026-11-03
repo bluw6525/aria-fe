@@ -4,22 +4,28 @@ import React from "react";
 import { LineChart as MantineLineChart } from "@mantine/charts";
 import { Paper, Text, Box } from "@mantine/core";
 
+// Interface untuk mendefinisikan setiap garis (series) yang digambar pada grafik
 export interface LineSeries {
-  key: string;
-  name: string;
-  color?: string;
-  dashed?: boolean;
+  key: string;       // Kunci properti data dalam objek (misal: "actual", "predicted")
+  name: string;      // Label legenda yang dibaca manusia (misal: "Nilai Aktual", "Hasil Estimasi")
+  color?: string;    // Warna garis grafik (opsional)
+  dashed?: boolean;  // Apakah garis berupa garis putus-putus (opsional)
 }
 
+// Interface props komponen LineChart dengan dukungan Generic Type T
 export interface LineChartProps<T extends object = Record<string, unknown>> {
-  data: T[];
-  lines: LineSeries[];
-  xAxisKey?: string;
-  title?: string;
-  subtitle?: string;
-  height?: number;
+  data: T[];             // Kumpulan baris data yang akan diplot
+  lines: LineSeries[];   // Konfigurasi daftar garis yang ingin digambar
+  xAxisKey?: string;     // Kunci properti untuk sumbu X horizontal (default: "index")
+  title?: string;        // Judul grafik (opsional)
+  subtitle?: string;     // Keterangan atau sub-judul grafik (opsional)
+  height?: number;       // Tinggi area grafik dalam satuan pixel (default: 250)
 }
 
+/**
+ * Komponen LineChart Reusable
+ * Membungkus `@mantine/charts LineChart` untuk menampilkan visualisasi data deret waktu atau perbandingan regresi.
+ */
 export function LineChart<T extends object = Record<string, unknown>>({
   data,
   lines,
@@ -28,6 +34,7 @@ export function LineChart<T extends object = Record<string, unknown>>({
   subtitle,
   height = 250,
 }: LineChartProps<T>) {
+  // Jika array data kosong atau undefined, tampilkan placeholder kosong
   if (!data || data.length === 0) {
     return (
       <Paper
@@ -49,14 +56,16 @@ export function LineChart<T extends object = Record<string, unknown>>({
     );
   }
 
+  // Memetakan konfigurasi LineSeries ke format series yang diharapkan oleh Mantine LineChart
   const series = lines.map((l) => ({
     name: l.key,
     label: l.name,
     color: l.color || "var(--mantine-color-brandPrimary-6)",
-    strokeDasharray: l.dashed ? "4 4" : undefined,
+    strokeDasharray: l.dashed ? "4 4" : undefined, // Efek putus-putus jika dashed: true
   }));
 
   return (
+    // Wadah kartu Paper dengan bayangan halus
     <Paper
       p="md"
       shadow="xs"
@@ -80,19 +89,19 @@ export function LineChart<T extends object = Record<string, unknown>>({
 
       {/* Area Grafik Mantine LineChart */}
       <MantineLineChart
-        h={height}
-        data={data}
-        dataKey={xAxisKey}
-        series={series}
-        curveType="monotone"
-        strokeWidth={2}
-        withDots
-        dotProps={{ r: 2 }}
-        activeDotProps={{ r: 4.5, stroke: "#fff", strokeWidth: 1.5 }}
-        withLegend
-        legendProps={{ verticalAlign: "top", height: 35 }}
-        gridAxis="xy"
-        tickLine="none"
+        h={height}                                      // Tinggi container grafik
+        data={data}                                     // Sumber data
+        dataKey={xAxisKey}                              // Properti sumbu X
+        series={series}                                 // Daftar garis
+        curveType="monotone"                            // Kelengkungan garis halus
+        strokeWidth={2}                                 // Ketebalan garis
+        withDots                                        // Menampilkan titik data
+        dotProps={{ r: 2 }}                             // Radius titik normal (2px)
+        activeDotProps={{ r: 4.5, stroke: "#fff", strokeWidth: 1.5 }} // Titik saat di-hover kursor
+        withLegend                                      // Menampilkan legenda keterangan garis
+        legendProps={{ verticalAlign: "top", height: 35 }} // Posisi legenda di atas grafik
+        gridAxis="xy"                                   // Garis bantu grid horizontal dan vertikal
+        tickLine="none"                                 // Menyembunyikan garis centang pada sumbu
       />
     </Paper>
   );

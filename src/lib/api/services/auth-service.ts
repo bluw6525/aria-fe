@@ -14,7 +14,7 @@ export const authService = {
       password,
     });
     return response.data;
-  },
+  },  
 
   /**
    * Mengambil profil pengguna yang sedang login berdasarkan token JWT aktif.

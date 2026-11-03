@@ -4,17 +4,24 @@ import React, { useRef } from "react";
 import { FileSpreadsheet, Upload, X } from "lucide-react";
 import { Stack, Text, Paper, UnstyledButton, ActionIcon, Flex } from "@mantine/core";
 
+// Interface definisi properti untuk komponen FileUploader
 export interface FileUploaderProps {
-  file: File | null;
-  onFileSelect: (file: File) => void;
-  onFileRemove: () => void;
-  label?: string;
-  hint?: string;
-  accept?: string;
-  placeholder?: string;
-  disabled?: boolean;
+  file: File | null;                     // State file yang sedang terpilih (atau null jika belum ada)
+  onFileSelect: (file: File) => void;    // Callback fungsi ketika pengguna memilih berkas baru
+  onFileRemove: () => void;              // Callback fungsi ketika pengguna menekan tombol hapus berkas
+  label?: string;                        // Label di bagian atas uploader (opsional)
+  hint?: string;                         // Teks petunjuk kecil di bawah uploader (opsional)
+  accept?: string;                       // Ekstensi berkas yang diizinkan (default: .xlsx, .xls, .csv)
+  placeholder?: string;                  // Pesan teks saat area upload masih kosong
+  disabled?: boolean;                    // Menonaktifkan interaksi upload
 }
 
+/**
+ * Komponen FileUploader
+ * Mengelola interaksi upload berkas spreadsheet (Excel / CSV) dengan dua mode tampilan:
+ * 1. Mode Belum Dipilih: Tombol putus-putus untuk memicu dialog pemilihan berkas.
+ * 2. Mode Sudah Dipilih: Kartu informasi nama dan ukuran berkas terpilih serta tombol hapus.
+ */
 export function FileUploader({
   file,
   onFileSelect,
@@ -25,8 +32,10 @@ export function FileUploader({
   placeholder = "Pilih file (.xlsx, .csv, .xls)",
   disabled = false,
 }: FileUploaderProps) {
+  // Ref untuk mengontrol elemen <input type="file"> tersembunyi
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Helper fungsi untuk memformat ukuran berkas dari byte ke B / KB / MB
   const formatFileSize = (bytes: number): string => {
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
@@ -34,13 +43,20 @@ export function FileUploader({
   };
 
   return (
+    // Wadah vertikal utama dengan jarak 6px
     <Stack gap={6}>
+      {/* Label Komponen di bagian atas */}
       {label && (
         <Text size="xs" fw={700} c="brandSecondary.9">
           {label}
         </Text>
       )}
 
+      {/* 
+        Elemen input file HTML asli.
+        Disembunyikan dengan `display: none` agar kita bisa mendesain tombol upload sendiri 
+        yang lebih menarik secara estetika, lalu diklik via inputRef.current?.click().
+      */}
       <input
         ref={inputRef}
         type="file"
@@ -48,13 +64,20 @@ export function FileUploader({
         disabled={disabled}
         style={{ display: "none" }}
         onChange={(e) => {
+          // Ketika user selesai memilih berkas dari dialog komputer, kirim ke parent
           if (e.target.files && e.target.files[0]) {
             onFileSelect(e.target.files[0]);
           }
         }}
       />
 
+      {/* 
+        Kondisi Rendering:
+        - Jika file SUDAH ada -> Tampilkan Paper card dengan nama file, ukuran, dan tombol hapus (X)
+        - Jika file BELUM ada -> Tampilkan tombol putus-putus untuk memicu dialog upload
+      */}
       {file ? (
+        /* TAMPILAN KETIKA BERKAS SUDAH DIPILIH */
         <Paper
           px="sm"
           py="xs"
@@ -68,6 +91,7 @@ export function FileUploader({
             justifyContent: "space-between",
           }}
         >
+          {/* Ikon Spreadsheet + Nama File + Ukuran */}
           <Flex align="center" gap="xs" style={{ minWidth: 0 }}>
             <FileSpreadsheet size={16} color="var(--mantine-color-brandPrimary-6)" style={{ flexShrink: 0 }} />
             <Flex align="center" gap={6} style={{ minWidth: 0 }}>
@@ -79,6 +103,8 @@ export function FileUploader({
               </Text>
             </Flex>
           </Flex>
+
+          {/* Tombol Hapus Berkas (ikon silang X) */}
           <ActionIcon
             variant="subtle"
             color="red"
@@ -91,8 +117,9 @@ export function FileUploader({
           </ActionIcon>
         </Paper>
       ) : (
+        /* TAMPILAN KETIKA BERKAS BELUM DIPILIH (Tombol Dropzone/Upload) */
         <UnstyledButton
-          onClick={() => inputRef.current?.click()}
+          onClick={() => inputRef.current?.click()} // Memicu klik pada input file tersembunyi
           disabled={disabled}
           p="sm"
           style={{
@@ -119,6 +146,7 @@ export function FileUploader({
         </UnstyledButton>
       )}
 
+      {/* Teks Petunjuk Tambahan di bagian bawah (opsional) */}
       {hint && (
         <Text size="xs" c="brandSecondary.4" style={{ fontSize: 11 }}>
           {hint}
