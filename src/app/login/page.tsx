@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Lock, User, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { Center, Box, Paper, Title, Text, Stack, ActionIcon } from "@mantine/core";
-import axios from "axios";
 import { authService } from "@/lib/api/services/auth-service";
 import { useAuthStore } from "@/store/auth-store";
 import { notify } from "@/lib/notifications";

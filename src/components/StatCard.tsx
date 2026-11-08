@@ -3,16 +3,22 @@
 import React, { ReactNode } from "react";
 import { Paper, Text, MantineRadius } from "@mantine/core";
 
+// Interface definisi properti untuk kartu ringkasan metrik statistik
 interface StatCardProps {
-  label: string;
-  value: ReactNode;
-  variant?: "sky" | "slate";
-  radius?: MantineRadius;
-  className?: string;
-  valueClassName?: string;
-  labelClassName?: string;
+  label: string;             // Judul metrik (misal: "R-SQUARED", "RMSE", "JUMLAH DATA")
+  value: ReactNode;          // Nilai angka atau elemen tampilan metrik
+  variant?: "sky" | "slate"; // Tema warna kartu: "sky" (biru muda) atau "slate" (abu netral)
+  radius?: MantineRadius;    // Kebulatan sudut kartu Mantine (default: "lg")
+  className?: string;        // Kelas CSS tambahan untuk kartu luar
+  valueClassName?: string;   // Kelas CSS tambahan untuk elemen nilai
+  labelClassName?: string;   // Kelas CSS tambahan untuk elemen label
 }
 
+/**
+ * Komponen StatCard
+ * Berfungsi menampilkan angka metrik statistik (seperti metrik performa model R², RMSE, MAE, atau hitungan data)
+ * secara ringkas, tegas, dan seragam.
+ */
 export function StatCard({
   label,
   value,
@@ -22,9 +28,11 @@ export function StatCard({
   valueClassName = "",
   labelClassName = "",
 }: StatCardProps) {
+  // Pengecekan varian warna: tema langit (sky) vs abu-abu (slate)
   const isSky = variant === "sky";
 
   return (
+    // Kartu Paper Mantine dengan batas garis (withBorder) dan isi di tengah
     <Paper
       p="sm"
       radius={radius}
@@ -37,10 +45,11 @@ export function StatCard({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: 84,
+        minHeight: 84, // Menjaga keseragaman tinggi kartu dalam grid
       }}
       className={className}
     >
+      {/* Label Metrik: Huruf kapital (uppercase) dengan jarak antar huruf renggang */}
       <Text
         size="xs"
         fw={700}
@@ -51,6 +60,8 @@ export function StatCard({
       >
         {label}
       </Text>
+
+      {/* Nilai Metrik: Angka tebal berukuran besar (xl, fw 800) */}
       <Text
         size="xl"
         fw={800}

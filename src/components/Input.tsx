@@ -3,17 +3,23 @@
 import React, { InputHTMLAttributes, ReactNode, forwardRef } from "react";
 import { Box, Group, Text } from "@mantine/core";
 
+// Interface properti input yang memperluas atribut bawaan HTML input
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: ReactNode;
-  labelRight?: ReactNode;
-  hint?: ReactNode;
-  error?: ReactNode;
-  icon?: ReactNode;
-  iconPosition?: "left" | "right";
-  iconRight?: ReactNode;
-  containerClassName?: string;
+  label?: ReactNode;             // Label teks di atas field input
+  labelRight?: ReactNode;        // Label tambahan di pojok kanan atas (misal: "Opsional" atau satuan)
+  hint?: ReactNode;              // Teks petunjuk kecil di bawah input
+  error?: ReactNode;             // Pesan error jika validasi gagal
+  icon?: ReactNode;              // Komponen ikon utama
+  iconPosition?: "left" | "right"; // Posisi ikon utama (default: kiri)
+  iconRight?: ReactNode;         // Ikon khusus sisi kanan (misal: tombol toggle lihat password)
+  containerClassName?: string;   // Kelas CSS pembungkus luar
 }
 
+/**
+ * Komponen Input Reusable
+ * Menggunakan `forwardRef` agar komponen parent dapat mengakses elemen DOM <input> asli
+ * secara langsung (misal untuk fokus kursor, atau integrasi dengan form library).
+ */
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
@@ -31,14 +37,18 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       style,
       ...props
     },
-    ref
+    ref // Parameter ref yang diteruskan ke tag <input> asli
   ) => {
+    // Penentuan keberadaan ikon kiri & kanan
     const hasIconLeft = Boolean(icon && iconPosition === "left");
     const rightContent = iconRight || (iconPosition === "right" ? icon : null);
     const hasIconRight = Boolean(rightContent);
 
     return (
+      // Wadah luar bertipe Box kolom vertikal dengan gap antar elemen sebesar 6px
       <Box style={{ display: "flex", flexDirection: "column", gap: 6 }} className={containerClassName}>
+        
+        {/* Header Label (Label kiri dan label kanan opsional) */}
         {(label || labelRight) && (
           <Group justify="space-between" align="center" style={{ fontSize: "12px", fontWeight: 700 }}>
             {label && (
@@ -54,7 +64,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           </Group>
         )}
 
+        {/* Wadah relatif untuk elemen <input> beserta posisi absolut ikonnya */}
         <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+          
+          {/* Render Ikon Sisi Kiri (jika ada) */}
           {hasIconLeft && (
             <div
               style={{
@@ -62,7 +75,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 left: 14,
                 display: "flex",
                 alignItems: "center",
-                pointerEvents: "none",
+                pointerEvents: "none", // Agar klik mouse tembus langsung ke kolom input
                 color: "var(--mantine-color-brandSecondary-4)",
               }}
             >
@@ -70,16 +83,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             </div>
           )}
 
+          {/* Elemen HTML <input> asli */}
           <input
-            ref={ref}
+            ref={ref}              // Menyambungkan ref dari parent ke elemen DOM ini
             id={id}
             disabled={disabled}
             style={{
               width: "100%",
               height: 40,
-              paddingLeft: hasIconLeft ? 40 : 14,
-              paddingRight: hasIconRight ? 40 : 14,
-              border: error ? "1px solid #f43f5e" : "1px solid #cbd5e1",
+              paddingLeft: hasIconLeft ? 40 : 14,   // Beri padding ekstra jika ada ikon di kiri
+              paddingRight: hasIconRight ? 40 : 14, // Beri padding ekstra jika ada ikon di kanan
+              border: error ? "1px solid #f43f5e" : "1px solid #cbd5e1", // Garis merah jika error
               borderRadius: 12,
               backgroundColor: disabled ? "#f1f5f9" : "#ffffff",
               color: disabled
@@ -97,6 +111,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
 
+          {/* Render Ikon Sisi Kanan (jika ada, misal ikon toggle mata password) */}
           {hasIconRight && (
             <div
               style={{
@@ -112,6 +127,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
 
+        {/* Tampilan Pesan Error (prioritas utama) atau Teks Petunjuk (hint) */}
         {error ? (
           <Text size="xs" c="red.6" style={{ fontSize: 11, fontWeight: 500 }}>
             {error}
@@ -126,5 +142,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
+// Menetapkan displayName untuk kemudahan debugging di React DevTools
 Input.displayName = "Input";
+
 export default Input;

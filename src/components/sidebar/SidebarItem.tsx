@@ -10,19 +10,21 @@ interface SidebarItemProps {
   href: string;
   icon: LucideIcon;
   isActive: boolean;
+  onClick?: () => void;
 }
 
 /**
  * Item tombol navigasi pada Sidebar dengan icon dan penanda rute aktif.
  * Mengembalikan styling frosted-glass asli (#0e8ad6 sidebar, bg-white/10 inactive, bg-white active).
  */
-export function SidebarItem({ label, href, icon: Icon, isActive }: SidebarItemProps) {
+export function SidebarItem({ label, href, icon: Icon, isActive, onClick }: SidebarItemProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <Box
       component={Link}
       href={href}
+      onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{

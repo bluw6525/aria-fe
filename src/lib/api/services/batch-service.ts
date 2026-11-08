@@ -60,6 +60,8 @@ export interface BatchRunResponse {
   summary_rows: BatchSummaryRow[];
   top_iterations: BatchIteration[];
   seeds: number[];
+  has_interpolated?: boolean;
+  interpolated_count?: number;
 }
 
 export interface RunBatchParams {
