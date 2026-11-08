@@ -39,9 +39,9 @@ export const penggunaTentang: PageDesc[] = [
               demikian tetap memperoleh gambaran mutu udara.
             </P>
             <P>
-              Aplikasi dibuka melalui browser tanpa instalasi tambahan dan tanpa
-              akun. Seluruh menu pada buku manual terbuka langsung setelah alamat
-              aplikasi dikunjungi. Model yang dipakai untuk menghitung ISPU
+              Aplikasi dibuka melalui browser tanpa instalasi tambahan. Seluruh
+              menu pada buku manual terbuka langsung setelah alamat aplikasi
+              dikunjungi. Model yang dipakai untuk menghitung ISPU
               sudah disiapkan sebelumnya dan muncul sebagai pilihan pada menu
               Estimasi ISPU.
             </P>
