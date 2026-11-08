@@ -350,6 +350,31 @@ async function main() {
 
   }
 
+  // ---------------------------------------------------------------- estimasi sebagai pengguna umum
+  if (want("estimate-public")) {
+  console.log("Estimasi (pengguna umum)");
+  const pubContext = await browser.newContext({ viewport: VIEWPORT, deviceScaleFactor: 2, locale: "id-ID" });
+  await pubContext.addInitScript(() => {
+    document.addEventListener("DOMContentLoaded", () => {
+      const s = document.createElement("style");
+      s.textContent = "nextjs-portal{display:none!important}.mantine-Notifications-root{display:none!important}";
+      document.head.appendChild(s);
+    });
+  });
+  pubContext.setDefaultTimeout(TIMEOUT);
+  const pub = await pubContext.newPage();
+  await go(pub, "/estimate", "Estimasi Kualitas Udara (ISPU)");
+  await pub.getByText(/model tersedia/).first().waitFor();
+  await pub.locator('input[type="file"]').first().setInputFiles(ESTIMATE_FILE);
+  await pub.waitForFunction(() => document.querySelector('input[placeholder*="Model Estimasi"]')?.value);
+  await settle(pub);
+  await pub.getByRole("button", { name: /Jalankan Estimasi/ }).click();
+  await pub.getByText(/Grafik Tren Nilai ISPU/).first().waitFor();
+  await settle(pub, 1500);
+  await viewport(pub, "04-estimasi-hero-pengguna");
+  await pubContext.close();
+  }
+
   await browser.close();
   const prev = await readFile(SHOTS_JSON, "utf8").then(JSON.parse).catch(() => ({}));
   await writeFile(SHOTS_JSON, JSON.stringify({ ...prev, ...sizes }, null, 2) + "\n");

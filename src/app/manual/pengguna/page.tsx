@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ManualBook } from "../_components/ManualBook";
 import { chapter01 } from "../_content/chapter-01";
 import { chapter02 } from "../_content/chapter-02";
-import { chapter03 } from "../_content/chapter-03";
+import { buildChapter03 } from "../_content/chapter-03";
 import { buildChapter06 } from "../_content/chapter-06";
 import { penggunaTentang, penggunaAlur } from "../_content/pengguna";
 import type { PageDesc } from "../_content/types";
@@ -24,7 +24,7 @@ const descs: PageDesc[] = [
   ...byId(chapter01, "c1-ispu"),
   ...byId(chapter01, "c1-robust"),
   ...byId(chapter02, "c2-beranda"),
-  ...chapter03,
+  ...buildChapter03("04-estimasi-hero-pengguna"),
   ...buildChapter06("4"),
   { kind: "back" },
 ];
