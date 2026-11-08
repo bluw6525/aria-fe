@@ -26,7 +26,7 @@ export function buildChapter06(NO: string): PageDesc[] {
           <PageHead kicker={`Bab ${NO}`} title="Halaman Bantuan" />
           <P>
             Halaman Bantuan memuat empat tab informasi yang dapat dibuka tanpa
-            masuk sebagai administrator. Tab dipilih dengan menekan namanya pada
+            akun. Tab dipilih dengan menekan namanya pada
             deretan tab di bagian atas. Isi setiap tab selaras dengan teori
             singkat pada Bab 1, sehingga pengguna dapat membacanya langsung di
             dalam aplikasi.

@@ -42,8 +42,8 @@ export const penggunaTentang: PageDesc[] = [
               Aplikasi dibuka melalui browser tanpa instalasi tambahan dan tanpa
               akun. Seluruh menu pada buku manual terbuka langsung setelah alamat
               aplikasi dikunjungi. Model yang dipakai untuk menghitung ISPU
-              sudah disiapkan oleh administrator dan muncul sebagai pilihan pada
-              menu Estimasi ISPU.
+              sudah disiapkan sebelumnya dan muncul sebagai pilihan pada menu
+              Estimasi ISPU.
             </P>
             <H3>Menu untuk pengguna umum</H3>
             <Table
@@ -131,9 +131,8 @@ export const penggunaAlur: PageDesc[] = [
             titik sebagai pemisah desimal, misalnya 0.0345.
           </Callout>
           <Callout label="Model" kind="tip">
-            Pilihan model berisi hasil pelatihan administrator. Bila daftar
-            kosong, hubungi administrator agar sebuah model disimpan terlebih
-            dahulu.
+            Pilihan model berisi model yang sudah tersimpan di aplikasi. Bila
+            daftar kosong, muat ulang halaman atau hubungi pengelola aplikasi.
           </Callout>
         </Cols>
         <P muted>

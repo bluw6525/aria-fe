@@ -62,7 +62,7 @@ export function buildChapter03(hero: ShotName): PageDesc[] {
                   ],
                   [
                     "Pilih Model Estimasi.",
-                    "Daftar model yang sudah disimpan administrator.",
+                    "Daftar model yang sudah tersimpan di aplikasi.",
                   ],
                   [
                     "Jalankan Estimasi.",
@@ -133,8 +133,7 @@ export function buildChapter03(hero: ShotName): PageDesc[] {
               </Steps>
               <Callout label="Model kosong" kind="warn">
                 Bila pilihan model menampilkan tulisan Belum ada model
-                tersimpan, hubungi administrator agar sebuah model disimpan
-                terlebih dahulu.
+                tersimpan, muat ulang halaman atau hubungi pengelola aplikasi.
               </Callout>
             </Col>
             <Shot
