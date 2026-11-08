@@ -17,13 +17,14 @@ type Kids = { children?: ReactNode };
 export function Sheet({
   label,
   no,
+  book = "Buku Manual Program",
   children,
-}: Kids & { label: string; no: number }) {
+}: Kids & { label: string; no: number; book?: string }) {
   return (
     <section className={styles.sheet} data-sheet={no}>
       <header className={styles.sheetHeader}>
         <span>
-          <b>Aria</b> &nbsp;/&nbsp; Buku Manual Program
+          <b>Aria</b> &nbsp;/&nbsp; {book}
         </span>
         <span>{label}</span>
       </header>
@@ -50,7 +51,14 @@ export function Circles({ className }: { className?: string }) {
   );
 }
 
-export function Cover() {
+export type CoverProps = {
+  kicker: string;
+  lines: [ReactNode, ReactNode];
+  sub: string;
+  audience?: string;
+};
+
+export function Cover({ kicker, lines, sub, audience }: CoverProps) {
   return (
     <section className={clsx(styles.sheet, styles.cover)} data-sheet={1}>
       <div className={styles.coverGlow} />
@@ -61,17 +69,13 @@ export function Cover() {
         aria.
       </div>
       <div className={styles.coverTitle}>
-        <p className={styles.coverKicker}>Buku Manual Program</p>
+        <p className={styles.coverKicker}>{kicker}</p>
         <h1 className={styles.coverH1}>
-          Estimasi ISPU
+          {lines[0]}
           <br />
-          dari <em>Sentinel-5P</em>
+          {lines[1]}
         </h1>
-        <p className={styles.coverSub}>
-          Panduan pengguna aplikasi Aria untuk memperkirakan Indeks Standar
-          Pencemar Udara ozon permukaan DKI Jakarta dari kadar CO dan NO2
-          satelit, serta melatih dan menguji model regresi robust.
-        </p>
+        <p className={styles.coverSub}>{sub}</p>
       </div>
       <div className={styles.coverStrip}>
         <div>
@@ -83,8 +87,8 @@ export function Cover() {
           <b>Universitas Tarumanagara</b>
         </div>
         <div>
-          <span>Versi</span>
-          <b>2.0 &middot; November 2026</b>
+          <span>{audience ? "Untuk" : "Versi"}</span>
+          <b>{audience ?? "2.0 · November 2026"}</b>
         </div>
       </div>
     </section>

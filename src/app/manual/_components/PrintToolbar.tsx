@@ -2,13 +2,19 @@
 
 import { styles } from "./styles";
 
-export function PrintToolbar({ totalPages }: { totalPages: number }) {
+export function PrintToolbar({
+  totalPages,
+  title = "Buku Manual Program",
+}: {
+  totalPages: number;
+  title?: string;
+}) {
   return (
     <div className={styles.toolbar}>
       <div className={styles.toolbarBrand}>
         aria.
         <span className={styles.toolbarHint}>
-          Buku Manual Program &middot; {totalPages} halaman A4 lanskap
+          {title} &middot; {totalPages} halaman A4 lanskap
         </span>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 16 }}>

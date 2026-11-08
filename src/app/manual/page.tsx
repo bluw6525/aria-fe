@@ -1,17 +1,5 @@
 import type { Metadata } from "next";
-import "@fontsource-variable/outfit/index.css";
-import "@fontsource/outfit/800.css";
-import "./manual.css";
-import { styles } from "./_components/styles";
-import {
-  Back,
-  Cover,
-  PageHead,
-  Sheet,
-  Toc,
-  type TocGroup,
-} from "./_components/primitives";
-import { PrintToolbar } from "./_components/PrintToolbar";
+import { ManualBook } from "./_components/ManualBook";
 import { chapter01 } from "./_content/chapter-01";
 import { chapter02 } from "./_content/chapter-02";
 import { chapter03 } from "./_content/chapter-03";
@@ -38,51 +26,21 @@ const descs: PageDesc[] = [
   { kind: "back" },
 ];
 
-function buildToc(): TocGroup[] {
-  const groups: TocGroup[] = [];
-  descs.forEach((d, i) => {
-    if (d.kind !== "page") return;
-    const page = i + 1;
-    let g = groups.find((x) => x.number === d.chapterNo);
-    if (!g) {
-      g = { number: d.chapterNo, title: d.chapter, page, entries: [] };
-      groups.push(g);
-    }
-    g.entries.push({ label: d.toc, page });
-  });
-  return groups;
-}
-
 export default function ManualPage() {
-  const groups = buildToc();
-
   return (
-    <div className={styles.root}>
-      <PrintToolbar totalPages={descs.length} />
-      <main className={styles.pages}>
-        {descs.map((d, i) => {
-          const no = i + 1;
-          switch (d.kind) {
-            case "cover":
-              return <Cover key="cover" />;
-            case "toc":
-              return (
-                <Sheet key={d.id} label="Daftar Isi" no={no}>
-                  <PageHead kicker="Buku Manual Program" title="Daftar Isi" />
-                  <Toc groups={groups} />
-                </Sheet>
-              );
-            case "page":
-              return (
-                <Sheet key={d.id} label={`Bab ${d.chapterNo} · ${d.chapter}`} no={no}>
-                  {d.body}
-                </Sheet>
-              );
-            case "back":
-              return <Back key="back" no={no} />;
-          }
-        })}
-      </main>
-    </div>
+    <ManualBook
+      descs={descs}
+      book="Buku Manual Program"
+      cover={{
+        kicker: "Buku Manual Program",
+        lines: [
+          "Estimasi ISPU",
+          <>
+            dari <em>Sentinel-5P</em>
+          </>,
+        ],
+        sub: "Panduan pengguna aplikasi Aria untuk memperkirakan Indeks Standar Pencemar Udara ozon permukaan DKI Jakarta dari kadar CO dan NO2 satelit, serta melatih dan menguji model regresi robust.",
+      }}
+    />
   );
 }

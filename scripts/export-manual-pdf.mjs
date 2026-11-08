@@ -1,10 +1,11 @@
 /**
- * Mengekspor halaman /manual menjadi PDF A4 lanskap dengan Playwright.
+ * Mengekspor halaman buku manual (/manual atau /manual/pengguna) menjadi PDF A4 lanskap dengan Playwright.
  *
  * Prasyarat: server Next.js aktif (bun dev atau bun start) dan Chromium untuk Playwright.
  *
  * Variabel lingkungan:
  *   ARIA_BASE_URL   alamat aplikasi              (bawaan http://localhost:3000)
+ *   ARIA_MANUAL_PATH jalur halaman manual         (bawaan /manual)
  *   ARIA_PDF_OUT    berkas keluaran              (bawaan manual/Buku-Manual-Aria.pdf)
  */
 import { chromium } from "playwright";
@@ -12,12 +13,13 @@ import { mkdir } from "node:fs/promises";
 import path from "node:path";
 
 const BASE = process.env.ARIA_BASE_URL ?? "http://localhost:3000";
+const MANUAL_PATH = process.env.ARIA_MANUAL_PATH ?? "/manual";
 const OUT = path.resolve(process.env.ARIA_PDF_OUT ?? "manual/Buku-Manual-Aria.pdf");
 
 const browser = await chromium.launch();
 try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-  await page.goto(`${BASE}/manual`, { waitUntil: "networkidle" });
+  await page.goto(`${BASE}${MANUAL_PATH}`, { waitUntil: "networkidle" });
 
   // Tunggu font dan seluruh gambar selesai dimuat sebelum mengukur tata letak.
   await page.evaluate(async () => {

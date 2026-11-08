@@ -108,8 +108,7 @@ export const chapter03: PageDesc[] = [
             </Steps>
             <Callout label="Model kosong" kind="warn">
               Bila pilihan model menampilkan tulisan Belum ada model tersimpan,
-              hubungi administrator agar sebuah model disimpan terlebih dahulu
-              lewat menu Latih dan Uji atau Pelatihan Massal.
+              hubungi administrator agar sebuah model disimpan terlebih dahulu.
             </Callout>
           </Col>
           <Shot
