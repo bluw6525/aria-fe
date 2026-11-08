@@ -33,17 +33,17 @@ export const chapter04: PageDesc[] = [
             n="4.1"
             caption="Halaman Latih dan Uji Model Regresi setelah model dilatih."
             marks={[
-              { n: 1, x: 24, y: 26 },
-              { n: 2, x: 24, y: 39.5 },
-              { n: 3, x: 24, y: 45.3 },
-              { n: 4, x: 24, y: 50.7 },
-              { n: 5, x: 24, y: 60.1 },
-              { n: 6, x: 24, y: 75.3 },
-              { n: 7, x: 24, y: 83.3 },
-              { n: 8, x: 24, y: 92.9 },
-              { n: 9, x: 52.6, y: 18.8 },
-              { n: 10, x: 52.6, y: 39.1 },
-              { n: 11, x: 53.8, y: 69.3 },
+              { n: 1, x: 24, y: 25.8 },
+              { n: 2, x: 24, y: 39.3 },
+              { n: 3, x: 24, y: 45.1 },
+              { n: 4, x: 24, y: 50.4 },
+              { n: 5, x: 24, y: 60 },
+              { n: 6, x: 24, y: 75.1 },
+              { n: 7, x: 24, y: 83 },
+              { n: 8, x: 24, y: 92.6 },
+              { n: 9, x: 52.6, y: 18.5 },
+              { n: 10, x: 52.6, y: 38.9 },
+              { n: 11, x: 53.8, y: 81.7 },
             ]}
           />
           <Col>
@@ -117,7 +117,9 @@ export const chapter04: PageDesc[] = [
             />
             <Callout label="Berkas" kind="note">
               Hanya kolom CO satelit, NO2 satelit, dan O3 SPKU yang diproses. Nilai
-              O3 yang kosong diisi otomatis dengan interpolasi spline kubik alami.
+              O3 yang kosong diisi otomatis dengan interpolasi spline kubik alami,
+              dan kotak kuning Pemberitahuan Data Interpolasi menyebutkan jumlah
+              baris yang dilengkapi.
             </Callout>
           </Col>
           <Shot
@@ -213,17 +215,19 @@ export const chapter04: PageDesc[] = [
             n="4.4"
             caption="Panel Hasil Pelatihan Model."
             marks={[
-              { n: 1, x: 81, y: 4.8 },
-              { n: 2, x: 2.8, y: 20.3 },
-              { n: 3, x: 19.5, y: 38.8 },
-              { n: 4, x: 51, y: 38.8 },
-              { n: 5, x: 3.4, y: 51.7 },
+              { n: 1, x: 80, y: 4.7 },
+              { n: 2, x: 2.4, y: 17.5 },
+              { n: 3, x: 2, y: 34.8 },
+              { n: 4, x: 7, y: 55.4 },
+              { n: 5, x: 65, y: 55.4 },
+              { n: 6, x: 3.4, y: 72 },
             ]}
           />
           <Col>
             <MarkList
               items={[
                 ["Jumlah data latih.", "Banyak baris yang dipakai untuk membentuk model."],
+                ["Pemberitahuan Data Interpolasi.", "Tampil bila ada nilai O3 yang kosong dan dilengkapi otomatis, lengkap dengan jumlah barisnya."],
                 ["Hasil Estimasi Parameter.", "Persamaan model sebagai catatan."],
                 ["RMSE.", "Rata-rata selisih nilai sebenarnya dan estimasi pada data latih, dengan selisih besar diberi penekanan. Makin kecil makin baik."],
                 ["MAE.", "Rata-rata selisih langsung dalam satuan ISPU. Makin kecil makin baik."],

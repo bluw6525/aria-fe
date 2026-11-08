@@ -32,11 +32,11 @@ export const chapter02: PageDesc[] = [
             n="2.1"
             caption="Halaman Beranda Aria pada pengguna umum."
             marks={[
-              { n: 1, x: 1.8, y: 15.4 },
-              { n: 2, x: 24, y: 45.5 },
-              { n: 3, x: 37.3, y: 45.5 },
-              { n: 4, x: 26, y: 56 },
-              { n: 5, x: 26, y: 90.9 },
+              { n: 1, x: 1.8, y: 14.9 },
+              { n: 2, x: 24, y: 44.5 },
+              { n: 3, x: 37.3, y: 44.5 },
+              { n: 4, x: 26, y: 55.9 },
+              { n: 5, x: 26, y: 90.5 },
             ]}
           />
           <Col>
@@ -51,7 +51,7 @@ export const chapter02: PageDesc[] = [
                 ["Menu navigasi.", "Daftar halaman. Halaman yang sedang dibuka ditandai latar putih."],
                 ["Mulai Estimasi.", "Tombol pintas menuju halaman Estimasi ISPU."],
                 ["Panduan Sistem.", "Tombol pintas menuju halaman Bantuan."],
-                ["Tujuan Aplikasi.", "Tiga sasaran aplikasi, yaitu memperluas jangkauan pemantauan, memadukan data satelit dengan data stasiun darat, dan membangun model estimasi ISPU ozon."],
+                ["Tujuan Aplikasi.", "Tiga sasaran aplikasi: Perluasan Jangkauan Pemantauan, Integrasi Data Satelit dan Sensor Darat, serta Estimasi Nilai ISPU Ozon Permukaan."],
                 ["Fitur dan Modul Aplikasi.", "Ringkasan setiap menu. Gulir ke bawah untuk membacanya."],
               ]}
             />
@@ -95,9 +95,8 @@ export const chapter02: PageDesc[] = [
               </li>
             </Steps>
             <Callout label="Keluar" kind="note">
-              Tekan ikon panah keluar di samping nama Admin Aria pada kiri atas
-              untuk mengakhiri sesi. Lakukan hal tersebut saat selesai memakai
-              komputer bersama.
+              Tekan ikon panah keluar di samping nama Admin Aria. Notifikasi
+              Logout Berhasil muncul dan layar kembali ke Beranda.
             </Callout>
           </Col>
           <Shot

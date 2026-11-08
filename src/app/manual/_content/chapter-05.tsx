@@ -130,6 +130,11 @@ export const chapter05: PageDesc[] = [
                 ["Simpangan baku kecil", "Metode stabil terhadap cara data dibagi"],
               ]}
             />
+            <Callout label="Interpolasi" kind="note">
+              Bila ada nilai O3 yang kosong pada berkas, kotak kuning Pemberitahuan
+              Data Interpolasi tampil di atas judul sesi dan menyebutkan jumlah
+              baris yang dilengkapi otomatis.
+            </Callout>
           </Col>
         </Cols>
       </>
@@ -251,12 +256,12 @@ export const chapter05: PageDesc[] = [
           name="06-batch-sesi-lalu"
           width="150mm"
           n="5.7"
-          caption="Tab Muat Sesi Lalu dengan satu sesi tersimpan."
+          caption="Tab Muat Sesi Lalu dengan dua sesi tersimpan."
           center
           marks={[
-            { n: 3, x: 3.1, y: 56 },
-            { n: 4, x: 95.9, y: 38.8 },
-            { n: 5, x: 3.1, y: 82 },
+            { n: 3, x: 3.1, y: 45 },
+            { n: 4, x: 95.9, y: 31.2 },
+            { n: 5, x: 3.1, y: 85.7 },
           ]}
         />
       </>

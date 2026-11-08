@@ -30,8 +30,9 @@ export const chapter01: PageDesc[] = [
         <Cols template="1fr 100mm" gap="10mm">
           <Col>
             <P>
-              Aria adalah aplikasi web untuk memperkirakan Indeks Standar
-              Pencemar Udara (ISPU) ozon permukaan di DKI Jakarta. Masukan
+              Aria (Atmospheric Regression ISPU Application) adalah aplikasi web
+              untuk memperkirakan Indeks Standar Pencemar Udara (ISPU) ozon
+              permukaan di DKI Jakarta. Masukan
               aplikasi berupa kadar karbon monoksida (CO) dan nitrogen dioksida
               (NO2) hasil pengamatan satelit Sentinel-5P dengan satuan mol/m².
               Aria menghitung nilai ISPU ozon dari kedua gas tersebut memakai
@@ -150,8 +151,8 @@ export const chapter01: PageDesc[] = [
           </Callout>
           <Callout label="Data kosong" kind="tip">
             Nilai O3 yang kosong pada data latih diisi otomatis dengan
-            interpolasi spline kubik alami, sehingga baris tersebut tetap
-            terpakai.
+            interpolasi spline kubik alami. Kotak kuning Pemberitahuan Data
+            Interpolasi pada hasil menyebutkan jumlah barisnya.
           </Callout>
         </Cols>
         <P muted>

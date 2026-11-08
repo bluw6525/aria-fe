@@ -157,7 +157,7 @@ async function main() {
   await page.locator("#password").fill(ADMIN_PASSWORD);
   await page.getByRole("button", { name: /Masuk Administrator/ }).click();
   await page.waitForURL("**/home");
-  await page.getByText("Admin Aria").first().waitFor();
+  await page.locator("aside").getByText("Admin Aria").first().waitFor();
   await settle(page, 1500);
   await element(page, page.locator("aside"), "02-sidebar-admin");
   // Notifikasi Mantine ditutup agar tidak menutupi antarmuka pada tangkapan berikutnya.
