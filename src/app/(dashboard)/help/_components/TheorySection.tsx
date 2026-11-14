@@ -20,15 +20,15 @@ export function TheorySection() {
           <Flex align="center" gap={10}>
             <Cpu style={{ width: 20, height: 20, color: "var(--mantine-color-brandPrimary-6)" }} />
             <Title order={3} size="h4" fw={800} c="brandSecondary.9" style={{ letterSpacing: "-0.01em" }}>
-              Dasar Teori Regresi Linear Robust & MM-Estimator
+              Dasar Teori Estimasi Robust & Peramalan Deret Waktu
             </Title>
           </Flex>
           <Text size="xs" c="brandSecondary.5" mt={4}>
-            Penjelasan matematis mengapa metode Ordinary Least Squares (OLS) rentan terhadap pencilan satelit dan bagaimana MM-estimator menyelesaikan kelemahan tersebut.
+            Penjelasan matematis keunggulan regresi linear robust terhadap data satelit Sentinel-5P serta peramalan Moving Average untuk proyeksi kualitas udara harian.
           </Text>
         </Box>
 
-        {/* Mengapa Regresi Robust Dibutuhkan? */}
+        {/* 1. Mengapa Regresi Robust Dibutuhkan? */}
         <Stack gap={10} style={{ fontSize: 12, color: "var(--mantine-color-brandSecondary-7)", lineHeight: 1.65 }}>
           <Text size="sm" fw={700} c="brandSecondary.9">
             1. Keterbatasan Regresi Klasik (OLS) Terhadap Data Satelit
@@ -41,7 +41,16 @@ export function TheorySection() {
           </Text>
         </Stack>
 
-        {/* Evolusi M, S, hingga MM-Estimator */}
+        {/* 2. Evolusi M, S, hingga MM-Estimator */}
+        <Stack gap={8} style={{ fontSize: 12, color: "var(--mantine-color-brandSecondary-7)", lineHeight: 1.65 }}>
+          <Text size="sm" fw={700} c="brandSecondary.9">
+            2. Perbandingan Estimator Regresi Robust
+          </Text>
+          <Text size="xs" inherit>
+            Untuk mengatasi kelemahan OLS terhadap pencilan ekstrim akibat tutupan awan atau derau atmosferik, sistem Aria mengimplementasikan keluarga penaksir robust:
+          </Text>
+        </Stack>
+
         <SimpleGrid cols={{ base: 1, md: 3 }} spacing="md">
           {/* M-Estimator */}
           <Paper
@@ -125,7 +134,7 @@ export function TheorySection() {
           </Paper>
         </SimpleGrid>
 
-        {/* Tahapan Algoritma MM-Estimator */}
+        {/* 3. Tahapan Algoritma MM-Estimator */}
         <Paper
           p="lg"
           bg="brandSecondary.0"
@@ -139,7 +148,7 @@ export function TheorySection() {
           }}
         >
           <Text size="sm" fw={700} c="brandSecondary.9">
-            2. Tiga Tahap Komputasi MM-Estimator (Yohai, 1987)
+            3. Tiga Tahap Komputasi MM-Estimator (Yohai, 1987)
           </Text>
           <Box component="ol" pl={20} m={0} style={{ display: "flex", flexDirection: "column", gap: 8, color: "var(--mantine-color-brandSecondary-6)" }}>
             <li>
@@ -150,6 +159,39 @@ export function TheorySection() {
             </li>
             <li>
               <strong>Tahap 3 (Iterative Reweighted Least Squares / IRLS):</strong> Menggunakan fungsi pembobot Tukey Bisquare untuk menghitung bobot observasi pada setiap iterasi hingga nilai koefisien konvergen.
+            </li>
+          </Box>
+        </Paper>
+
+        {/* 4. Teori Moving Average untuk Peramalan Deret Waktu */}
+        <Paper
+          p="lg"
+          bg="brandSecondary.0"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 12,
+            fontSize: 12,
+            color: "var(--mantine-color-brandSecondary-7)",
+            lineHeight: 1.65,
+          }}
+        >
+          <Text size="sm" fw={700} c="brandSecondary.9">
+            4. Peramalan 2 Hari Kedepan: Metode Rata-Rata Bergerak (Moving Average)
+          </Text>
+          <Text size="xs" inherit>
+            Untuk memperkirakan kualitas udara 2 hari ke depan (Besok dan Lusa), sistem Aria menggunakan pendekatan deret waktu sederhana berbasis rata-rata bergerak (<em>Moving Average</em>):
+          </Text>
+
+          <Box component="ol" pl={20} m={0} style={{ display: "flex", flexDirection: "column", gap: 8, color: "var(--mantine-color-brandSecondary-6)" }}>
+            <li>
+              <strong>Mengambil Riwayat 3 Hari Terakhir:</strong> Sistem mencari riwayat data satelit Sentinel-5P di wilayah tersebut, lalu mengambil 3 pengamatan valid paling terkini untuk konsentrasi gas CO dan NO₂.
+            </li>
+            <li>
+              <strong>Menghitung Nilai Rata-Rata (Peredam Derau):</strong> Data 3 hari tersebut dihitung nilai rata-ratanya untuk dijadikan perkiraan kadar gas besok dan lusa. Hal ini bertujuan meredam gangguan cuaca sesaat (seperti hujan lebat atau angin kencang) agar proyeksi tidak melompat ekstrem.
+            </li>
+            <li>
+              <strong>Konversi ke Angka & Kategori ISPU:</strong> Angka rata-rata gas tersebut kemudian dimasukkan ke dalam model regresi aktif untuk menghasilkan proyeksi nilai ISPU dan kategori mutu udaranya (misalnya Baik, Sedang, atau Tidak Sehat).
             </li>
           </Box>
         </Paper>

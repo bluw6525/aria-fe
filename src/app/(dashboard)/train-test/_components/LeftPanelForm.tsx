@@ -37,6 +37,15 @@ export function LeftPanelForm() {
   const [selectedModelId, setSelectedModelId] = useState<string>("");
   const [testFile, setTestFile] = useState<File | null>(null);
 
+  useEffect(() => {
+    if (!selectedModelId && models.length > 0) {
+      const active = models.find((m) => m.is_active);
+      if (active) {
+        setSelectedModelId(String(active.id));
+      }
+    }
+  }, [models, selectedModelId]);
+
   // Handler Latih
   const handleTrainClick = async () => {
     if (!trainFile) {
@@ -213,7 +222,7 @@ export function LeftPanelForm() {
             ...(trainResult ? [{ value: "current", label: "★ Model Baru Dilatih • Belum Disimpan" }] : []),
             ...models.map((m) => ({
               value: String(m.id),
-              label: `${m.name} (${formatEstimatorType(m.estimator_type)})`,
+              label: `${m.is_active ? "● [Aktif] " : ""}${m.name} (${formatEstimatorType(m.estimator_type)})`,
             })),
           ]}
           searchable

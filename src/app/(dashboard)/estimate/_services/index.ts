@@ -1,52 +1,38 @@
 import httpClient from "@/lib/api/http/client";
 import {
-  TrainedModel,
-  SingleEstimatePayload,
-  SingleEstimateResult,
   BatchEstimateResult,
+  MapOverviewResponse,
+  SatelliteEstimatePayload,
 } from "../_types";
 
 export const estimateService = {
   /**
-   * Mengambil daftar model regresi tersimpan dari basis data untuk dropdown pilihan.
+   * Mengambil estimasi nilai rata-rata ISPU 5 wilayah DKI Jakarta untuk visualisasi Peta Choropleth.
    */
-  getModels: async (page: number = 1, limit: number = 100): Promise<TrainedModel[]> => {
-    const response = await httpClient.get<TrainedModel[]>("/regression/models", {
-      params: { page, limit },
-    });
-    return response.data;
-  },
-
-  /**
-   * Melakukan estimasi nilai dan klasifikasi ISPU untuk input titik tunggal CO dan NO2 (Manual).
-   */
-  estimateSingle: async (payload: SingleEstimatePayload): Promise<SingleEstimateResult> => {
-    const response = await httpClient.post<SingleEstimateResult>(
-      "/regression/estimates",
-      payload
+  getMapOverview: async (
+    startDate: string,
+    endDate: string
+  ): Promise<MapOverviewResponse> => {
+    const params = {
+      start_date: startDate,
+      end_date: endDate,
+    };
+    const response = await httpClient.get<MapOverviewResponse>(
+      "/regression/estimates/map-overview",
+      { params }
     );
     return response.data;
   },
 
   /**
-   * Melakukan estimasi nilai dan klasifikasi ISPU untuk berkas satelit (.xlsx, .xls, .csv) secara batch.
+   * Melakukan estimasi satelit Sentinel-5P L3 untuk wilayah administrasi dan rentang tanggal tertentu.
    */
-  estimateFromFile: async (
-    modelId: number,
-    file: File
+  estimateFromSatellite: async (
+    payload: SatelliteEstimatePayload
   ): Promise<BatchEstimateResult> => {
-    const formData = new FormData();
-    formData.append("model_id", String(modelId));
-    formData.append("file", file);
-
     const response = await httpClient.post<BatchEstimateResult>(
-      "/regression/estimates/batch",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
+      "/regression/estimates/satellite",
+      payload
     );
     return response.data;
   },

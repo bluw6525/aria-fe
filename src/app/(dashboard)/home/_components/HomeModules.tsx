@@ -24,7 +24,7 @@ const MODULES: ModuleItem[] = [
   {
     title: "Modul Estimasi Kualitas Udara",
     description:
-      "Melakukan estimasi nilai konsentrasi O₃ dan kategori ISPU SPKU berdasarkan data polutan CO dan NO₂ Sentinel-5P melalui input nilai manual maupun unggah berkas data.",
+      "Melakukan estimasi nilai konsentrasi O₃ dan kategori ISPU pada lima wilayah DKI Jakarta berbasis data satelit Sentinel-5P, dilengkapi peta sebaran spasial interaktif, peramalan 2 hari kedepan, dan eksplorasi tren deret waktu.",
     href: "/estimate",
     actionLabel: "Buka Estimasi",
     icon: Gauge,

@@ -24,7 +24,7 @@ export function GuideSection() {
             </Title>
           </Flex>
           <Text size="xs" c="brandSecondary.5" mt={4}>
-            Panduan ringkas langkah-langkah estimasi Indeks Standar Pencemar Udara (ISPU) berbasis data satelit Sentinel-5P menggunakan model regresi robust.
+            Panduan langkah pemantauan kualitas udara spasial DKI Jakarta, analisis tren deret waktu historis, serta peramalan ISPU 2 hari kedepan berbasis data satelit Sentinel-5P.
           </Text>
         </Box>
 
@@ -53,15 +53,36 @@ export function GuideSection() {
                 </Text>
               </ThemeIcon>
               <Text size="sm" fw={700} c="brandSecondary.9">
-                Pilih Model Estimasi
+                Pemantauan Peta Sebaran ISPU
               </Text>
             </Flex>
             <Text size="xs" c="brandSecondary.6" lh={1.6}>
-              Pilih salah satu model regresi robust terverifikasi yang tersedia (seperti <strong>MM-Estimator</strong>, <strong>M-Estimator</strong>, atau <strong>S-Estimator</strong>) pada menu dropdown model.
+              Pantau sebaran mutu udara di 5 wilayah administrasi DKI Jakarta secara spasial:
             </Text>
+            <Box
+              pl={12}
+              style={{
+                borderLeft: "2px solid #7dd3fc",
+                display: "flex",
+                flexDirection: "column",
+                gap: 6,
+                fontSize: 12,
+                color: "var(--mantine-color-brandSecondary-6)",
+              }}
+            >
+              <div>
+                <strong>Pilih Basis Tanggal:</strong> Tentukan tanggal pengamatan pada kalender atau tekan tombol <em>Reset ke Hari Ini</em> untuk melihat data terkini.
+              </div>
+              <div>
+                <strong>Kode Warna Mutu Udara:</strong> Poligon wilayah diwarnai otomatis sesuai kategori ISPU resmi (Hijau = Baik, Biru = Sedang, Kuning = Tidak Sehat, dst).
+              </div>
+              <div>
+                <strong>Ringkasan Wilayah:</strong> Sorot atau klik kartu ringkasan di bawah peta untuk melihat angka ISPU dan tanggal observasi masing-masing wilayah.
+              </div>
+            </Box>
           </Paper>
 
-          {/* Langkah 2 */}
+          {/* Langkah 2: Peramalan 2 Hari Kedepan */}
           <Paper
             p="md"
             bg="brandSecondary.0"
@@ -84,11 +105,11 @@ export function GuideSection() {
                 </Text>
               </ThemeIcon>
               <Text size="sm" fw={700} c="brandSecondary.9">
-                Masukkan Data Prekursor
+                Peramalan 2 Hari Kedepan
               </Text>
             </Flex>
             <Text size="xs" c="brandSecondary.6" lh={1.6}>
-              Tersedia 2 metode input data prekursor udara (CO & NO₂):
+              Antisipasi kondisi kualitas udara masa depan untuk perencanaan aktivitas:
             </Text>
             <Box
               pl={12}
@@ -102,15 +123,18 @@ export function GuideSection() {
               }}
             >
               <div>
-                <strong>Unggah Berkas (Batch):</strong> Unggah file <code>.xlsx</code> / <code>.csv</code> untuk estimasi banyak baris data sekaligus.
+                <strong>Proyeksi Besok & Lusa:</strong> Saat memantau data hari ini, kartu peramalan otomatis memproyeksikan indeks mutu udara untuk H+1 dan H+2.
               </div>
               <div>
-                <strong>Input Manual:</strong> Masukkan nilai numerik secara mandiri untuk estimasi titik tunggal secara seketika.
+                <strong>Indikator Perubahan (&Delta;):</strong> Perhatikan label selisih nilai apakah kualitas udara diproyeksikan membaik atau memburuk.
+              </div>
+              <div>
+                <strong>Visualisasi Garis Hijau:</strong> Ujung grafik tren menampilkan garis putus-putus hijau sebagai panduan visual proyeksi jangka pendek.
               </div>
             </Box>
           </Paper>
 
-          {/* Langkah 3 */}
+          {/* Langkah 3: Eksplorasi Tren Deret Waktu */}
           <Paper
             p="md"
             bg="brandSecondary.0"
@@ -133,12 +157,33 @@ export function GuideSection() {
                 </Text>
               </ThemeIcon>
               <Text size="sm" fw={700} c="brandSecondary.9">
-                Analisis Hasil & Kategori
+                Eksplorasi Tren Deret Waktu
               </Text>
             </Flex>
             <Text size="xs" c="brandSecondary.6" lh={1.6}>
-              Sistem akan menghitung estimasi nilai ISPU, memetakan kategori kualitas udara (Baik hingga Berbahaya), serta menyajikan grafik tren.
+              Pelajari riwayat dan dinamika perubahan kualitas udara pada wilayah tertentu:
             </Text>
+            <Box
+              pl={12}
+              style={{
+                borderLeft: "2px solid #7dd3fc",
+                display: "flex",
+                flexDirection: "column",
+                gap: 6,
+                fontSize: 12,
+                color: "var(--mantine-color-brandSecondary-6)",
+              }}
+            >
+              <div>
+                <strong>Buka Panel Analisis:</strong> Klik salah satu wilayah di peta untuk memunculkan panel rincian di sisi kanan layar.
+              </div>
+              <div>
+                <strong>Atur Rentang Waktu:</strong> Pilih tanggal awal dan akhir (hingga 31 hari), lalu klik tombol <em>Terapkan Rentang Waktu</em>.
+              </div>
+              <div>
+                <strong>Grafik & Tabel Harian:</strong> Amati grafik fluktuasi garis observasi historis serta tabel rincian konsentrasi polutan harian.
+              </div>
+            </Box>
           </Paper>
         </SimpleGrid>
       </Paper>

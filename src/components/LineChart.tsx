@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { LineChart as MantineLineChart } from "@mantine/charts";
+import { LineChart as MantineLineChart, ChartTooltip } from "@mantine/charts";
 import { Paper, Text, Box } from "@mantine/core";
 
 // Interface untuk mendefinisikan setiap garis (series) yang digambar pada grafik
@@ -102,6 +102,28 @@ export function LineChart<T extends object = Record<string, unknown>>({
         legendProps={{ verticalAlign: "top", height: 35 }} // Posisi legenda di atas grafik
         gridAxis="xy"                                   // Garis bantu grid horizontal dan vertikal
         tickLine="none"                                 // Menyembunyikan garis centang pada sumbu
+        tooltipProps={{
+          content: ({ label, payload }: any) => {
+            if (!payload || payload.length === 0) return null;
+
+            // Jika ada lebih dari 1 item di tooltip pada titik data ini (misal titik sambungan historis & proyeksi),
+            // sembunyikan entri 'forecast_value' agar tidak menampilkan 2 nilai kembar di tanggal yang sama.
+            const hasEstimated = payload.some(
+              (p: any) => p.dataKey === "estimated_value" && p.value !== null && p.value !== undefined
+            );
+            const filteredPayload = hasEstimated && payload.length > 1
+              ? payload.filter((p: any) => p.dataKey !== "forecast_value")
+              : payload;
+
+            return (
+              <ChartTooltip
+                label={label}
+                payload={filteredPayload}
+                series={series}
+              />
+            );
+          },
+        }}
       />
     </Paper>
   );

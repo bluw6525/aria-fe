@@ -1,20 +1,34 @@
-import { TrainedModel } from "@/app/(dashboard)/train-test/_types";
-
-export type { TrainedModel };
-
-export interface SingleEstimatePayload {
-  co: number;
-  no2: number;
-  model_id?: number;
+export interface RegionMapItem {
+  region: string;
+  name: string;
+  estimated_ispu?: number | null;
+  category: string;
+  count?: number;
+  observation_date?: string | null;
+  is_fallback?: boolean;
 }
 
-export interface SingleEstimateResult {
-  model_id?: number | null;
-  model_name: string;
-  estimator_type: string;
-  equation?: string | null;
+export interface MapOverviewResponse {
+  start_date: string;
+  end_date: string;
+  regions: RegionMapItem[];
+}
+
+export interface SatelliteEstimatePayload {
+  region: string;
+  start_date: string;
+  end_date: string;
+}
+
+export interface ForecastItem {
+  day_offset: number; // 1 = Besok (H+1), 2 = Lusa (H+2)
+  date: string;
+  label: string;
+  co: number;
+  no2: number;
   estimated_value: number;
   ispu_category: string;
+  delta: number; // Selisih tren terhadap hari terakhir (H)
 }
 
 export interface BatchEstimatePoint {
@@ -25,6 +39,8 @@ export interface BatchEstimatePoint {
   actual_value?: number | null;
   estimated_value: number;
   ispu_category: string;
+  is_forecast?: boolean;
+  forecast_value?: number | null;
 }
 
 export interface BatchEstimateSummary {
@@ -38,9 +54,9 @@ export interface BatchEstimateResult {
   model_id: number;
   model_name: string;
   estimator_type: string;
-  equation: string;
   chart_data: BatchEstimatePoint[];
   summary: BatchEstimateSummary;
+  forecast_days?: ForecastItem[];
 }
 
 export interface IspuStyleConfig {
@@ -120,17 +136,18 @@ export function getIspuStyle(category: string): IspuStyleConfig {
         description: "Tingkat mutu udara berbahaya yang secara umum dapat merugikan kesehatan serius pada seluruh populasi.",
         healthImpact: "Gunakan masker pelindung dan tetap berada di dalam ruangan.",
       };
+    case "Tidak Ada Data":
     default:
       return {
         color: "gray",
         badgeBg: "bg-slate-100",
         badgeBorder: "border-slate-300",
-        badgeText: "text-slate-800",
+        badgeText: "text-slate-600",
         bgHex: "#f1f5f9",
         borderHex: "#cbd5e1",
-        textHex: "#334155",
-        description: "Data ISPU tidak terdefinisi.",
-        healthImpact: "Tidak ada informasi dampak kesehatan.",
+        textHex: "#64748b",
+        description: "Tidak ada data observasi satelit pada tanggal ini (tutupan awan atau tidak ada orbit).",
+        healthImpact: "Data kualitas udara tidak tersedia.",
       };
   }
 }
