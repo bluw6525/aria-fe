@@ -65,12 +65,12 @@ export const chapter02: PageDesc[] = [
     kind: "page",
     id: "c2-masuk",
     part: "B",
-    chapterNo: "B1",
+    chapterNo: "5",
     chapter: "Persiapan Administrator",
     toc: "Masuk dan keluar sebagai administrator",
     body: (
       <>
-        <PageHead kicker="Bab B1" title="Masuk dan Keluar sebagai Administrator" />
+        <PageHead kicker="Bab 5" title="Masuk dan Keluar sebagai Administrator" />
         <Cols template="1fr 84mm 64mm" gap="9mm">
           <Col>
             <P>

@@ -11,7 +11,7 @@ import {
 } from "../_components/primitives";
 import type { PageDesc } from "./types";
 
-const NO = "B1";
+const NO = "5";
 const CH = "Persiapan Administrator";
 
 export const administratorAkses: PageDesc[] = [
@@ -24,7 +24,7 @@ export const administratorAkses: PageDesc[] = [
     toc: "Hak akses dan persiapan data",
     body: (
       <>
-        <PageHead kicker="Bab B1" title="Hak Akses dan Persiapan Data" />
+        <PageHead kicker="Bab 5" title="Hak Akses dan Persiapan Data" />
         <Cols template="1fr 54mm" gap="10mm">
           <Col>
             <P>
@@ -85,7 +85,7 @@ export const administratorAkses: PageDesc[] = [
             name="02-sidebar-admin"
             width="50mm"
             box={[0, 0, 100, 50]}
-            n="B1.1"
+            n="5.1"
             caption="Menu administrator."
             center
           />

@@ -55,17 +55,12 @@ export type CoverProps = {
   kicker: string;
   lines: [ReactNode, ReactNode];
   sub: string;
-  audience?: string;
-  /** Teks tambahan pada strip bawah sampul, menggantikan baris Versi atau Untuk. */
-  label?: string;
 };
 
 export function Cover({
   kicker,
   lines,
   sub,
-  audience,
-  label,
   no = 1,
 }: CoverProps & { no?: number }) {
   return (
@@ -96,8 +91,9 @@ export function Cover({
           <b>Universitas Tarumanagara</b>
         </div>
         <div>
-          <span>{audience ? (label ?? "Untuk") : "Versi"}</span>
-          <b>{audience ?? "2.0 · November 2026"}</b>
+          <span>Dosen Pembimbing</span>
+          <b>Utama: Prof. Dr. Ir. Dyah Erny Herwindiati, M.Si</b>
+          <b>Pendamping: Lely Hiryanto, S.T., M.Sc., Ph.D.</b>
         </div>
       </div>
     </section>

@@ -12,7 +12,7 @@ import {
 } from "../_components/primitives";
 import type { PageDesc } from "./types";
 
-const NO = "B3";
+const NO = "7";
 const CH = "Pelatihan Massal";
 
 export const chapter05: PageDesc[] = [
@@ -25,7 +25,7 @@ export const chapter05: PageDesc[] = [
     toc: "Mengatur sesi pelatihan massal",
     body: (
       <>
-        <PageHead kicker="Bab B3" title="Mengatur Sesi Pelatihan Massal" />
+        <PageHead kicker="Bab 7" title="Mengatur Sesi Pelatihan Massal" />
         <P>
           Pelatihan Massal membandingkan beberapa metode regresi pada banyak
           pembagian data latih dan data uji yang berbeda, sehingga metode yang
@@ -88,7 +88,7 @@ export const chapter05: PageDesc[] = [
     toc: "Membaca ringkasan sesi",
     body: (
       <>
-        <PageHead kicker="Bab B3" title="Membaca Ringkasan Sesi" />
+        <PageHead kicker="Bab 7" title="Membaca Ringkasan Sesi" />
         <Cols template="160mm 1fr" gap="9mm">
           <Col>
             <Shot
@@ -151,7 +151,7 @@ export const chapter05: PageDesc[] = [
     toc: "Detail iterasi dan menyimpan model",
     body: (
       <>
-        <PageHead kicker="Bab B3" title="Detail Iterasi dan Menyimpan Model" />
+        <PageHead kicker="Bab 7" title="Detail Iterasi dan Menyimpan Model" />
         <Cols template="160mm 1fr" gap="9mm">
           <Shot
             name="06-batch-iterasi"
@@ -216,7 +216,7 @@ export const chapter05: PageDesc[] = [
     toc: "Memuat sesi lama",
     body: (
       <>
-        <PageHead kicker="Bab B3" title="Memuat Sesi Lama" />
+        <PageHead kicker="Bab 7" title="Memuat Sesi Lama" />
         <Cols template="112mm 1fr" gap="10mm">
           <Shot
             name="06-batch-hero"

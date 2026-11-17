@@ -29,9 +29,9 @@ const descs: PageDesc[] = [
   {
     kind: "divider",
     id: "divider-b",
-    label: "Bagian B",
+    label: "Administrator",
     cover: {
-      kicker: "Bagian B · Administrator",
+      kicker: "Administrator",
       lines: [
         "Melatih dan Menyimpan",
         <>
@@ -39,7 +39,6 @@ const descs: PageDesc[] = [
         </>,
       ],
       sub: "Panduan khusus administrator untuk masuk ke aplikasi, melatih dan menguji model regresi robust, membandingkan metode, serta menyimpan model aktif yang dipakai peta Estimasi ISPU.",
-      audience: "Administrator · November 2026",
     },
   },
   { kind: "toc", id: "toc-b", part: "B" },
@@ -64,8 +63,7 @@ export default function ManualPage() {
             dari <em>Sentinel-5P</em>
           </>,
         ],
-        sub: "Bagian A untuk pengguna umum membaca peta ISPU lima wilayah Jakarta beserta proyeksinya. Bagian B untuk administrator melatih, menguji, dan menyimpan model regresi robust.",
-        audience: "Pengguna umum dan administrator",
+        sub: "Panduan pengguna umum untuk membaca peta ISPU lima wilayah Jakarta beserta proyeksinya, dilanjutkan panduan administrator untuk melatih, menguji, dan menyimpan model regresi robust.",
       }}
     />
   );

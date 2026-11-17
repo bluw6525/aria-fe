@@ -13,7 +13,7 @@ import {
 } from "../_components/primitives";
 import type { PageDesc } from "./types";
 
-const NO = "B2";
+const NO = "6";
 const CH = "Latih dan Uji";
 
 export const chapter04: PageDesc[] = [
@@ -26,7 +26,7 @@ export const chapter04: PageDesc[] = [
     toc: "Mengenal halaman Latih dan Uji",
     body: (
       <>
-        <PageHead kicker="Bab B2" title="Mengenal Halaman Latih dan Uji" />
+        <PageHead kicker="Bab 6" title="Mengenal Halaman Latih dan Uji" />
         <Cols template="160mm 1fr" gap="9mm">
           <Shot
             name="05-latih-hero"
@@ -77,7 +77,7 @@ export const chapter04: PageDesc[] = [
     toc: "Melatih model",
     body: (
       <>
-        <PageHead kicker="Bab B2" title="Melatih Model" />
+        <PageHead kicker="Bab 6" title="Melatih Model" />
         <Cols template="1fr 62mm" gap="10mm">
           <Col>
             <P>
@@ -150,7 +150,7 @@ export const chapter04: PageDesc[] = [
     toc: "Mendeteksi outlier",
     body: (
       <>
-        <PageHead kicker="Bab B2" title="Mendeteksi Outlier" />
+        <PageHead kicker="Bab 6" title="Mendeteksi Outlier" />
         <Cols template="1fr 124mm" gap="10mm">
           <Col>
             <P>
@@ -210,7 +210,7 @@ export const chapter04: PageDesc[] = [
     toc: "Membaca hasil pelatihan dan menyimpan model",
     body: (
       <>
-        <PageHead kicker="Bab B2" title="Membaca Hasil Pelatihan dan Menyimpan Model" />
+        <PageHead kicker="Bab 6" title="Membaca Hasil Pelatihan dan Menyimpan Model" />
         <Cols template="116mm 1fr" gap="10mm">
           <Shot
             name="05-hasil-latih"
@@ -267,7 +267,7 @@ export const chapter04: PageDesc[] = [
     toc: "Menguji model dengan data uji",
     body: (
       <>
-        <PageHead kicker="Bab B2" title="Menguji Model dengan Data Uji" />
+        <PageHead kicker="Bab 6" title="Menguji Model dengan Data Uji" />
         <Cols template="1fr 62mm 98mm" gap="8mm">
           <Col>
             <P>

@@ -82,12 +82,12 @@ export const chapter01: PageDesc[] = [
     kind: "page",
     id: "c1-robust",
     part: "B",
-    chapterNo: "B1",
+    chapterNo: "5",
     chapter: "Persiapan Administrator",
     toc: "Teori singkat: regresi robust dan MM-estimator",
     body: (
       <>
-        <PageHead kicker="Bab B1" title="Teori Singkat: Regresi Robust dan MM-Estimator" />
+        <PageHead kicker="Bab 5" title="Teori Singkat: Regresi Robust dan MM-Estimator" />
         <Cols template="1fr 1fr" gap="10mm">
           <Col>
             <H3>Apa itu regresi</H3>

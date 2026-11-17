@@ -65,7 +65,7 @@ export function ManualBook({
                   book={`${book} · ${PART_NAME[d.part]}`}
                 >
                   <PageHead
-                    kicker={`Bagian ${d.part} · ${PART_NAME[d.part]}`}
+                    kicker={PART_NAME[d.part]}
                     title="Daftar Isi"
                   />
                   <Toc groups={groups[d.part]} />
