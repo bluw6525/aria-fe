@@ -12,19 +12,20 @@ import {
 } from "../_components/primitives";
 import type { PageDesc } from "./types";
 
-const NO = "5";
+const NO = "B3";
 const CH = "Pelatihan Massal";
 
 export const chapter05: PageDesc[] = [
   {
     kind: "page",
+    part: "B",
     id: "c5-form",
     chapterNo: NO,
     chapter: CH,
     toc: "Mengatur sesi pelatihan massal",
     body: (
       <>
-        <PageHead kicker="Bab 5 · Khusus administrator" title="Mengatur Sesi Pelatihan Massal" />
+        <PageHead kicker="Bab B3" title="Mengatur Sesi Pelatihan Massal" />
         <P>
           Pelatihan Massal membandingkan beberapa metode regresi pada banyak
           pembagian data latih dan data uji yang berbeda, sehingga metode yang
@@ -80,13 +81,14 @@ export const chapter05: PageDesc[] = [
   },
   {
     kind: "page",
+    part: "B",
     id: "c5-ringkasan",
     chapterNo: NO,
     chapter: CH,
     toc: "Membaca ringkasan sesi",
     body: (
       <>
-        <PageHead kicker="Bab 5 · Khusus administrator" title="Membaca Ringkasan Sesi" />
+        <PageHead kicker="Bab B3" title="Membaca Ringkasan Sesi" />
         <Cols template="160mm 1fr" gap="9mm">
           <Col>
             <Shot
@@ -142,13 +144,14 @@ export const chapter05: PageDesc[] = [
   },
   {
     kind: "page",
+    part: "B",
     id: "c5-iterasi",
     chapterNo: NO,
     chapter: CH,
     toc: "Detail iterasi dan menyimpan model",
     body: (
       <>
-        <PageHead kicker="Bab 5 · Khusus administrator" title="Detail Iterasi dan Menyimpan Model" />
+        <PageHead kicker="Bab B3" title="Detail Iterasi dan Menyimpan Model" />
         <Cols template="160mm 1fr" gap="9mm">
           <Shot
             name="06-batch-iterasi"
@@ -188,8 +191,9 @@ export const chapter05: PageDesc[] = [
                 metode, seed, dan nilai RMSE.
               </li>
               <li>
-                Tekan <Ui>Simpan ke Database</Ui>. Model muncul pada menu Estimasi
-                ISPU dan Latih dan Uji bagi semua pengguna.
+                Tekan <Ui>Simpan ke Database</Ui>. Model tersimpan sebagai model
+                aktif yang dipakai peta Estimasi ISPU bagi semua pengguna,
+                menggantikan model aktif sebelumnya.
               </li>
             </Steps>
           </Col>
@@ -205,13 +209,14 @@ export const chapter05: PageDesc[] = [
   },
   {
     kind: "page",
+    part: "B",
     id: "c5-sesi",
     chapterNo: NO,
     chapter: CH,
     toc: "Memuat sesi lama",
     body: (
       <>
-        <PageHead kicker="Bab 5 · Khusus administrator" title="Memuat Sesi Lama" />
+        <PageHead kicker="Bab B3" title="Memuat Sesi Lama" />
         <Cols template="112mm 1fr" gap="10mm">
           <Shot
             name="06-batch-hero"

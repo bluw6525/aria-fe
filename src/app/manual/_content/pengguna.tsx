@@ -16,10 +16,11 @@ import type { PageDesc } from "./types";
 const NO = "1";
 const CH = "Pengenalan Aria";
 
-export const penggunaTentang: PageDesc[] = [
+export const penggunaIntro: PageDesc[] = [
   {
     kind: "page",
     id: "u1-tentang",
+    part: "A",
     chapterNo: NO,
     chapter: CH,
     toc: "Tentang Aria dan menu yang tersedia",
@@ -35,15 +36,16 @@ export const penggunaTentang: PageDesc[] = [
               (CO) dan nitrogen dioksida (NO2) hasil pengamatan satelit
               Sentinel-5P dengan satuan mol/m². Aria mengubah kedua nilai
               tersebut menjadi angka ISPU beserta kategori kualitas udaranya.
-              Wilayah yang belum terjangkau stasiun pemantau darat dengan
-              demikian tetap memperoleh gambaran mutu udara.
+              Lima wilayah administrasi Jakarta ditampilkan pada satu peta,
+              sehingga gambaran mutu udara dapat dibaca tanpa stasiun pemantau
+              darat di setiap wilayah.
             </P>
             <P>
-              Aplikasi dibuka melalui browser tanpa instalasi tambahan. Seluruh
-              menu pada buku manual terbuka langsung setelah alamat aplikasi
-              dikunjungi. Model yang dipakai untuk menghitung ISPU
-              sudah disiapkan sebelumnya dan muncul sebagai pilihan pada menu
-              Estimasi ISPU.
+              Aplikasi dibuka melalui browser di komputer, tablet, atau ponsel
+              tanpa instalasi tambahan. Data satelit dan model estimasi sudah
+              tersimpan di aplikasi, sehingga pengguna cukup memilih tanggal dan
+              wilayah. Tidak ada berkas yang perlu disiapkan dan tidak ada nilai
+              yang perlu diketik.
             </P>
             <H3>Menu untuk pengguna umum</H3>
             <Table
@@ -52,8 +54,8 @@ export const penggunaTentang: PageDesc[] = [
               compact
               rows={[
                 ["Beranda", "Ringkasan tujuan dan fitur aplikasi, serta tombol pintas ke menu lain"],
-                ["Estimasi ISPU", "Menghitung ISPU dari berkas data satelit atau dari nilai CO dan NO2 yang diketik"],
-                ["Bantuan", "Cara penggunaan, teori singkat, dan tabel kategori ISPU"],
+                ["Estimasi ISPU", "Peta ISPU lima wilayah, rincian tren harian, dan proyeksi dua hari ke depan"],
+                ["Bantuan", "Cara penggunaan, teori singkat, dampak polusi, dan tabel kategori ISPU"],
                 ["Riwayat Perancang", "Profil perancang aplikasi dan dosen pembimbing"],
               ]}
             />
@@ -70,76 +72,149 @@ export const penggunaTentang: PageDesc[] = [
       </>
     ),
   },
-];
-
-export const penggunaAlur: PageDesc[] = [
   {
     kind: "page",
     id: "u1-alur",
+    part: "A",
     chapterNo: NO,
     chapter: CH,
-    toc: "Alur penggunaan dan persiapan data",
+    toc: "Alur penggunaan",
     body: (
       <>
-        <PageHead kicker="Bab 1" title="Alur Penggunaan dan Persiapan Data" />
+        <PageHead kicker="Bab 1" title="Alur Penggunaan" />
         <Cards cols={4}>
           <Card n="1" title="Buka aplikasi">
             <p>
-              Kunjungi alamat Aria pada browser di komputer, tablet, atau
-              ponsel. Halaman Beranda tampil lebih dahulu.
+              Kunjungi alamat Aria pada browser. Halaman Beranda tampil lebih
+              dahulu dan menu tersedia di sisi kiri.
             </p>
           </Card>
-          <Card n="2" title="Pilih menu">
+          <Card n="2" title="Buka peta">
             <p>
-              Tekan <Ui>Estimasi ISPU</Ui> pada menu di sisi kiri, lalu pilih
-              jenis input yang diinginkan.
+              Tekan <Ui>Estimasi ISPU</Ui>. Peta lima wilayah Jakarta muncul
+              dengan nilai ISPU pada tanggal hari ini.
             </p>
           </Card>
-          <Card n="3" title="Isi data dan model">
+          <Card n="3" title="Pilih wilayah">
             <p>
-              Unggah berkas atau ketik nilai CO dan NO2, kemudian pilih model
-              estimasi pada daftar pilihan.
+              Atur <Ui>Basis Tanggal</Ui> bila perlu, lalu klik wilayah pada
+              peta atau pada kartu wilayah di bawah peta.
             </p>
           </Card>
-          <Card n="4" title="Baca hasil">
+          <Card n="4" title="Baca rincian">
             <p>
-              Tekan <Ui>Jalankan Estimasi</Ui>. Nilai, kategori, grafik, dan
-              tabel muncul pada panel hasil.
+              Panel rincian memuat proyeksi dua hari, grafik tren, dan tabel
+              observasi harian wilayah terpilih.
             </p>
           </Card>
         </Cards>
-        <H3>Dua cara memasukkan data</H3>
+        <H3>Data yang dipakai aplikasi</H3>
         <Table
-          head={["Jenis input", "Yang disiapkan", "Cocok untuk"]}
-          widths={["22%", "46%", "32%"]}
+          head={["Bahan", "Isi", "Sumber"]}
+          widths={["20%", "50%", "30%"]}
           rows={[
             [
-              "Upload Data Satelit",
-              "Berkas .xlsx, .xls, atau .csv dengan kolom CO satelit dan NO2 satelit. Kolom Tanggal bersifat opsional dan dipakai sebagai label sumbu grafik",
-              "Banyak pengamatan sekaligus; setiap baris mewakili satu pengamatan",
+              "Data satelit",
+              "Kadar CO dan NO2 harian pada setiap wilayah, dalam mol/m²",
+              "Produk Sentinel-5P yang disimpan di basis data Aria",
             ],
             [
-              "Input Manual",
-              "Dua angka: kadar CO dan kadar NO2 dalam mol/m². Titik dapat ditambah satu per satu",
-              "Satu atau beberapa titik pengamatan",
+              "Model estimasi",
+              "Persamaan regresi robust yang mengubah kadar CO dan NO2 menjadi ISPU ozon",
+              "Model aktif yang disimpan administrator",
+            ],
+            [
+              "Hasil",
+              "Nilai ISPU, kategori mutu udara, dan proyeksi dua hari ke depan",
+              "Dihitung Aria saat wilayah dipilih",
             ],
           ]}
         />
         <Cols template="1fr 1fr" gap="8mm">
           <Callout label="Satuan" kind="note">
-            CO dan NO2 ditulis dalam mol/m² sesuai produk Sentinel-5P. Gunakan
-            titik sebagai pemisah desimal, misalnya 0.0345.
+            CO dan NO2 ditulis dalam mol/m² sesuai produk Sentinel-5P. Nilai ISPU
+            tidak bersatuan dan dibaca bersama kategorinya.
           </Callout>
-          <Callout label="Model" kind="tip">
-            Pilihan model berisi model yang sudah tersimpan di aplikasi. Bila
-            daftar kosong, muat ulang halaman atau hubungi pengelola aplikasi.
+          <Callout label="Hari tanpa data" kind="tip">
+            Tutupan awan atau tidak adanya orbit membuat sebagian tanggal tanpa
+            data valid. Aria lalu menampilkan pengamatan valid terdekat dan
+            menuliskan tanggalnya pada peta.
           </Callout>
         </Cols>
         <P muted>
-          Seluruh tangkapan layar pada buku manual memakai berkas contoh dan
-          sebuah model contoh. Angka pada layar pengguna akan berbeda sesuai data
-          dan model yang dipilih.
+          Seluruh tangkapan layar pada buku manual diambil pada 17 November 2026.
+          Angka pada layar pengguna dapat berbeda sesuai tanggal, data satelit
+          yang tersedia, dan model aktif.
         </P>
+      </>
+    ),
+  },
+];
+
+export const penggunaTeori: PageDesc[] = [
+  {
+    kind: "page",
+    id: "u1-teori",
+    part: "A",
+    chapterNo: NO,
+    chapter: CH,
+    toc: "Teori singkat: dari data satelit ke ISPU dan proyeksi",
+    body: (
+      <>
+        <PageHead kicker="Bab 1" title="Teori Singkat: dari Data Satelit ke ISPU dan Proyeksi" />
+        <Cols template="1fr 1fr" gap="10mm">
+          <Col>
+            <H3>Data satelit Sentinel-5P</H3>
+            <P>
+              Sentinel-5P adalah satelit pemantau atmosfer milik Badan Antariksa
+              Eropa. Instrumen di dalamnya mengukur jumlah gas CO dan NO2 pada
+              kolom udara di atas permukaan, hampir setiap hari untuk wilayah
+              yang sama. Aria menyimpan nilai rata-rata setiap wilayah
+              administrasi Jakarta. Awan tebal dapat menutupi sensor, sehingga
+              sebagian tanggal tidak memiliki nilai yang sah.
+            </P>
+            <H3>Dari kadar gas ke ISPU</H3>
+            <P>
+              Ozon permukaan terbentuk ketika sinar matahari memicu reaksi antara
+              NO2, CO, dan gas lain di udara. Karena itu kadar CO dan NO2 dapat
+              dipakai untuk memperkirakan ISPU ozon. Hubungan keduanya dipelajari
+              dari data latih yang memuat pengukuran satelit dan pengukuran
+              stasiun pemantau darat. Hubungan tersebut disimpan sebagai model
+              regresi robust, yaitu model yang tidak mudah bergeser oleh
+              pengamatan ekstrem.
+            </P>
+            <H3>Proyeksi dua hari</H3>
+            <P>
+              Proyeksi memakai rata-rata tiga pengamatan valid terakhir pada
+              setiap gas. Rata-rata tersebut menjadi nilai CO dan NO2 untuk hari
+              berikutnya, lalu proses diulang satu kali untuk hari lusa. Kedua
+              nilai gas dimasukkan ke model sehingga muncul ISPU untuk Besok (H+1)
+              dan Lusa (H+2). Metode tersebut dinamakan rata-rata bergerak.
+            </P>
+          </Col>
+          <Col>
+            <H3>Istilah yang muncul di layar</H3>
+            <Table
+              head={["Istilah", "Arti"]}
+              widths={["30%", "70%"]}
+              compact
+              rows={[
+                ["Estimasi ISPU", "Angka ISPU ozon hasil hitungan model dari data satelit, bukan hasil ukur stasiun darat."],
+                ["Observasi Historis", "Nilai ISPU dari pengamatan satelit pada tanggal yang sudah lewat."],
+                ["Proyeksi", "Perkiraan ISPU untuk Besok (H+1) dan Lusa (H+2) dari pola tiga pengamatan terakhir."],
+                ["Observasi terdekat", "Pengamatan valid terbaru yang dipakai saat tanggal terpilih tidak punya data."],
+                ["Tutupan awan", "Kondisi awan tebal yang membuat satelit tidak dapat menghasilkan nilai CO dan NO2."],
+                ["Selisih (delta)", "Beda nilai proyeksi terhadap ISPU observasi terakhir. Tanda plus berarti naik."],
+              ]}
+            />
+            <Callout label="Batas proyeksi" kind="note">
+              Proyeksi hanya melanjutkan pola pengamatan terbaru. Perubahan cuaca,
+              kebakaran, atau kejadian pencemaran mendadak tidak masuk ke dalam
+              hitungan, sehingga angka proyeksi dibaca sebagai gambaran
+              kecenderungan.
+            </Callout>
+          </Col>
+        </Cols>
       </>
     ),
   },

@@ -12,12 +12,17 @@ import {
   type TocGroup,
 } from "./primitives";
 import { PrintToolbar } from "./PrintToolbar";
-import type { PageDesc } from "../_content/types";
+import type { PageDesc, PartKey } from "../_content/types";
 
-function buildToc(descs: PageDesc[]): TocGroup[] {
+const PART_NAME: Record<PartKey, string> = {
+  A: "Pengguna Umum",
+  B: "Administrator",
+};
+
+function buildToc(descs: PageDesc[], part: PartKey): TocGroup[] {
   const groups: TocGroup[] = [];
   descs.forEach((d, i) => {
-    if (d.kind !== "page") return;
+    if (d.kind !== "page" || d.part !== part) return;
     const page = i + 1;
     let g = groups.find((x) => x.number === d.chapterNo);
     if (!g) {
@@ -38,7 +43,7 @@ export function ManualBook({
   book: string;
   cover: CoverProps;
 }) {
-  const groups = buildToc(descs);
+  const groups = { A: buildToc(descs, "A"), B: buildToc(descs, "B") };
 
   return (
     <div className={styles.root}>
@@ -49,11 +54,21 @@ export function ManualBook({
           switch (d.kind) {
             case "cover":
               return <Cover key="cover" {...cover} />;
+            case "divider":
+              return <Cover key={d.id} {...d.cover} no={no} />;
             case "toc":
               return (
-                <Sheet key={d.id} label="Daftar Isi" no={no} book={book}>
-                  <PageHead kicker={book} title="Daftar Isi" />
-                  <Toc groups={groups} />
+                <Sheet
+                  key={d.id}
+                  label={`Daftar Isi · ${PART_NAME[d.part]}`}
+                  no={no}
+                  book={`${book} · ${PART_NAME[d.part]}`}
+                >
+                  <PageHead
+                    kicker={`Bagian ${d.part} · ${PART_NAME[d.part]}`}
+                    title="Daftar Isi"
+                  />
+                  <Toc groups={groups[d.part]} />
                 </Sheet>
               );
             case "page":
@@ -62,7 +77,7 @@ export function ManualBook({
                   key={d.id}
                   label={`Bab ${d.chapterNo} · ${d.chapter}`}
                   no={no}
-                  book={book}
+                  book={`${book} · ${PART_NAME[d.part]}`}
                 >
                   {d.body}
                 </Sheet>

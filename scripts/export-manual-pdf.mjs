@@ -1,5 +1,5 @@
 /**
- * Mengekspor halaman buku manual (/manual atau /manual/pengguna) menjadi PDF A4 lanskap dengan Playwright.
+ * Mengekspor halaman buku manual (/manual) menjadi PDF A4 lanskap dengan Playwright.
  *
  * Prasyarat: server Next.js aktif (bun dev atau bun start) dan Chromium untuk Playwright.
  *

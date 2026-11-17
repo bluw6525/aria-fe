@@ -1,16 +1,12 @@
 import {
   Callout,
-  Card,
-  Cards,
   Chip,
   Col,
   Cols,
   H3,
   P,
   PageHead,
-  Shot,
   Table,
-  Ui,
 } from "../_components/primitives";
 import type { PageDesc } from "./types";
 
@@ -20,152 +16,8 @@ const CH = "Pengenalan Aria";
 export const chapter01: PageDesc[] = [
   {
     kind: "page",
-    id: "c1-tentang",
-    chapterNo: NO,
-    chapter: CH,
-    toc: "Tentang Aria dan hak akses",
-    body: (
-      <>
-        <PageHead kicker="Bab 1" title="Tentang Aria dan Hak Akses" />
-        <Cols template="1fr 100mm" gap="10mm">
-          <Col>
-            <P>
-              Aria (Atmospheric Regression ISPU Application) adalah aplikasi web
-              untuk memperkirakan Indeks Standar Pencemar Udara (ISPU) ozon
-              permukaan di DKI Jakarta. Masukan
-              aplikasi berupa kadar karbon monoksida (CO) dan nitrogen dioksida
-              (NO2) hasil pengamatan satelit Sentinel-5P dengan satuan mol/m².
-              Aria menghitung nilai ISPU ozon dari kedua gas tersebut memakai
-              model regresi robust, lalu menampilkan kategori kualitas udara,
-              grafik, dan tabel hasil. Dengan cara tersebut, wilayah yang belum
-              terjangkau stasiun pemantau darat tetap memperoleh perkiraan
-              kualitas udara.
-            </P>
-            <P>
-              Aplikasi dibuka dalam browser tanpa instalasi tambahan. Pengguna
-              umum langsung dapat memakai menu <Ui>Estimasi ISPU</Ui> setelah
-              membuka alamat aplikasi. Administrator masuk dengan akun khusus
-              untuk memperoleh dua menu tambahan, yaitu <Ui>Latih dan Uji</Ui>{" "}
-              serta <Ui>Pelatihan Massal</Ui>, yang dipakai untuk membuat model.
-              Model yang disimpan administrator muncul sebagai pilihan pada
-              menu Estimasi ISPU bagi semua pengguna.
-            </P>
-            <Table
-              head={["Menu", "Fungsi", "Pengguna", "Admin"]}
-              widths={["24%", "52%", "12%", "12%"]}
-              compact
-              rows={[
-                ["Beranda", "Ringkasan tujuan dan fitur aplikasi", "Ya", "Ya"],
-                ["Estimasi ISPU", "Menghitung ISPU dari berkas satelit atau nilai manual", "Ya", "Ya"],
-                ["Latih dan Uji", "Melatih satu model, mendeteksi outlier, dan mengujinya", "Tidak", "Ya"],
-                ["Pelatihan Massal", "Membandingkan beberapa metode pada banyak pembagian data", "Tidak", "Ya"],
-                ["Bantuan", "Cara penggunaan, teori, dan kategori ISPU", "Ya", "Ya"],
-                ["Riwayat Perancang", "Profil perancang dan dosen pembimbing", "Ya", "Ya"],
-              ]}
-            />
-          </Col>
-          <div style={{ display: "flex", gap: "6mm", justifyContent: "center" }}>
-            <Shot
-              name="02-sidebar-pengguna"
-              width="46mm"
-              box={[0, 0, 100, 50]}
-              n="1.1"
-              caption="Menu pengguna umum."
-            />
-            <Shot
-              name="02-sidebar-admin"
-              width="46mm"
-              box={[0, 0, 100, 50]}
-              n="1.2"
-              caption="Menu administrator."
-            />
-          </div>
-        </Cols>
-      </>
-    ),
-  },
-  {
-    kind: "page",
-    id: "c1-alur",
-    chapterNo: NO,
-    chapter: CH,
-    toc: "Alur penggunaan dan persiapan data",
-    body: (
-      <>
-        <PageHead kicker="Bab 1" title="Alur Penggunaan dan Persiapan Data" />
-        <Cards cols={4}>
-          <Card n="1" title="Siapkan data">
-            <p>
-              Siapkan berkas satelit berformat .xlsx, .xls, atau .csv sesuai
-              kebutuhan menu yang dipakai.
-            </p>
-          </Card>
-          <Card n="2" title="Buka menu">
-            <p>
-              Pilih <Ui>Estimasi ISPU</Ui> untuk menghitung ISPU, atau masuk
-              sebagai administrator untuk membuat model.
-            </p>
-          </Card>
-          <Card n="3" title="Pilih model">
-            <p>
-              Pilih model pada menu pilihan, lalu tekan tombol aksi pada
-              panel kiri.
-            </p>
-          </Card>
-          <Card n="4" title="Baca hasil">
-            <p>
-              Lihat nilai, kategori, grafik, dan tabel pada panel hasil di sisi
-              kanan.
-            </p>
-          </Card>
-        </Cards>
-        <H3>Format berkas data</H3>
-        <Table
-          head={["Kebutuhan", "Kolom yang dibaca", "Dipakai pada", "Ketentuan"]}
-          widths={["17%", "30%", "23%", "30%"]}
-          rows={[
-            [
-              "Data estimasi",
-              "CO satelit dan NO2 satelit. Kolom Tanggal dipakai sebagai label sumbu grafik",
-              "Estimasi ISPU",
-              "Satu baris mewakili satu pengamatan satelit",
-            ],
-            [
-              "Data latih",
-              "CO satelit, NO2 satelit, dan O3 SPKU",
-              "Latih dan Uji, Pelatihan Massal",
-              "Pelatihan Massal membutuhkan minimal 20 baris data valid",
-            ],
-            [
-              "Data uji",
-              "CO satelit, NO2 satelit, dan O3 SPKU",
-              "Latih dan Uji",
-              "Hanya baris dengan ketiga nilai lengkap yang diproses",
-            ],
-          ]}
-        />
-        <Cols template="1fr 1fr" gap="8mm">
-          <Callout label="Satuan" kind="note">
-            CO dan NO2 ditulis dalam mol/m² sesuai produk Sentinel-5P. Nilai O3
-            SPKU adalah ISPU ozon hasil pengukuran stasiun pemantau darat.
-          </Callout>
-          <Callout label="Data kosong" kind="tip">
-            Nilai O3 yang kosong pada data latih diisi otomatis dengan
-            interpolasi spline kubik alami. Kotak kuning Pemberitahuan Data
-            Interpolasi pada hasil menyebutkan jumlah barisnya.
-          </Callout>
-        </Cols>
-        <P muted>
-          Seluruh tangkapan layar pada buku manual memakai berkas contoh dan
-          sebuah model contoh yang dilatih dari berkas tersebut. Angka pada
-          layar pengguna akan berbeda sesuai data dan model yang dipilih.
-        </P>
-      </>
-    ),
-  },
-  {
-    kind: "page",
     id: "c1-ispu",
+    part: "A",
     chapterNo: NO,
     chapter: CH,
     toc: "Teori singkat: ISPU dan kategorinya",
@@ -229,12 +81,13 @@ export const chapter01: PageDesc[] = [
   {
     kind: "page",
     id: "c1-robust",
-    chapterNo: NO,
-    chapter: CH,
+    part: "B",
+    chapterNo: "B1",
+    chapter: "Persiapan Administrator",
     toc: "Teori singkat: regresi robust dan MM-estimator",
     body: (
       <>
-        <PageHead kicker="Bab 1" title="Teori Singkat: Regresi Robust dan MM-Estimator" />
+        <PageHead kicker="Bab B1" title="Teori Singkat: Regresi Robust dan MM-Estimator" />
         <Cols template="1fr 1fr" gap="10mm">
           <Col>
             <H3>Apa itu regresi</H3>

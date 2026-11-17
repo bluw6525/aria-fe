@@ -2,12 +2,13 @@
  * Mengambil tangkapan layar aplikasi Aria untuk Buku Manual (halaman /manual).
  *
  * Prasyarat:
- *   1. Backend aria-be (branch new) berjalan di http://localhost:8000 dengan database kosong
- *      yang sudah dimigrasi dan memiliki akun admin (uv run python commands/seed_admin.py).
+ *   1. Backend aria-be (branch estimate-changes) berjalan di http://localhost:8000 dengan database
+ *      yang sudah dimigrasi, memiliki akun admin (uv run python commands/seed_admin.py), memiliki
+ *      model aktif, dan memuat data tabel sentinel_measurements agar peta Estimasi ISPU terisi.
  *   2. Frontend aria-fe berjalan di http://localhost:3000 (bun run dev).
  *   3. Chromium untuk Playwright terpasang.
  *
- * Skrip menjalankan alur nyata melalui antarmuka memakai data contoh di scripts/manual-sample.
+ * Skrip menjalankan alur nyata melalui antarmuka. Halaman Estimasi memakai data satelit di basis data, sedangkan Latih dan Uji serta Pelatihan Massal memakai data contoh di scripts/manual-sample.
  * Ukuran setiap gambar ditulis ke src/app/manual/_content/shots.json agar halaman manual
  * dapat memesan ruang gambar sebelum gambar dimuat.
  *
@@ -32,7 +33,6 @@ const SHOTS_JSON = path.join(ROOT, "src/app/manual/_content/shots.json");
 const SAMPLE = path.join(ROOT, "scripts", "manual-sample");
 const TRAIN_FILE = path.join(SAMPLE, "data_latih_contoh.csv");
 const TEST_FILE = path.join(SAMPLE, "data_uji_contoh.csv");
-const ESTIMATE_FILE = path.join(SAMPLE, "data_estimasi_contoh.csv");
 
 /** Rasio 1,45 : 1 menyerupai jendela browser pada halaman manual. */
 const VIEWPORT = { width: 1440, height: 990 };
@@ -137,12 +137,94 @@ async function main() {
   await element(page, page.locator("aside"), "02-sidebar-pengguna");
 
   await go(page, "/help", "Bantuan & Informasi Teori");
-  const tabs = ["Cara Penggunaan", "Dasar Teori MM-Estimator", "Dampak Polusi & Prekursor", "Kategori Standar ISPU"];
+  const tabs = ["Cara Penggunaan", "Dasar Teori & Algoritma", "Dampak Polusi & Prekursor", "Kategori Standar ISPU"];
   for (const [i, t] of tabs.entries()) {
     await page.getByRole("tab", { name: t }).or(page.getByText(t, { exact: true })).first().click();
     await page.waitForTimeout(500);
     await viewport(page, `07-bantuan-${i + 1}`);
   }
+
+  await go(page, "/estimate", "Peta Distribusi ISPU DKI Jakarta");
+  await page.getByText(/ISPU: \d/).first().waitFor();
+  await settle(page, 1500);
+  await viewport(page, "04-peta-hero");
+  const mapBar = page.getByText("Peta Sebaran Observasi Satelit ISPU").first();
+  await element(page, paperOf(mapBar), "04-kontrol-tanggal");
+  const mapTitle = page.getByText("Peta Distribusi ISPU DKI Jakarta").first();
+  {
+    const t = await pageBox(mapTitle);
+    const legend = await pageBox(page.getByText(/Skala Kategori ISPU/).first().locator("xpath=ancestor::div[3]"));
+    const panel = await pageBox(outerPaperOf(mapTitle));
+    await clip(page, "04-peta", {
+      x: panel.x + 8,
+      y: t.y - 10,
+      width: panel.width - 16,
+      height: legend.y + legend.height - t.y + 14,
+    });
+  }
+  {
+    const cards = page.locator("svg g").filter({ hasText: "Jakarta Selatan" }).first();
+    await cards.hover({ position: { x: 20, y: 20 } }).catch(() => cards.hover());
+    await page.waitForTimeout(500);
+    await viewport(page, "04-tooltip");
+    await page.mouse.move(5, 5);
+  }
+  {
+    const legend = page.getByText(/Skala Kategori ISPU/).first().locator("xpath=ancestor::div[3]");
+    const card = page.getByText("Observasi Satelit", { exact: true }).first();
+    const l = await pageBox(legend);
+    const c = await pageBox(paperOf(card));
+    await clip(page, "04-legenda-kartu", { x: l.x, y: l.y, width: l.width, height: c.y + c.height - l.y + 4 });
+  }
+  const banner = page.getByText(/tidak memiliki data satelit lengkap/).first();
+  if (await banner.count()) await element(page, banner.locator("xpath=ancestor::div[contains(@class,'mantine-Alert-root')][1]"), "04-banner-awan");
+
+  // Drawer rincian wilayah
+  await page.getByText("Jakarta Selatan", { exact: true }).first().click().catch(async () => {
+    await page.locator("svg g").filter({ hasText: "Jakarta Selatan" }).first().click();
+  });
+  const drawerTitle = page.locator(".mantine-Drawer-content").first();
+  await drawerTitle.getByText("Estimasi & Peramalan Kualitas Udara Satelit Sentinel-5P").waitFor();
+  await page.getByText("Total Sampel").first().waitFor();
+  await settle(page, 1800);
+  await viewport(page, "04-drawer");
+  const drawer = page.locator(".mantine-Drawer-body").first();
+  {
+    const proj = drawer.getByText(/Proyeksi Kualitas Udara \(2 Hari Kedepan\)/).first();
+    await element(page, proj.locator("xpath=ancestor::div[contains(@class,'mantine-Paper-root')][1]"), "04-proyeksi");
+  }
+  {
+    const f = drawer.getByText("Rentang Waktu Observasi Wilayah:").first().locator("xpath=ancestor::div[1]");
+    await element(page, f, "04-rentang");
+  }
+  {
+    const grid = drawer.getByText("Total Sampel").first().locator("xpath=ancestor::div[contains(@class,'mantine-SimpleGrid-root')][1]");
+    await grid.scrollIntoViewIfNeeded();
+    await element(page, grid, "04-metrik");
+    const chart = drawer.getByText(/Tren Harian ISPU/).first().locator("xpath=ancestor::div[contains(@class,'mantine-Paper-root')][1]");
+    await chart.scrollIntoViewIfNeeded();
+    await element(page, chart, "04-grafik");
+  }
+  {
+    const tb = drawer.getByText(/Daftar Data Observasi Satelit/).first();
+    const box = tb.locator("xpath=ancestor::div[contains(@style,'border-top')][1]");
+    await box.scrollIntoViewIfNeeded();
+    await element(page, box, "04-tabel");
+  }
+  // Validasi rentang tanggal lebih dari 31 hari
+  {
+    const inputs = drawer.locator('input[type="date"]');
+    await inputs.nth(0).fill("2026-08-01");
+    await drawer.getByRole("button", { name: /Terapkan Rentang Waktu/ }).click();
+    const err = drawer.getByText(/Batas maksimal adalah 31 hari/).first();
+    await err.waitFor();
+    await page.evaluate(() => document.querySelectorAll(".mantine-Drawer-content, .mantine-Drawer-body").forEach((e) => { e.scrollTop = 0; }));
+    await settle(page, 400);
+    const f = drawer.getByText("Rentang Waktu Observasi Wilayah:").first().locator("xpath=ancestor::div[1]");
+    await element(page, f, "04-validasi");
+  }
+  await page.keyboard.press("Escape");
+  await settle(page, 500);
 
   await go(page, "/history", "Riwayat Perancang");
   await viewport(page, "08-riwayat");
@@ -297,82 +379,6 @@ async function main() {
     "06-batch-sesi-lalu",
   );
 
-  }
-  // ---------------------------------------------------------------- estimasi
-  if (want("estimate")) {
-  console.log("Estimasi");
-  await go(page, "/estimate", "Estimasi Kualitas Udara (ISPU)");
-  await page.getByText(/model tersedia/).first().waitFor();
-  const formTitle = page.getByText("Pilih Jenis Input").first();
-  const form = paperOf(formTitle);
-
-  await page.locator('input[type="file"]').first().setInputFiles(ESTIMATE_FILE);
-  // Model pertama terpilih otomatis; memilih ulang opsi yang sama akan membatalkan pilihan.
-  await page.waitForFunction(() => document.querySelector('input[placeholder*="Model Estimasi"]')?.value);
-  await settle(page);
-  await element(page, form, "04-form-berkas");
-
-  await page.getByRole("button", { name: /Jalankan Estimasi/ }).click();
-  const batchTitle = page.getByText(/Grafik Tren Nilai ISPU/).first();
-  await batchTitle.waitFor();
-  await settle(page, 1500);
-  await viewport(page, "04-estimasi-hero");
-  {
-    const panel = await pageBox(outerPaperOf(batchTitle));
-    await clip(page, "04-hasil-berkas", { x: panel.x, y: panel.y, width: panel.width, height: Math.min(panel.height, 620) });
-  }
-
-  await page.getByRole("button", { name: /Input Manual/ }).click();
-  await page.getByPlaceholder("Contoh: 0.0332").fill("0.0332");
-  await page.getByPlaceholder("Contoh: 0.000092").fill("0.000092");
-  await settle(page);
-  await element(page, form, "04-form-manual");
-  await page.getByRole("button", { name: /Jalankan Estimasi/ }).click();
-  await page.getByText(/Dampak Kesehatan/).first().waitFor();
-  await settle(page, 1000);
-  {
-    const t = page.getByText(/Dampak Kesehatan/).first();
-    const panel = await pageBox(outerPaperOf(t));
-    await clip(page, "04-hasil-titik", { x: panel.x, y: panel.y, width: panel.width, height: Math.min(panel.height, 560) });
-  }
-
-  await page.getByPlaceholder("Contoh: 0.0332").fill("0.0369");
-  await page.getByPlaceholder("Contoh: 0.000092").fill("0.000118");
-  await page.getByRole("button", { name: /Tambah Titik Ke-2/ }).click();
-  await page.getByText(/Grafik Tren Nilai ISPU/).first().waitFor();
-  await settle(page, 1200);
-  await element(page, form, "04-form-multi");
-  {
-    const t = page.getByText(/Grafik Tren Nilai ISPU/).first();
-    const panel = await pageBox(outerPaperOf(t));
-    await clip(page, "04-hasil-multi", { x: panel.x, y: panel.y, width: panel.width, height: Math.min(panel.height, 660) });
-  }
-
-  }
-
-  // ---------------------------------------------------------------- estimasi sebagai pengguna umum
-  if (want("estimate-public")) {
-  console.log("Estimasi (pengguna umum)");
-  const pubContext = await browser.newContext({ viewport: VIEWPORT, deviceScaleFactor: 2, locale: "id-ID" });
-  await pubContext.addInitScript(() => {
-    document.addEventListener("DOMContentLoaded", () => {
-      const s = document.createElement("style");
-      s.textContent = "nextjs-portal{display:none!important}.mantine-Notifications-root{display:none!important}";
-      document.head.appendChild(s);
-    });
-  });
-  pubContext.setDefaultTimeout(TIMEOUT);
-  const pub = await pubContext.newPage();
-  await go(pub, "/estimate", "Estimasi Kualitas Udara (ISPU)");
-  await pub.getByText(/model tersedia/).first().waitFor();
-  await pub.locator('input[type="file"]').first().setInputFiles(ESTIMATE_FILE);
-  await pub.waitForFunction(() => document.querySelector('input[placeholder*="Model Estimasi"]')?.value);
-  await settle(pub);
-  await pub.getByRole("button", { name: /Jalankan Estimasi/ }).click();
-  await pub.getByText(/Grafik Tren Nilai ISPU/).first().waitFor();
-  await settle(pub, 1500);
-  await viewport(pub, "04-estimasi-hero-pengguna");
-  await pubContext.close();
   }
 
   await browser.close();

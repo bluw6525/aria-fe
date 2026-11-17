@@ -56,11 +56,20 @@ export type CoverProps = {
   lines: [ReactNode, ReactNode];
   sub: string;
   audience?: string;
+  /** Teks tambahan pada strip bawah sampul, menggantikan baris Versi atau Untuk. */
+  label?: string;
 };
 
-export function Cover({ kicker, lines, sub, audience }: CoverProps) {
+export function Cover({
+  kicker,
+  lines,
+  sub,
+  audience,
+  label,
+  no = 1,
+}: CoverProps & { no?: number }) {
   return (
-    <section className={clsx(styles.sheet, styles.cover)} data-sheet={1}>
+    <section className={clsx(styles.sheet, styles.cover)} data-sheet={no}>
       <div className={styles.coverGlow} />
       <div className={styles.coverBand} />
       <Circles className={styles.coverCircles} />
@@ -87,7 +96,7 @@ export function Cover({ kicker, lines, sub, audience }: CoverProps) {
           <b>Universitas Tarumanagara</b>
         </div>
         <div>
-          <span>{audience ? "Untuk" : "Versi"}</span>
+          <span>{audience ? (label ?? "Untuk") : "Versi"}</span>
           <b>{audience ?? "2.0 · November 2026"}</b>
         </div>
       </div>

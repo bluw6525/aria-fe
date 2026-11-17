@@ -19,6 +19,7 @@ export const chapter02: PageDesc[] = [
   {
     kind: "page",
     id: "c2-beranda",
+    part: "A",
     chapterNo: NO,
     chapter: CH,
     toc: "Membuka aplikasi dan halaman Beranda",
@@ -63,19 +64,21 @@ export const chapter02: PageDesc[] = [
   {
     kind: "page",
     id: "c2-masuk",
-    chapterNo: NO,
-    chapter: CH,
+    part: "B",
+    chapterNo: "B1",
+    chapter: "Persiapan Administrator",
     toc: "Masuk dan keluar sebagai administrator",
     body: (
       <>
-        <PageHead kicker="Bab 2" title="Masuk dan Keluar sebagai Administrator" />
+        <PageHead kicker="Bab B1" title="Masuk dan Keluar sebagai Administrator" />
         <Cols template="1fr 84mm 64mm" gap="9mm">
           <Col>
             <P>
-              Pengguna umum tidak perlu masuk untuk memakai menu Estimasi ISPU.
               Akun administrator diperlukan untuk menu Latih dan Uji serta
               Pelatihan Massal. Halaman Login Administrator dibuka lewat alamat
-              aplikasi dengan akhiran <Ui>/login</Ui>.
+              aplikasi dengan akhiran <Ui>/login</Ui>. Setelah masuk, seluruh
+              menu pengguna umum tetap tersedia dan dua menu administrator
+              bertambah di bawahnya.
             </P>
             <Steps>
               <li>
@@ -122,9 +125,10 @@ export const chapter02: PageDesc[] = [
         <H3>Cara memilih halaman</H3>
         <P>
           Tekan salah satu nama pada menu kiri untuk membuka halamannya. Judul
-          dan penjelasan singkat halaman tampil di tengah bagian atas, sedangkan
-          kolom kiri berisi isian dan kolom kanan berisi hasil. Hasil muncul
-          setelah tombol aksi ditekan dan hilang setelah tombol Reset ditekan.
+          dan penjelasan singkat halaman tampil di tengah bagian atas. Pada
+          halaman Latih dan Uji serta Pelatihan Massal, kolom kiri berisi isian
+          dan kolom kanan berisi hasil. Hasil muncul setelah tombol aksi
+          ditekan dan hilang setelah tombol Reset ditekan.
         </P>
       </>
     ),

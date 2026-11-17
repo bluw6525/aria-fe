@@ -8,8 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "manual:capture": "node scripts/capture-manual-screenshots.mjs",
-    "manual:pdf": "node scripts/export-manual-pdf.mjs",
-    "manual:pdf:pengguna": "ARIA_MANUAL_PATH=/manual/pengguna ARIA_PDF_OUT=manual/Buku-Manual-Aria-Pengguna.pdf node scripts/export-manual-pdf.mjs"
+    "manual:pdf": "node scripts/export-manual-pdf.mjs"
   },
   "dependencies": {
     "@fontsource-variable/outfit": "^5.3.0",

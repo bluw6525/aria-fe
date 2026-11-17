@@ -13,19 +13,20 @@ import {
 } from "../_components/primitives";
 import type { PageDesc } from "./types";
 
-const NO = "4";
+const NO = "B2";
 const CH = "Latih dan Uji";
 
 export const chapter04: PageDesc[] = [
   {
     kind: "page",
+    part: "B",
     id: "c4-halaman",
     chapterNo: NO,
     chapter: CH,
     toc: "Mengenal halaman Latih dan Uji",
     body: (
       <>
-        <PageHead kicker="Bab 4 · Khusus administrator" title="Mengenal Halaman Latih dan Uji" />
+        <PageHead kicker="Bab B2" title="Mengenal Halaman Latih dan Uji" />
         <Cols template="160mm 1fr" gap="9mm">
           <Shot
             name="05-latih-hero"
@@ -69,20 +70,21 @@ export const chapter04: PageDesc[] = [
   },
   {
     kind: "page",
+    part: "B",
     id: "c4-latih",
     chapterNo: NO,
     chapter: CH,
     toc: "Melatih model",
     body: (
       <>
-        <PageHead kicker="Bab 4 · Khusus administrator" title="Melatih Model" />
+        <PageHead kicker="Bab B2" title="Melatih Model" />
         <Cols template="1fr 62mm" gap="10mm">
           <Col>
             <P>
               Pelatihan membentuk model dari data yang memuat kadar CO, NO2, dan
               nilai O3 hasil pengukuran stasiun SPKU. Model yang sudah dilatih
-              dapat langsung dilihat hasilnya, diuji, dan disimpan agar muncul
-              pada menu Estimasi ISPU. Proses pelatihan dimulai dari panel
+              dapat langsung dilihat hasilnya, diuji, dan disimpan sebagai model
+              aktif yang dipakai peta Estimasi ISPU. Proses pelatihan dimulai dari panel
               Konfigurasi Data Latih di sisi kiri.
             </P>
             <Steps>
@@ -141,13 +143,14 @@ export const chapter04: PageDesc[] = [
   },
   {
     kind: "page",
+    part: "B",
     id: "c4-outlier",
     chapterNo: NO,
     chapter: CH,
     toc: "Mendeteksi outlier",
     body: (
       <>
-        <PageHead kicker="Bab 4 · Khusus administrator" title="Mendeteksi Outlier" />
+        <PageHead kicker="Bab B2" title="Mendeteksi Outlier" />
         <Cols template="1fr 124mm" gap="10mm">
           <Col>
             <P>
@@ -200,13 +203,14 @@ export const chapter04: PageDesc[] = [
   },
   {
     kind: "page",
+    part: "B",
     id: "c4-hasil",
     chapterNo: NO,
     chapter: CH,
     toc: "Membaca hasil pelatihan dan menyimpan model",
     body: (
       <>
-        <PageHead kicker="Bab 4 · Khusus administrator" title="Membaca Hasil Pelatihan dan Menyimpan Model" />
+        <PageHead kicker="Bab B2" title="Membaca Hasil Pelatihan dan Menyimpan Model" />
         <Cols template="116mm 1fr" gap="10mm">
           <Shot
             name="05-hasil-latih"
@@ -238,8 +242,9 @@ export const chapter04: PageDesc[] = [
             <P>
               Ketik nama pada kolom Simpan Parameter Model ke Database, lalu
               tekan Simpan. Notifikasi Model Berhasil Disimpan menandakan model
-              sudah masuk ke daftar yang dapat dipilih pada menu Estimasi ISPU
-              dan pada pengujian. Kolom nama yang kosong memunculkan notifikasi
+              tersimpan dan menjadi model aktif yang menggantikan model aktif
+              sebelumnya. Model aktif dipakai peta Estimasi ISPU untuk semua
+              pengguna dan ditandai ● [Aktif] pada daftar model pengujian. Kolom nama yang kosong memunculkan notifikasi
               Nama Model Kosong, dan Simpan sebelum Latih Model memunculkan
               notifikasi Model Belum Dilatih.
             </P>
@@ -255,13 +260,14 @@ export const chapter04: PageDesc[] = [
   },
   {
     kind: "page",
+    part: "B",
     id: "c4-uji",
     chapterNo: NO,
     chapter: CH,
     toc: "Menguji model dengan data uji",
     body: (
       <>
-        <PageHead kicker="Bab 4 · Khusus administrator" title="Menguji Model dengan Data Uji" />
+        <PageHead kicker="Bab B2" title="Menguji Model dengan Data Uji" />
         <Cols template="1fr 62mm 98mm" gap="8mm">
           <Col>
             <P>

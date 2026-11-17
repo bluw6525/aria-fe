@@ -18,6 +18,7 @@ export function buildChapter06(NO: string): PageDesc[] {
     {
       kind: "page",
       id: "c6-bantuan",
+      part: "A",
       chapterNo: NO,
       chapter: CH,
       toc: "Halaman Bantuan",
@@ -27,9 +28,8 @@ export function buildChapter06(NO: string): PageDesc[] {
           <P>
             Halaman Bantuan memuat empat tab informasi yang dapat dibuka kapan
             saja. Tab dipilih dengan menekan namanya pada deretan tab di bagian
-            atas. Isi setiap tab selaras dengan teori
-            singkat pada Bab 1, sehingga pengguna dapat membacanya langsung di
-            dalam aplikasi.
+            atas. Isi setiap tab selaras dengan teori singkat pada Bab 1,
+            sehingga pengguna dapat membacanya langsung di dalam aplikasi.
           </P>
           <Cols
             template="1fr 1fr"
@@ -41,14 +41,14 @@ export function buildChapter06(NO: string): PageDesc[] {
               width="98mm"
               box={BOX}
               n={`${NO}.1`}
-              caption="Tab Cara Penggunaan: tiga langkah memilih model, memasukkan data, dan membaca hasil."
+              caption="Tab Cara Penggunaan: pemantauan peta, peramalan dua hari, dan eksplorasi tren."
             />
             <Shot
               name="07-bantuan-2"
               width="98mm"
               box={BOX}
               n={`${NO}.2`}
-              caption="Tab Dasar Teori MM-Estimator: perbandingan M, S, dan MM-Estimator."
+              caption="Tab Dasar Teori dan Algoritma: regresi robust dan peramalan deret waktu."
             />
             <Shot
               name="07-bantuan-3"
@@ -71,6 +71,7 @@ export function buildChapter06(NO: string): PageDesc[] {
     {
       kind: "page",
       id: "c6-riwayat",
+      part: "A",
       chapterNo: NO,
       chapter: CH,
       toc: "Riwayat Perancang",
@@ -115,4 +116,4 @@ export function buildChapter06(NO: string): PageDesc[] {
   ];
 }
 
-export const chapter06 = buildChapter06("6");
+export const chapter06 = buildChapter06("4");
