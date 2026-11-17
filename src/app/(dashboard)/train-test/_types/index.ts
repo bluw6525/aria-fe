@@ -3,6 +3,7 @@ export interface TrainedModel {
   name: string;
   estimator_type: string;
   is_default?: boolean;
+  is_active?: boolean;
   intercept?: number;
   coef_co: number;
   coef_no2: number;
