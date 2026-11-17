@@ -63,7 +63,7 @@ export default function ManualPage() {
             dari <em>Sentinel-5P</em>
           </>,
         ],
-        sub: "Panduan pengguna umum untuk membaca peta ISPU lima wilayah Jakarta beserta proyeksinya, dilanjutkan panduan administrator untuk melatih, menguji, dan menyimpan model regresi robust.",
+        sub: "Panduan membaca peta ISPU lima wilayah Jakarta beserta proyeksinya, serta melatih, menguji, dan menyimpan model regresi robust yang menjadi dasar estimasi.",
       }}
     />
   );
